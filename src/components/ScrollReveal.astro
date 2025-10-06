@@ -1,0 +1,35 @@
+---
+interface Props {
+  delay?: number;
+  class?: string;
+}
+
+const { delay = 200, class: className = '' } = Astro.props;
+---
+
+<div class={`fade-in-scroll ${className}`} data-scroll-animation data-delay={delay}>
+  <slot />
+</div>
+
+<script>
+  const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '0px 0px -100px 0px',
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const delay = parseInt(entry.target.getAttribute('data-delay') || '200');
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('[data-scroll-animation]').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

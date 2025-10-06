@@ -39,4 +39,17 @@
   .btn-primary {
     @apply bg-accent rounded-md px-8 py-4 text-center font-medium text-black uppercase transition-all duration-300 ease-in-out hover:bg-black hover:text-white;
   }
+
+  .fade-in-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 1000ms ease,
+      transform 1000ms ease;
+  }
+
+  .fade-in-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
