@@ -29,12 +29,7 @@ const menuItems = [
   </nav>
 
   <!-- Mobile Hamburger -->
-  <button
-    id="menu-toggle"
-    class="md:hidden"
-    aria-label="Toggle menu"
-    aria-expanded="false"
-  >
+  <button id="menu-toggle" class="md:hidden" aria-label="Toggle menu" aria-expanded="false">
     <Icon name="mdi:menu" class="h-8 w-8" />
   </button>
 </header>
@@ -42,7 +37,8 @@ const menuItems = [
 <!-- Mobile Menu -->
 <nav
   id="mobile-menu"
-  class="fixed inset-0 top-[76px] z-50 hidden flex flex-col items-center justify-center gap-6 bg-white md:hidden"
+  class="fixed inset-0 top-[76px] z-50 flex flex-col items-center justify-center gap-6 bg-white transition-transform duration-500 ease-in-out md:hidden"
+  style="transform: translateY(-100%); visibility: hidden;"
 >
   {
     menuItems.map((item) => (
@@ -60,6 +56,17 @@ const menuItems = [
   menuToggle?.addEventListener('click', () => {
     const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
     menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
-    mobileMenu?.classList.toggle('hidden');
+
+    if (isExpanded) {
+      mobileMenu!.style.transform = 'translateY(-100%)';
+      setTimeout(() => {
+        mobileMenu!.style.visibility = 'hidden';
+      }, 500);
+    } else {
+      mobileMenu!.style.visibility = 'visible';
+      setTimeout(() => {
+        mobileMenu!.style.transform = 'translateY(0)';
+      }, 10);
+    }
   });
 </script>
