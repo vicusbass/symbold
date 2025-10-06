@@ -1,5 +1,6 @@
 ---
 import Button from '../components/Button.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import hero from '../assets/hero.png';
@@ -23,9 +24,9 @@ import heroMobile from '../assets/hero-mobile.png';
     <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
   </section>
 
-  <div>
+  <ScrollReveal delay={200}>
     <h2
-      class="mt-20 mb-20 text-center text-xl leading-tight font-bold md:mt-60 md:mb-60 md:text-4xl"
+      class="mb-20 mt-20 text-center text-xl font-bold leading-tight md:mb-60 md:mt-60 md:text-4xl"
     >
       We don't make the logo bigger.
       <br />
@@ -33,5 +34,5 @@ import heroMobile from '../assets/hero-mobile.png';
       <br />
       We are agile, efficient & creative
     </h2>
-  </div>
+  </ScrollReveal>
 </Layout>
