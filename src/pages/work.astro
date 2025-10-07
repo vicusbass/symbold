@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { MuxPlayer } from '@mux/mux-player-astro';
+---
+
+<Layout title="Work">
+  <section id="headers" class="edge-padding">
+    <div>
+      <MuxPlayer
+        playbackId="jKdX00whICbkRA3qni4OlyaV01ogVdhq7lwYxx00FE9twY"
+        metadata={{
+          video_title: 'Outdoorz',
+        }}
+        style={{
+          display: 'block',
+          aspectRatio: '16/9',
+          backgroundColor: '#000',
+          margin: '1rem 0 2rem',
+          '--controls': 'none',
+        }}
+        primaryColor="#f2ec3a"
+        secondaryColor="#0caa09"
+        accentColor="#6e1e99"
+        autoplay={true}
+        muted={true}
+        loop={true}
+        nohotkeys={true}
+        defaultHiddenCaptions={true}
+        streamType="on-demand"
+      />
+    </div>
+  </section>
+</Layout>
