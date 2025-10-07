@@ -26,6 +26,7 @@
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "css.lint.unknownAtRules": "ignore",
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
