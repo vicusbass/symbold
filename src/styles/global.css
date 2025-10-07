@@ -40,10 +40,10 @@
 
   .fade-in-scroll {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(60px);
     transition:
-      opacity 1000ms ease,
-      transform 1000ms ease;
+      opacity 300ms ease,
+      transform 300ms ease;
   }
 
   .fade-in-scroll.visible {
