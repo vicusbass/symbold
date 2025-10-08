@@ -50,23 +50,25 @@ const menuItems = [
 </nav>
 
 <script>
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
+  document.addEventListener('astro:page-load', () => {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-  menuToggle?.addEventListener('click', () => {
-    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+    menuToggle?.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
 
-    if (isExpanded) {
-      mobileMenu!.style.transform = 'translateY(-100%)';
-      setTimeout(() => {
-        mobileMenu!.style.visibility = 'hidden';
-      }, 500);
-    } else {
-      mobileMenu!.style.visibility = 'visible';
-      setTimeout(() => {
-        mobileMenu!.style.transform = 'translateY(0)';
-      }, 10);
-    }
+      if (isExpanded) {
+        mobileMenu!.style.transform = 'translateY(-100%)';
+        setTimeout(() => {
+          mobileMenu!.style.visibility = 'hidden';
+        }, 500);
+      } else {
+        mobileMenu!.style.visibility = 'visible';
+        setTimeout(() => {
+          mobileMenu!.style.transform = 'translateY(0)';
+        }, 10);
+      }
+    });
   });
 </script>

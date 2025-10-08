@@ -66,10 +66,15 @@
   }
 
   .page-title {
-    @apply mt-4 text-[60px] leading-[0.9] tracking-tight drop-shadow-xl md:mt-[140px] md:text-[96px];
+    @apply mt-4 leading-[0.9] tracking-tight drop-shadow-xl md:mt-[8.75rem];
+    font-size: clamp(3.75rem, 0.938rem + 4.688vw, 6rem);
     font-weight: 900;
     -webkit-text-stroke: 2px black;
     paint-order: stroke fill;
     font-stretch: ultra-expanded;
+  }
+
+  .bg-custom-gray {
+    background-color: var(--custom-gray);
   }
 }
