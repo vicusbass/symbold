@@ -27,6 +27,10 @@
     @apply border-t;
     border-color: var(--custom-gray);
   }
+
+  mux-player::part(cast) {
+    display: none;
+  }
 }
 
 @layer components {
