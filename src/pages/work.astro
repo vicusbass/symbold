@@ -1,33 +1,266 @@
 ---
+import Button from '../components/Button.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import Layout from '../layouts/Layout.astro';
-import { MuxPlayer } from '@mux/mux-player-astro';
+import { Image } from 'astro:assets';
+import heroProj1 from '../assets/poc/project-hero-1.png';
+import heroProj2 from '../assets/poc/project-hero-2.png';
+import heroProj3 from '../assets/poc/project-hero-3.png';
+import Tag from '../components/Tag.astro';
+
+const tags = [
+  { id: 'all', label: 'All' },
+  { id: 'brand', label: 'Brand identity' },
+  { id: 'packaging', label: 'Packaging' },
+  { id: 'naming', label: 'Naming & Strategy' },
+  { id: 'graphic', label: 'Graphic design' },
+  { id: 'uiux', label: 'UI/UX' },
+  { id: 'motion', label: 'Motion' },
+];
+
+// temp mockup data
+const projects = [
+  { id: 1, image: heroProj1, alt: 'Hero Project 1', tags: ['brand', 'graphic'] },
+  { id: 2, image: heroProj2, alt: 'Hero Project 2', tags: ['packaging', 'brand'] },
+  { id: 3, image: heroProj3, alt: 'Hero Project 3', tags: ['uiux', 'motion'] },
+  { id: 4, image: heroProj1, alt: 'Hero Project 4', tags: ['brand', 'naming'] },
+  { id: 5, image: heroProj2, alt: 'Hero Project 5', tags: ['graphic', 'motion'] },
+  { id: 6, image: heroProj3, alt: 'Hero Project 6', tags: ['packaging', 'uiux'] },
+  { id: 7, image: heroProj1, alt: 'Hero Project 7', tags: ['brand', 'uiux'] },
+  { id: 8, image: heroProj2, alt: 'Hero Project 8', tags: ['motion', 'graphic'] },
+];
 ---
 
 <Layout title="Symbold | Work">
-  <section id="headers" class="edge-padding">
-    <div>
-      <MuxPlayer
-        playbackId="jKdX00whICbkRA3qni4OlyaV01ogVdhq7lwYxx00FE9twY"
-        metadata={{
-          video_title: 'Outdoorz',
-        }}
-        style={{
-          display: 'block',
-          aspectRatio: '16/9',
-          backgroundColor: '#000',
-          margin: '1rem 0 2rem',
-          '--controls': 'none',
-        }}
-        primaryColor="#f2ec3a"
-        secondaryColor="#0caa09"
-        accentColor="#6e1e99"
-        autoplay={true}
-        muted={true}
-        loop={true}
-        nohotkeys={true}
-        defaultHiddenCaptions={true}
-        streamType="on-demand"
-      />
+  <section id="headers" class="content-padding">
+    <h1 class="page-title">
+      brands
+      <br /> we're proud of
+    </h1>
+
+    <div class="mt-20 text-base md:mt-60">Browse work by service</div>
+
+    <div class="mt-10 flex flex-wrap gap-4">
+      {tags.map((tag) => <Tag id={tag.id} label={tag.label} active={tag.id === 'all'} />)}
     </div>
   </section>
+
+  <div id="projects-container" class="mt-20 md:mt-60">
+    {
+      projects.map((project, index) => (
+        <div
+          class="project-item hidden"
+          data-project-id={project.id}
+          data-tags={project.tags.join(',')}
+        >
+          {index === 0 ? (
+            <Image src={project.image} alt={project.alt} class="h-auto w-full" />
+          ) : (
+            <ScrollReveal>
+              <Image src={project.image} alt={project.alt} class="h-auto w-full" />
+            </ScrollReveal>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <ScrollReveal>
+    <h2
+      class="mx-auto mt-30 w-full text-center text-xl leading-tight font-bold md:mt-60 md:w-1/2 md:text-4xl"
+    >
+      We are not for everyone.
+      <br />
+      Symbold partners only with visionaries who value design as strategy, not decoration.
+    </h2>
+  </ScrollReveal>
+
+  <div class="content-padding mt-30 flex items-center justify-center">
+    <Button class="w-full md:w-auto" href="/work">→ Work with us</Button>
+  </div>
+
+  <div class="content-padding">
+    <hr class="mt-30 mb-10 md:mb-30" />
+  </div>
 </Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    let selectedTags = new Set(['all']);
+    let allProjectsCache: Element[] = [];
+
+    function renderProjects() {
+      const container = document.getElementById('projects-container');
+      if (!container) return;
+
+      // Cache all project items on first run
+      if (allProjectsCache.length === 0) {
+        allProjectsCache = Array.from(container.querySelectorAll('.project-item'));
+      }
+
+      // Filter projects based on selected tags
+      const visibleProjects = allProjectsCache.filter((project) => {
+        const projectTags = project.getAttribute('data-tags')?.split(',') || [];
+        return selectedTags.has('all') || projectTags.some((tag) => selectedTags.has(tag));
+      });
+
+      // Clear container
+      container.innerHTML = '';
+
+      // Render with alternating pattern: 1 large, 2 half, repeat
+      visibleProjects.forEach((project, index) => {
+        const position = index % 3; // 0, 1, 2, 0, 1, 2...
+
+        if (position === 0) {
+          // Large single image
+          const wrapper = document.createElement('div');
+          wrapper.className = 'edge-padding mt-4';
+          wrapper.appendChild(project.cloneNode(true));
+          const clonedProject = wrapper.querySelector('.project-item');
+          if (clonedProject) {
+            clonedProject.classList.remove('hidden');
+            // Make first project visible immediately
+            if (index === 0) {
+              const scrollElement = clonedProject.querySelector('[data-scroll-animation]');
+              if (scrollElement) {
+                scrollElement.classList.add('visible');
+              }
+            }
+          }
+          container.appendChild(wrapper);
+        } else if (position === 1) {
+          // First half of two-column row
+          const row = document.createElement('div');
+          row.className = 'edge-padding mt-4 flex flex-col gap-4 md:flex-row md:gap-4';
+
+          const halfWrapper = document.createElement('div');
+          halfWrapper.className = 'w-full md:w-1/2';
+          halfWrapper.appendChild(project.cloneNode(true));
+          const clonedProject = halfWrapper.querySelector('.project-item');
+          if (clonedProject) {
+            clonedProject.classList.remove('hidden');
+            // Make first project visible immediately
+            if (index === 0) {
+              const scrollElement = clonedProject.querySelector('[data-scroll-animation]');
+              if (scrollElement) {
+                scrollElement.classList.add('visible');
+              }
+            }
+          }
+          row.appendChild(halfWrapper);
+
+          // Check if there's a next project for the second half
+          const nextProject = visibleProjects[index + 1];
+          if (nextProject) {
+            const halfWrapper2 = document.createElement('div');
+            halfWrapper2.className = 'w-full md:w-1/2';
+            halfWrapper2.appendChild(nextProject.cloneNode(true));
+            const clonedProject2 = halfWrapper2.querySelector('.project-item');
+            if (clonedProject2) {
+              clonedProject2.classList.remove('hidden');
+            }
+            row.appendChild(halfWrapper2);
+          }
+
+          container.appendChild(row);
+        }
+        // position === 2 is handled in position === 1 (second half of row)
+      });
+
+      // Re-initialize scroll animations for newly added elements (except first one)
+      const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -100px 0px',
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = parseInt(entry.target.getAttribute('data-delay') || '300');
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, delay);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      // Observe all scroll animation elements in the container (except those already visible)
+      container.querySelectorAll('[data-scroll-animation]:not(.visible)').forEach((el) => {
+        observer.observe(el);
+      });
+    }
+
+    function toggleTag(button: Element) {
+      const tagId = button.getAttribute('data-tag-id');
+      const isActive = button.getAttribute('data-active') === 'true';
+
+      if (!tagId) return;
+
+      if (tagId === 'all') {
+        if (!isActive) {
+          // Select "all" and deselect others
+          selectedTags.clear();
+          selectedTags.add('all');
+
+          document.querySelectorAll('.tag-button').forEach((btn) => {
+            const btnTagId = btn.getAttribute('data-tag-id');
+            if (btnTagId === 'all') {
+              btn.setAttribute('data-active', 'true');
+              btn.classList.remove('bg-transparent');
+              btn.classList.add('bg-accent');
+            } else if (btn.getAttribute('data-active') === 'true') {
+              btn.setAttribute('data-active', 'false');
+              btn.classList.remove('bg-accent');
+              btn.classList.add('bg-transparent');
+            }
+          });
+        }
+      } else {
+        if (isActive) {
+          // Deselect this tag
+          button.setAttribute('data-active', 'false');
+          button.classList.remove('bg-accent');
+          button.classList.add('bg-transparent');
+          selectedTags.delete(tagId);
+
+          // If no tags selected, reselect "all"
+          if (selectedTags.size === 0) {
+            selectedTags.add('all');
+            const allTag = document.querySelector('[data-tag-id="all"]');
+            if (allTag) {
+              allTag.setAttribute('data-active', 'true');
+              allTag.classList.remove('bg-transparent');
+              allTag.classList.add('bg-accent');
+            }
+          }
+        } else {
+          // Select this tag
+          button.setAttribute('data-active', 'true');
+          button.classList.remove('bg-transparent');
+          button.classList.add('bg-accent');
+          selectedTags.delete('all');
+          selectedTags.add(tagId);
+
+          // Deselect "all" tag
+          const allTag = document.querySelector('[data-tag-id="all"]');
+          if (allTag?.getAttribute('data-active') === 'true') {
+            allTag.setAttribute('data-active', 'false');
+            allTag.classList.remove('bg-accent');
+            allTag.classList.add('bg-transparent');
+          }
+        }
+      }
+
+      renderProjects();
+    }
+
+    // Attach click handlers to all tag buttons
+    document.querySelectorAll('.tag-button').forEach((button) => {
+      button.addEventListener('click', () => toggleTag(button));
+    });
+
+    // Initial render
+    renderProjects();
+  });
+</script>
