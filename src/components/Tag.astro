@@ -1,0 +1,21 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  active?: boolean;
+}
+
+const { id, label, active = false } = Astro.props;
+---
+
+<button
+  type="button"
+  data-tag-id={id}
+  data-active={active}
+  class={`tag-button rounded-full border-1 cursor-pointer border-black px-6 py-2 text-sm font-medium uppercase transition-all duration-300 ${
+    active ? 'bg-accent text-black' : 'bg-transparent text-black hover:bg-accent'
+  }`}
+>
+  {label}
+</button>
+
