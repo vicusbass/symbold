@@ -1,5 +1,49 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import { Image } from 'astro:assets';
+import hero from '../assets/hero.png';
+import heroMobile from '../assets/hero-mobile.png';
 ---
 
-<Layout title="Symbold | About" />
+<Layout title="Symbold | About">
+  <section id="headers" class="content-padding">
+    <h1 class="page-title">We don't design logos.</h1>
+    <h2 class="mt-10 text-base font-medium md:text-2xl">
+      Symbold is a branding studio for ambitious companies that value design as strategy, not
+      decoration.
+    </h2>
+
+    <div class="mt-10">
+      <Button class="w-full md:w-auto" href="/work">→ Work with us</Button>
+    </div>
+  </section>
+
+  <section id="hero" class="edge-padding mt-10 w-full md:mt-40">
+    <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+    <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+  </section>
+
+  <ScrollReveal>
+    <h2
+      class="mt-10 text-center text-8xl font-black tracking-tighter md:mt-20 md:text-[clamp(9rem,17vw,17.5rem)]"
+    >
+      who we are
+    </h2>
+  </ScrollReveal>
+
+  <ScrollReveal>
+    <h2
+      class="content-padding mx-auto mt-20 w-full text-center text-xl leading-relaxed font-bold md:mt-80 md:text-4xl"
+    >
+      Symbold is not a traditional agency. <br /> We are a studio of branding experts, based in Cluj
+      and working internationally. <br />We move fast, deliver a lot, and do it with depth and
+      precision.
+    </h2>
+  </ScrollReveal>
+
+  <div class="content-padding">
+    <hr class="mt-30 mb-10 md:mb-30" />
+  </div>
+</Layout>
