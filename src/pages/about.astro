@@ -5,6 +5,22 @@ import ScrollReveal from '../components/ScrollReveal.astro';
 import { Image } from 'astro:assets';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
+import projectHero1 from '../assets/poc/project-hero-1.png';
+import projectHero2 from '../assets/poc/project-hero-2.png';
+import projectHero3 from '../assets/poc/project-hero-3.png';
+import Tag from '../components/Tag.astro';
+
+const serviceTags = [
+  'Brand Identity',
+  'Packaging Design',
+  'Brand Strategy',
+  'Naming',
+  'Web Design',
+  'Graphic Design',
+  'Motion Design',
+  'UI/UX',
+  'Brand Manual',
+];
 ---
 
 <Layout title="Symbold | About">
@@ -42,6 +58,85 @@ import heroMobile from '../assets/hero-mobile.png';
       precision.
     </h2>
   </ScrollReveal>
+
+  <ScrollReveal>
+    <div class="edge-padding mt-10 w-full md:mt-40">
+      <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+      <Image src={projectHero1} alt="Hero" class="hidden h-auto w-full md:block" />
+    </div>
+  </ScrollReveal>
+
+  <section id="services" class="content-padding">
+    <h2 class="pt-8 text-center text-4xl font-black md:pt-40 md:text-6xl">Services</h2>
+
+    <div id="service-tags" class="mt-10 flex flex-col items-center gap-4 md:mt-20">
+      <div class="flex flex-wrap justify-center gap-4">
+        {
+          serviceTags
+            .slice(0, 4)
+            .map((tag) => <Tag id={tag} label={tag} class="px-8 py-4 text-xl" />)
+        }
+      </div>
+      <div class="flex flex-wrap justify-center gap-4">
+        {
+          serviceTags
+            .slice(4, 7)
+            .map((tag) => <Tag id={tag} label={tag} class="px-8 py-4 text-xl" />)
+        }
+      </div>
+      <div class="flex flex-wrap justify-center gap-4">
+        {
+          serviceTags
+            .slice(7, 9)
+            .map((tag) => <Tag id={tag} label={tag} class="px-8 py-4 text-xl" />)
+        }
+      </div>
+    </div>
+  </section>
+
+  <ScrollReveal>
+    <div class="edge-padding mt-10 w-full md:mt-40">
+      <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+      <Image src={projectHero1} alt="Hero" class="hidden h-auto w-full md:block" />
+    </div>
+  </ScrollReveal>
+
+  <section id="values" class="content-padding">
+    <div class="mt-10 flex flex-col gap-4 md:mt-20 md:flex-row">
+      <div class="flex w-full flex-col md:w-1/2">
+        <h2 class="pt-8 text-left text-4xl font-black md:pt-20 md:text-6xl">Our values</h2>
+      </div>
+      <div
+        class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm md:w-1/2 md:pt-20 md:pl-0 md:text-2xl"
+      >
+        <p>
+          <span class="font-bold md:font-normal">Brutally honest</span>
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> no sugarcoating,
+          only clarity
+        </p>
+        <p>
+          <span class="font-bold md:font-normal">Conceptual</span>
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> every brand built
+          on strong ideas
+        </p>
+        <p>
+          <span class="font-bold md:font-normal">Efficient</span>
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> fast, structured,
+          reliable
+        </p>
+        <p>
+          <span class="font-bold md:font-normal">Ambitious</span>
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> aiming higher,
+          always
+        </p>
+        <p>
+          <span class="font-bold md:font-normal">Profound</span>
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> depth over superficial
+          design
+        </p>
+      </div>
+    </div>
+  </section>
 
   <div class="content-padding">
     <hr class="mt-30 mb-10 md:mb-30" />

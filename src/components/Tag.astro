@@ -3,19 +3,19 @@ interface Props {
   id: string;
   label: string;
   active?: boolean;
+  class?: string;
 }
 
-const { id, label, active = false } = Astro.props;
+const { id, label, active = false, class: className = '' } = Astro.props;
 ---
 
 <button
   type="button"
   data-tag-id={id}
   data-active={active}
-  class={`tag-button rounded-full border-1 cursor-pointer border-black px-6 py-2 text-sm font-medium uppercase transition-all duration-300 ${
+  class={`tag-button rounded-full border-1 cursor-pointer border-black px-2 py-1 md:px-6 md:py-2 text-xs md:text-base font-medium  transition-all duration-300 ${
     active ? 'bg-accent text-black' : 'bg-transparent text-black hover:bg-accent'
-  }`}
+  } ${className}`}
 >
   {label}
 </button>
-
