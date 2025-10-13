@@ -3,32 +3,8 @@ import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
-import heroProj1 from '../assets/poc/project-hero-1.png';
-import heroProj2 from '../assets/poc/project-hero-2.png';
-import heroProj3 from '../assets/poc/project-hero-3.png';
 import Tag from '../components/Tag.astro';
-
-const tags = [
-  { id: 'all', label: 'All' },
-  { id: 'brand', label: 'Brand identity' },
-  { id: 'packaging', label: 'Packaging' },
-  { id: 'naming', label: 'Naming & Strategy' },
-  { id: 'graphic', label: 'Graphic design' },
-  { id: 'uiux', label: 'UI/UX' },
-  { id: 'motion', label: 'Motion' },
-];
-
-// temp mockup data
-const projects = [
-  { id: 1, image: heroProj1, alt: 'Hero Project 1', tags: ['brand', 'graphic'] },
-  { id: 2, image: heroProj2, alt: 'Hero Project 2', tags: ['packaging', 'brand'] },
-  { id: 3, image: heroProj3, alt: 'Hero Project 3', tags: ['uiux', 'motion'] },
-  { id: 4, image: heroProj1, alt: 'Hero Project 4', tags: ['brand', 'naming'] },
-  { id: 5, image: heroProj2, alt: 'Hero Project 5', tags: ['graphic', 'motion'] },
-  { id: 6, image: heroProj3, alt: 'Hero Project 6', tags: ['packaging', 'uiux'] },
-  { id: 7, image: heroProj1, alt: 'Hero Project 7', tags: ['brand', 'uiux'] },
-  { id: 8, image: heroProj2, alt: 'Hero Project 8', tags: ['motion', 'graphic'] },
-];
+import { projects, tags } from '../context/projects';
 ---
 
 <Layout title="Symbold | Work">
@@ -54,10 +30,20 @@ const projects = [
           data-tags={project.tags.join(',')}
         >
           {index === 0 ? (
-            <Image src={project.image} alt={project.alt} class="h-auto w-full" />
+            <a
+              href={`/work/${project.id}`}
+              class="focus-visible:ring-accent block focus:outline-none focus-visible:ring-2"
+            >
+              <Image src={project.hero} alt={project.alt} class="h-auto w-full" />
+            </a>
           ) : (
             <ScrollReveal>
-              <Image src={project.image} alt={project.alt} class="h-auto w-full" />
+              <a
+                href={`/work/${project.id}`}
+                class="focus-visible:ring-accent block focus:outline-none focus-visible:ring-2"
+              >
+                <Image src={project.hero} alt={project.alt} class="h-auto w-full" />
+              </a>
             </ScrollReveal>
           )}
         </div>

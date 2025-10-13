@@ -1,0 +1,227 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Tag from '../../components/Tag.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
+import Button from '../../components/Button.astro';
+import { Image } from 'astro:assets';
+import { getProjectById, projects, tags } from '../../context/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { id: project.id.toString() },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: ReturnType<typeof getProjectById> };
+
+if (!project) {
+  throw new Error('Project not found.');
+}
+
+const tagLookup = new Map(tags.map((tag) => [tag.id, tag.label]));
+const detailItems = project.details ?? [];
+const suggestedProjects = projects.filter((item) => item.id !== project.id).slice(0, 3);
+const heroLabelledTags = project.tags.map((tagId) => ({
+  id: tagId,
+  label: tagLookup.get(tagId) ?? tagId,
+}));
+const teamLines = project.team.split('\n').filter(Boolean);
+---
+
+<Layout title={`Symbold | ${project.title}`}>
+  <section class="content-padding mt-10 md:mt-24">
+    <a
+      href="/work"
+      class="hover:text-accent text-sm tracking-wide uppercase transition-colors md:text-base"
+    >
+      ← back to all work
+    </a>
+
+    <div class="mt-12 grid gap-10 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-start">
+      <div class="flex flex-col gap-8">
+        <h1 class="page-title">{project.title}</h1>
+        <p class="max-w-2xl text-base leading-relaxed md:text-xl">{project.description}</p>
+        <div class="flex flex-wrap gap-3">
+          {heroLabelledTags.map((tag) => <Tag id={tag.id} label={tag.label} interactive={false} />)}
+        </div>
+      </div>
+      <div class="md:mt-[5.5rem]">
+        <h2 class="text-sm tracking-[0.2em] text-neutral-500 uppercase">Team</h2>
+        <div class="mt-4 space-y-1 text-sm leading-relaxed md:text-base">
+          {teamLines.map((line) => <p>{line}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="edge-padding mt-16 md:mt-24">
+    <Image src={project.hero} alt={project.alt} class="h-auto w-full" />
+  </section>
+
+  <section class="content-padding mt-20 space-y-16 md:mt-30 md:space-y-24">
+    {
+      detailItems.length ? (
+        detailItems.map((detail, index) => {
+          const description = detail.description?.trim();
+          const isHalf = detail.size === 'half';
+          const ShowDescription = Boolean(description);
+          if (!isHalf) {
+            return (
+              <article class="edge-padding">
+                <ScrollReveal>
+                  <Image src={detail.image} alt={detail.alt} class="h-auto w-full" />
+                </ScrollReveal>
+                {ShowDescription && (
+                  <div class="md:flex md:justify-center">
+                    <p class="max-w-3xl text-base leading-relaxed md:text-lg">{description}</p>
+                  </div>
+                )}
+              </article>
+            );
+          }
+
+          const imageOrderClasses = detail.isDescriptionFirst
+            ? 'order-2 md:order-2'
+            : 'order-1 md:order-1';
+          const descriptionOrderClasses = detail.isDescriptionFirst
+            ? 'order-1 md:order-1 md:pr-12'
+            : 'order-2 md:order-2 md:pl-12';
+
+          return (
+            <article class="flex flex-col gap-8 md:flex-row md:items-center md:gap-16">
+              <div class={`w-full md:w-1/2 ${imageOrderClasses}`}>
+                <ScrollReveal>
+                  <Image src={detail.image} alt={detail.alt} class="h-auto w-full" />
+                </ScrollReveal>
+              </div>
+              {ShowDescription && (
+                <div
+                  class={`w-full text-base leading-relaxed md:w-1/2 md:text-lg ${descriptionOrderClasses}`}
+                >
+                  <ScrollReveal>
+                    <p>{description}</p>
+                  </ScrollReveal>
+                </div>
+              )}
+            </article>
+          );
+        })
+      ) : (
+        <p class="text-base md:text-lg">Project details coming soon.</p>
+      )
+    }
+  </section>
+
+  {
+    suggestedProjects.length ? (
+      <section class="content-padding mt-30 md:mt-40">
+        <h2 class="text-2xl font-bold md:text-4xl">Suggested projects</h2>
+        <div class="mt-10 grid gap-6 md:grid-cols-3 md:gap-10">
+          {suggestedProjects.map((suggested) => (
+            <ScrollReveal>
+              <a
+                href={`/work/${suggested.id}`}
+                class="group focus-visible:ring-accent block focus:outline-none focus-visible:ring-2"
+              >
+                <Image src={suggested.hero} alt={suggested.alt} class="h-auto w-full" />
+                <div class="mt-4 flex flex-col gap-2">
+                  <h3 class="group-hover:text-accent text-lg font-semibold tracking-wide uppercase">
+                    {suggested.title}
+                  </h3>
+                  <div class="flex flex-wrap gap-2 text-sm tracking-wide text-neutral-500 uppercase">
+                    {suggested.tags.map((tagId) => (
+                      <span>{tagLookup.get(tagId) ?? tagId}</span>
+                    ))}
+                  </div>
+                </div>
+              </a>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+    ) : null
+  }
+
+  <section class="content-padding mt-30 md:mt-40">
+    <div class="flex flex-col gap-12 md:flex-row md:items-start md:gap-20">
+      <div class="w-full md:w-1/3">
+        <h2 class="text-3xl font-bold md:text-5xl">Let's talk about you.</h2>
+        <p class="mt-6 text-base leading-relaxed text-neutral-700 md:text-lg">
+          Symbold collaborates with leaders who see design as leverage. Share your challenges and
+          we'll shape a brand experience that moves your business forward.
+        </p>
+      </div>
+      <div class="w-full bg-[#f6f6f6] md:w-[55.67%]">
+        <form class="mt-4 flex flex-col gap-6 p-6 md:p-16">
+          <div class="flex flex-col gap-6 md:flex-row md:gap-4">
+            <input
+              type="text"
+              name="firstName"
+              placeholder="First name"
+              class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
+              required
+            />
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Last name"
+              class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
+              required
+            />
+          </div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Your email"
+            class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
+            required
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Your phone number"
+            class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
+          />
+          <input
+            type="text"
+            name="subject"
+            placeholder="Your subject"
+            class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
+            required
+          />
+          <textarea
+            name="message"
+            placeholder="Your message here"
+            rows="6"
+            class="w-full resize-none border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
+            required></textarea>
+          <div class="flex items-start gap-3">
+            <input
+              type="checkbox"
+              name="terms"
+              id="terms"
+              class="mt-1 h-5 w-5 cursor-pointer border-gray-300"
+              required
+            />
+            <label for="terms" class="cursor-pointer text-sm leading-relaxed">
+              I have read and agree with the Terms and Conditions and with the Privacy Policy
+            </label>
+          </div>
+          <div class="mt-4">
+            <Button
+              type="submit"
+              class="inline-flex w-full items-center justify-center gap-2 text-base md:w-auto"
+            >
+              → SUBMIT
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-padding">
+    <hr class="mt-30 mb-10 md:mb-30" />
+  </div>
+</Layout>
