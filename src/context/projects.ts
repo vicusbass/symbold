@@ -47,7 +47,6 @@ Designer: Emilia Ciorea`,
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     tags: ['brand', 'graphic'],
     details: [
-      { image: heroProj1, alt: 'Detail Image 1', size: 'full' },
       {
         image: heroProj2,
         alt: 'Detail Image 2',
@@ -56,6 +55,7 @@ Designer: Emilia Ciorea`,
         description:
           'An extensive description for the second detail image, explaining the design choices and project context.',
       },
+      { image: heroProj1, alt: 'Detail Image 1', size: 'full' },
       {
         image: heroProj3,
         alt: 'Detail Image 3',
