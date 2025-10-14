@@ -66,12 +66,18 @@
   }
 
   .page-title {
-    @apply mt-4 leading-[0.9] tracking-tight drop-shadow-xl md:mt-[8.75rem];
-    font-size: clamp(3.75rem, 0.938rem + 4.688vw, 6rem);
-    font-weight: 900;
+    @apply mt-4 leading-[0.9] md:mt-[8.75rem] md:tracking-tight;
+    font-size: clamp(3.5rem, 0.938rem + 4.688vw, 6rem);
+    font-weight: 700;
     -webkit-text-stroke: 2px black;
     paint-order: stroke fill;
     font-stretch: ultra-expanded;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-weight: 900;
+    }
   }
 
   .bg-custom-gray {
