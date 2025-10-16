@@ -31,13 +31,6 @@ const teamLines = project.team.split('\n').filter(Boolean);
 
 <Layout title={`Symbold | ${project.title}`}>
   <section class="edge-padding mt-10 md:mt-24">
-    <a
-      href="/work"
-      class="hover:text-accent text-sm tracking-wide uppercase transition-colors md:text-base"
-    >
-      ← back to all work
-    </a>
-
     <div class="mt-12 grid gap-10 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-start">
       <div class="flex flex-col gap-8">
         <h1 class="page-title">{project.title}</h1>

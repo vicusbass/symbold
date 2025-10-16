@@ -6,21 +6,22 @@ import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
-import heroProj1 from '../assets/poc/project-hero-1.png';
 import heroProj2 from '../assets/poc/project-hero-2.png';
-import heroProj3 from '../assets/poc/project-hero-3.png';
+import BaselineReveal from '../components/BaselineReveal.astro';
 ---
 
 <Layout title="Symbold">
   <section id="headers" class="content-padding">
-    <h1 class="page-title">brutally honest <br /> branding</h1>
-    <h2 class="mt-10 text-base font-medium md:text-2xl">
-      we create conceptual, ambitious, and profound brand identities.
-    </h2>
+    <BaselineReveal>
+      <div>
+        <h1 class="page-title">brutally honest <br /> branding</h1>
+        <h2 class="mt-10 text-base font-medium md:text-2xl">
+          we create conceptual, ambitious, and profound brand identities.
+        </h2>
+      </div>
+    </BaselineReveal>
 
-    <div class="mt-10">
-      <Button class="w-full md:w-auto" href="/work">→ Work with us</Button>
-    </div>
+    <Button class="mt-10" href="/contact">Work with us</Button>
   </section>
 
   <section id="hero" class="edge-padding mt-10 w-full md:mt-40">
@@ -113,7 +114,7 @@ import heroProj3 from '../assets/poc/project-hero-3.png';
   </ScrollReveal>
 
   <div class="content-padding mt-30 flex items-center justify-center">
-    <Button class="w-full md:w-auto" href="/work">→ Work with us</Button>
+    <Button href="/contact">Work with us</Button>
   </div>
 
   <div class="content-padding">
