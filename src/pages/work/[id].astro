@@ -1,10 +1,12 @@
 ---
+import type { SanityDocument } from '@sanity/client';
+import { sanityClient } from 'sanity:client';
 import Layout from '../../layouts/Layout.astro';
 import Tag from '../../components/Tag.astro';
 import ScrollReveal from '../../components/ScrollReveal.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import { Image } from 'astro:assets';
-import { getProjectById, projects, tags } from '../../context/projects';
+import { getProjectById, projects } from '../../context/projects';
 
 export function getStaticPaths() {
   return projects.map((project) => ({
@@ -19,13 +21,25 @@ if (!project) {
   throw new Error('Project not found.');
 }
 
-const tagLookup = new Map(tags.map((tag) => [tag.id, tag.label]));
+const TAGS_QUERY = `*[_type == "tag"]{ id, text, hoverColor, order } | order(order asc)`;
+const tagsData = await sanityClient.fetch<SanityDocument[]>(TAGS_QUERY);
+const sanityTags = tagsData.map((tag) => ({
+  id: tag.id.current,
+  label: tag.text,
+  hoverColor: tag.hoverColor,
+}));
+
+const tagLookup = new Map(sanityTags.map((tag) => [tag.id, tag.label]));
 const detailItems = project.details ?? [];
 const suggestedProjects = projects.filter((item) => item.id !== project.id).slice(0, 3);
-const heroLabelledTags = project.tags.map((tagId) => ({
-  id: tagId,
-  label: tagLookup.get(tagId) ?? tagId,
-}));
+const heroLabelledTags = project.tags.map((tagId) => {
+  const sanityTag = sanityTags.find((t) => t.id === tagId);
+  return {
+    id: tagId,
+    label: tagLookup.get(tagId) ?? tagId,
+    hoverColor: sanityTag?.hoverColor,
+  };
+});
 const teamLines = project.team.split('\n').filter(Boolean);
 ---
 
@@ -36,7 +50,11 @@ const teamLines = project.team.split('\n').filter(Boolean);
         <h1 class="page-title">{project.title}</h1>
         <p class="max-w-2xl text-base leading-relaxed md:text-xl">{project.description}</p>
         <div class="flex flex-wrap gap-3">
-          {heroLabelledTags.map((tag) => <Tag id={tag.id} label={tag.label} interactive={false} />)}
+          {
+            heroLabelledTags.map((tag) => (
+              <Tag id={tag.id} label={tag.label} interactive={false} hoverColor={tag.hoverColor} />
+            ))
+          }
         </div>
       </div>
       <div class="md:mt-[5.5rem]">
