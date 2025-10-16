@@ -23,16 +23,6 @@ export type Project = {
   details?: ProjectDetail[];
 };
 
-export const tags = [
-  { id: 'all', label: 'All' },
-  { id: 'brand', label: 'Brand identity' },
-  { id: 'packaging', label: 'Packaging' },
-  { id: 'naming', label: 'Naming & Strategy' },
-  { id: 'graphic', label: 'Graphic design' },
-  { id: 'uiux', label: 'UI/UX' },
-  { id: 'motion', label: 'Motion' },
-];
-
 export const projects: Project[] = [
   {
     id: 1,

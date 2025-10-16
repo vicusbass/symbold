@@ -5,20 +5,40 @@ interface Props {
   active?: boolean;
   class?: string;
   interactive?: boolean;
+  hoverColor?: { hex?: string };
 }
 
-const { id, label, active = false, class: className = '', interactive = true } = Astro.props;
+const {
+  id,
+  label,
+  active = false,
+  class: className = '',
+  interactive = true,
+  hoverColor,
+} = Astro.props;
 ---
 
 <button
   type="button"
   data-tag-id={id}
   data-active={active}
-  class={`tag-button rounded-full border-1 border-black text-xs md:text-base font-medium ${
-    interactive ? 'cursor-pointer transition-all duration-300' : 'cursor-default'
-  } ${
-    active ? 'bg-accent text-black' : `bg-transparent text-black ${interactive ? 'hover:bg-accent' : ''}`
+  data-hover-color={hoverColor?.hex}
+  class={`tag-button rounded-full border-1 border-black text-xs md:text-base font-medium text-black ${
+    interactive ? 'cursor-pointer' : 'cursor-default'
   } ${className || 'px-2 py-1 md:px-6 md:py-2'}`}
+  style={hoverColor?.hex ? `--hover-color: ${hoverColor.hex}` : ''}
 >
   {label}
 </button>
+
+<style>
+  .tag-button {
+    background-color: transparent;
+  }
+  .tag-button:hover {
+    background-color: var(--hover-color, var(--color-accent));
+  }
+  .tag-button[data-active='true'] {
+    background-color: var(--hover-color, var(--color-accent));
+  }
+</style>
