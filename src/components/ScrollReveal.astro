@@ -5,7 +5,7 @@ interface Props {
   delayed?: boolean;
 }
 
-const { delay = 800, class: className = '', delayed = false } = Astro.props;
+const { delay = 500, class: className = '', delayed = false } = Astro.props;
 ---
 
 <div
@@ -20,16 +20,16 @@ const { delay = 800, class: className = '', delayed = false } = Astro.props;
 <script>
   document.addEventListener('astro:page-load', () => {
     const observerOptions = {
-      threshold: 0.2,
-      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.05,
+      rootMargin: '0px',
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const delay = parseInt(entry.target.getAttribute('data-delay') || '800');
+          const delay = parseInt(entry.target.getAttribute('data-delay') || '500');
           const delayed = entry.target.getAttribute('data-delayed') === 'true';
-          const extraDelay = delayed ? 800 : 0;
+          const extraDelay = delayed ? 500 : 0;
           setTimeout(() => {
             entry.target.classList.add('visible');
           }, delay + extraDelay);

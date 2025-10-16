@@ -1,11 +1,24 @@
 ---
+import type { SanityDocument } from '@sanity/client';
+import { sanityClient } from 'sanity:client';
+
 import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import BaselineReveal from '../components/BaselineReveal.astro';
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import Tag from '../components/Tag.astro';
-import { projects, tags } from '../context/projects';
+import { projects } from '../context/projects';
+
+const TAGS_QUERY = `*[_type == "tag"]{ id, text, hoverColor, order } | order(order asc)`;
+
+const tagsData = await sanityClient.fetch<SanityDocument[]>(TAGS_QUERY);
+
+const tags = tagsData.map((tag) => ({
+  id: tag.id.current,
+  label: tag.text,
+  hoverColor: tag.hoverColor,
+}));
 ---
 
 <Layout title="Symbold | Work">
@@ -21,7 +34,12 @@ import { projects, tags } from '../context/projects';
     </BaselineReveal>
 
     <div class="mt-10 flex flex-wrap gap-4">
-      {tags.map((tag) => <Tag id={tag.id} label={tag.label} active={tag.id === 'all'} />)}
+      <Tag id="all" label="All" active={true} />
+      {
+        tags.map((tag) => (
+          <Tag id={tag.id} label={tag.label} active={false} hoverColor={tag.hoverColor} />
+        ))
+      }
     </div>
   </section>
 
@@ -197,12 +215,8 @@ import { projects, tags } from '../context/projects';
             const btnTagId = btn.getAttribute('data-tag-id');
             if (btnTagId === 'all') {
               btn.setAttribute('data-active', 'true');
-              btn.classList.remove('bg-transparent');
-              btn.classList.add('bg-accent');
             } else if (btn.getAttribute('data-active') === 'true') {
               btn.setAttribute('data-active', 'false');
-              btn.classList.remove('bg-accent');
-              btn.classList.add('bg-transparent');
             }
           });
         }
@@ -210,8 +224,6 @@ import { projects, tags } from '../context/projects';
         if (isActive) {
           // Deselect this tag
           button.setAttribute('data-active', 'false');
-          button.classList.remove('bg-accent');
-          button.classList.add('bg-transparent');
           selectedTags.delete(tagId);
 
           // If no tags selected, reselect "all"
@@ -220,24 +232,18 @@ import { projects, tags } from '../context/projects';
             const allTag = document.querySelector('[data-tag-id="all"]');
             if (allTag) {
               allTag.setAttribute('data-active', 'true');
-              allTag.classList.remove('bg-transparent');
-              allTag.classList.add('bg-accent');
             }
           }
         } else {
           // Select this tag
           button.setAttribute('data-active', 'true');
-          button.classList.remove('bg-transparent');
-          button.classList.add('bg-accent');
           selectedTags.delete('all');
           selectedTags.add(tagId);
 
-          // Deselect "all" tag
+          // Always deselect "all" tag when selecting another tag
           const allTag = document.querySelector('[data-tag-id="all"]');
-          if (allTag?.getAttribute('data-active') === 'true') {
+          if (allTag) {
             allTag.setAttribute('data-active', 'false');
-            allTag.classList.remove('bg-accent');
-            allTag.classList.add('bg-transparent');
           }
         }
       }
