@@ -41,7 +41,6 @@ import BaselineReveal from '../components/BaselineReveal.astro';
 
   <ScrollReveal>
     <div class="edge-padding mt-20 md:mt-60">
-      <!-- <Image src={heroProj1} alt="Hero Project 1" class="h-auto w-full" /> -->
       <div>
         <MuxPlayer
           playbackId="FNxQJaU02uRsOBFTwOF7UTFTg4YnZMzRGtTwBfLR3KLg"
@@ -72,7 +71,7 @@ import BaselineReveal from '../components/BaselineReveal.astro';
     <ScrollReveal class="w-full md:w-1/2">
       <Image src={heroProj2} alt="Hero Project 2" class="h-auto w-full" />
     </ScrollReveal>
-    <ScrollReveal class="w-full md:w-1/2">
+    <ScrollReveal delayed class="w-full md:w-1/2">
       <!-- <Image src={heroProj3} alt="Hero Project 3" class="h-auto w-full" /> -->
       <div class="w-full">
         <MuxPlayer
@@ -101,7 +100,9 @@ import BaselineReveal from '../components/BaselineReveal.astro';
     </ScrollReveal>
   </div>
 
-  <a href="/work" class="link-primary mt-10 block text-center">See our work</a>
+  <ScrollReveal>
+    <a href="/work" class="link-primary mt-10 block text-center">See our work</a>
+  </ScrollReveal>
 
   <ScrollReveal>
     <h2
