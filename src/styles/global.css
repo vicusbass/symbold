@@ -42,8 +42,8 @@
     opacity: 0;
     transform: translateY(90px);
     transition:
-      opacity 500ms ease-in,
-      transform 500ms ease-in;
+      opacity 800ms ease-out,
+      transform 800ms ease-out;
   }
 
   .fade-in-scroll.visible {
