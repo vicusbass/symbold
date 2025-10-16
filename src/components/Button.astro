@@ -1,18 +1,36 @@
 ---
+import { Image } from 'astro:assets';
+import arrow from '../assets/arrow-right.svg';
 interface Props {
   href?: string;
   type?: 'button' | 'submit' | 'reset';
   class?: string;
+  hasArrow?: boolean;
 }
 
-const { href, type = 'button', class: className = '' } = Astro.props;
+const { href, type = 'button', class: className = '', hasArrow = true } = Astro.props;
 const Element = href ? 'a' : 'button';
 ---
 
 <Element
   href={href}
   type={!href ? type : undefined}
-  class={`btn-primary inline-block ${className}`}
+  class={`bg-accent rounded-md pl-10 pr-15 py-5 font-[600] text-black uppercase
+    inline-flex items-center justify-center w-full md:w-auto group hover:opacity-85
+    transition-all duration-300 ease-in-out
+    ${className}
+    `}
 >
+  {
+    hasArrow && (
+      <Image
+        class="mr-5 transition-transform duration-300 ease-in-out group-hover:translate-x-4"
+        src={arrow}
+        alt="Arrow"
+        width={20}
+        height={20}
+      />
+    )
+  }
   <slot />
 </Element>

@@ -4,7 +4,7 @@ interface Props {
   class?: string;
 }
 
-const { delay = 300, class: className = '' } = Astro.props;
+const { delay = 500, class: className = '' } = Astro.props;
 ---
 
 <div class={`fade-in-scroll ${className}`} data-scroll-animation data-delay={delay}>
