@@ -5,7 +5,7 @@ interface Props {
   delayed?: boolean;
 }
 
-const { delay = 500, class: className = '', delayed = false } = Astro.props;
+const { delay = 600, class: className = '', delayed = false } = Astro.props;
 ---
 
 <div
@@ -27,12 +27,12 @@ const { delay = 500, class: className = '', delayed = false } = Astro.props;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const delay = parseInt(entry.target.getAttribute('data-delay') || '500');
+          const delay = parseInt(entry.target.getAttribute('data-delay') || '600');
           const delayed = entry.target.getAttribute('data-delayed') === 'true';
-          const extraDelay = delayed ? 500 : 0;
+          const extraDelay = delayed ? delay : 0;
           setTimeout(() => {
             entry.target.classList.add('visible');
-          }, delay + extraDelay);
+          }, extraDelay);
           observer.unobserve(entry.target);
         }
       });
