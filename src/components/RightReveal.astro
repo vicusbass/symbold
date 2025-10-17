@@ -21,11 +21,29 @@ const { class: className = '', delayed = false, index = 0 } = Astro.props;
 
 <script>
   document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('[data-right-fade-animation]').forEach((el) => {});
+
+    const observerOptions = {
+      threshold: 0.05,
+      rootMargin: '0px',
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delayed = el.getAttribute('data-delayed') === 'true';
+          const index = parseInt(el.getAttribute('data-index') || '0');
+          const delay = index ? index * 300 : delayed ? 300 : 0;
+          setTimeout(() => el.classList.add('visible'), delay);
+
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
     document.querySelectorAll('[data-right-fade-animation]').forEach((el) => {
-      const delayed = el.getAttribute('data-delayed') === 'true';
-      const index = parseInt(el.getAttribute('data-index') || '0');
-      const delay = index ? index * 300 : delayed ? 300 : 0;
-      setTimeout(() => el.classList.add('visible'), delay);
+      observer.observe(el);
     });
   });
 </script>
