@@ -15,16 +15,17 @@ const Element = href ? 'a' : 'button';
 <Element
   href={href}
   type={!href ? type : undefined}
-  class={`bg-accent rounded-md pl-10 pr-15 py-5 font-[600] text-black uppercase
-    inline-flex items-center justify-center w-full md:w-auto group hover:opacity-85
-    transition-all duration-300 ease-in-out
+  class={`border-1 bg-accent rounded-md pl-10 pr-15 py-5 font-[600] text-black uppercase
+    inline-flex items-center justify-center w-full md:w-auto group 
+    transition-all duration-400 ease-in-out
+    hover:bg-black hover:text-white hover:border-black
     ${className}
     `}
 >
   {
     hasArrow && (
       <Image
-        class="mr-5 transition-transform duration-300 ease-in-out group-hover:translate-x-4"
+        class="mr-5 filter transition-all duration-400 ease-in-out group-hover:translate-x-4 group-hover:brightness-0 group-hover:invert"
         src={arrow}
         alt="Arrow"
         width={20}
