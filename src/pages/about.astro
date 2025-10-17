@@ -9,6 +9,7 @@ import projectHero1 from '../assets/poc/project-hero-1.png';
 import projectHero2 from '../assets/poc/project-hero-2.png';
 import projectHero3 from '../assets/poc/project-hero-3.png';
 import Tag from '../components/Tag.astro';
+import RightReveal from '../components/RightReveal.astro';
 
 const serviceTags = [
   'Brand Identity',
@@ -25,7 +26,7 @@ const serviceTags = [
 
 <Layout title="Symbold | About">
   <section id="headers" class="content-padding">
-    <h1 class="page-title">We don't design logos.</h1>
+    <h1 class="page-title">we don't design logos.</h1>
     <h2 class="mt-10 text-base font-medium md:text-2xl">
       Symbold is a branding studio for ambitious companies that value design as strategy, not
       decoration.
@@ -67,50 +68,25 @@ const serviceTags = [
   <section id="services" class="content-padding">
     <h2 class="pt-8 text-center text-4xl font-black md:pt-40 md:text-6xl">Services</h2>
 
-    <div id="service-tags" class="mt-10 flex flex-col items-center gap-4 md:mt-20">
-      <div class="flex flex-wrap justify-center gap-4">
+    <ScrollReveal>
+      <div
+        id="service-tags"
+        class="mt-10 flex flex-wrap items-center justify-center gap-4 px-0 md:mt-20 md:px-30"
+      >
         {
-          serviceTags
-            .slice(0, 4)
-            .map((tag) => (
+          serviceTags.map((tag, index) => (
+            <RightReveal index={index}>
               <Tag
                 id={tag}
                 label={tag}
                 class="px-6 py-2 text-xl md:px-10 md:py-4"
                 interactive={false}
               />
-            ))
+            </RightReveal>
+          ))
         }
       </div>
-      <div class="flex flex-wrap justify-center gap-4">
-        {
-          serviceTags
-            .slice(4, 7)
-            .map((tag) => (
-              <Tag
-                id={tag}
-                label={tag}
-                class="px-6 py-2 text-xl md:px-10 md:py-4"
-                interactive={false}
-              />
-            ))
-        }
-      </div>
-      <div class="flex flex-wrap justify-center gap-4">
-        {
-          serviceTags
-            .slice(7, 9)
-            .map((tag) => (
-              <Tag
-                id={tag}
-                label={tag}
-                class="px-6 py-2 text-xl md:px-10 md:py-4"
-                interactive={false}
-              />
-            ))
-        }
-      </div>
-    </div>
+    </ScrollReveal>
   </section>
 
   <ScrollReveal>

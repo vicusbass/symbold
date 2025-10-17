@@ -29,7 +29,7 @@ const { delay = 600, class: className = '', delayed = false } = Astro.props;
         if (entry.isIntersecting) {
           const delay = parseInt(entry.target.getAttribute('data-delay') || '600');
           const delayed = entry.target.getAttribute('data-delayed') === 'true';
-          const extraDelay = delayed ? delay : 0;
+          const extraDelay = delayed && window.innerWidth > 768 ? delay : 0;
           setTimeout(() => {
             entry.target.classList.add('visible');
           }, extraDelay);
