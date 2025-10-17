@@ -1,0 +1,31 @@
+---
+interface Props {
+  class?: string;
+  delayed?: boolean;
+  index?: number;
+}
+
+const { class: className = '', delayed = false, index = 0 } = Astro.props;
+---
+
+<!-- <div class="overflow-hidden"> -->
+<div
+  class={`right-fade ${className}`}
+  data-right-fade-animation
+  data-delayed={delayed}
+  data-index={index}
+>
+  <slot />
+</div>
+<!-- </div> -->
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('[data-right-fade-animation]').forEach((el) => {
+      const delayed = el.getAttribute('data-delayed') === 'true';
+      const index = parseInt(el.getAttribute('data-index') || '0');
+      const delay = index ? index * 300 : delayed ? 300 : 0;
+      setTimeout(() => el.classList.add('visible'), delay);
+    });
+  });
+</script>

@@ -9,6 +9,7 @@ import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import Tag from '../components/Tag.astro';
 import { projects } from '../context/projects';
+import RightReveal from '../components/RightReveal.astro';
 
 const TAGS_QUERY = `*[_type == "tag"]{ id, text, hoverColor, order } | order(order asc)`;
 
@@ -24,20 +25,24 @@ const tags = tagsData.map((tag) => ({
 <Layout title="Symbold | Work">
   <section id="headers" class="content-padding">
     <BaselineReveal>
-      <div>
-        <h1 class="page-title">
-          brands
-          <br /> we're proud of
-        </h1>
-        <div class="mt-20 text-base md:mt-30">Browse work by service</div>
-      </div>
+      <h1 class="page-title">
+        brands
+        <br /> we're proud of
+      </h1>
+    </BaselineReveal>
+    <BaselineReveal delayed>
+      <div class="mt-20 text-base md:mt-30">Browse work by service</div>
     </BaselineReveal>
 
     <div class="mt-10 flex flex-wrap gap-4">
-      <Tag id="all" label="All" active={true} />
+      <RightReveal index={0}>
+        <Tag id="all" label="All" active={true} />
+      </RightReveal>
       {
-        tags.map((tag) => (
-          <Tag id={tag.id} label={tag.label} active={false} hoverColor={tag.hoverColor} />
+        tags.map((tag, index) => (
+          <RightReveal index={index + 1}>
+            <Tag id={tag.id} label={tag.label} active={false} hoverColor={tag.hoverColor} />
+          </RightReveal>
         ))
       }
     </div>

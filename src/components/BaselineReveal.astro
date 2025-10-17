@@ -1,22 +1,23 @@
 ---
 interface Props {
-  delay?: number;
   class?: string;
+  delayed?: boolean;
 }
 
-const { delay = 100, class: className = '' } = Astro.props;
+const { class: className = '', delayed = false } = Astro.props;
 ---
 
 <div class="overflow-hidden">
-  <div class={`baseline-scroll ${className}`} data-baseline-animation data-delay={delay}>
+  <div class={`baseline-scroll ${className}`} data-baseline-animation data-delayed={delayed}>
     <slot />
   </div>
 </div>
 
 <script>
   document.addEventListener('astro:page-load', () => {
-    document
-      .querySelectorAll('[data-baseline-animation]')
-      .forEach((el) => el.classList.add('visible'));
+    document.querySelectorAll('[data-baseline-animation]').forEach((el) => {
+      const delayed = el.getAttribute('data-delayed') === 'true';
+      setTimeout(() => el.classList.add('visible'), delayed ? 300 : 0);
+    });
   });
 </script>
