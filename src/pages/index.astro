@@ -1,13 +1,46 @@
 ---
 import { Image } from 'astro:assets';
-import { MuxPlayer } from '@mux/mux-player-astro';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
+import MuxVideo from '../components/MuxVideo.astro';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
 import heroProj2 from '../assets/poc/project-hero-2.png';
 import BaselineReveal from '../components/BaselineReveal.astro';
+import { client, urlFor } from '../lib/sanity';
+import type { MainPage } from '../types/sanity';
+
+// Fetch MainPage data from Sanity
+const mainPage = await client.fetch<MainPage>(
+  `*[_type == "mainPage"][0]{
+    _id,
+    title,
+    slug,
+    hero{
+      mediaType,
+      image{
+        asset,
+        alt
+      },
+      video{
+        asset->{
+          playbackId
+        }
+      },
+      mobileMediaType,
+      mobileImage{
+        asset,
+        alt
+      },
+      mobileVideo{
+        asset->{
+          playbackId
+        }
+      }
+    }
+  }`
+);
 ---
 
 <Layout title="Symbold">
@@ -25,8 +58,52 @@ import BaselineReveal from '../components/BaselineReveal.astro';
   </section>
 
   <section id="hero" class="edge-padding mt-10 w-full md:mt-40">
-    <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
-    <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+    {
+      mainPage?.hero ? (
+        <>
+          {/* Mobile Hero */}
+          {mainPage.hero.mobileMediaType === 'image' && mainPage.hero.mobileImage ? (
+            <Image
+              src={urlFor(mainPage.hero.mobileImage)?.url() || ''}
+              alt={mainPage.hero.mobileImage.alt || 'Hero'}
+              class="h-auto w-full md:hidden"
+              inferSize
+            />
+          ) : mainPage.hero.mobileMediaType === 'video' &&
+            mainPage.hero.mobileVideo?.asset?.playbackId ? (
+            <div class="md:hidden">
+              <MuxVideo
+                playbackId={mainPage.hero.mobileVideo.asset.playbackId}
+                videoTitle={mainPage.title || 'Hero Video'}
+              />
+            </div>
+          ) : null}
+
+          {/* Desktop Hero */}
+          {mainPage.hero.mediaType === 'image' && mainPage.hero.image ? (
+            <Image
+              src={urlFor(mainPage.hero.image)?.url() || ''}
+              alt={mainPage.hero.image.alt || 'Hero'}
+              class="hidden h-auto w-full md:block"
+              inferSize
+            />
+          ) : mainPage.hero.mediaType === 'video' && mainPage.hero.video?.asset?.playbackId ? (
+            <div class="hidden md:block">
+              <MuxVideo
+                playbackId={mainPage.hero.video.asset.playbackId}
+                videoTitle={mainPage.title || 'Hero Video'}
+              />
+            </div>
+          ) : null}
+        </>
+      ) : (
+        <>
+          {/* Fallback to static assets if no Sanity data */}
+          <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+          <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+        </>
+      )
+    }
   </section>
 
   <ScrollReveal>
@@ -42,27 +119,7 @@ import BaselineReveal from '../components/BaselineReveal.astro';
   <ScrollReveal>
     <div class="edge-padding mt-20 md:mt-60">
       <div>
-        <MuxPlayer
-          playbackId="FNxQJaU02uRsOBFTwOF7UTFTg4YnZMzRGtTwBfLR3KLg"
-          metadata={{
-            video_title: 'Brancusi',
-          }}
-          style={{
-            display: 'block',
-            aspectRatio: '16/9',
-            backgroundColor: '#000',
-            '--controls': 'none',
-          }}
-          primaryColor="#f2ec3a"
-          secondaryColor="#0caa09"
-          accentColor="#6e1e99"
-          autoplay={true}
-          muted={true}
-          loop={true}
-          nohotkeys={true}
-          defaultHiddenCaptions={true}
-          streamType="on-demand"
-        />
+        <MuxVideo playbackId="FNxQJaU02uRsOBFTwOF7UTFTg4YnZMzRGtTwBfLR3KLg" videoTitle="Brancusi" />
       </div>
     </div>
   </ScrollReveal>
@@ -72,29 +129,10 @@ import BaselineReveal from '../components/BaselineReveal.astro';
       <Image src={heroProj2} alt="Hero Project 2" class="h-auto w-full" />
     </ScrollReveal>
     <ScrollReveal delayed class="w-full md:w-1/2">
-      <!-- <Image src={heroProj3} alt="Hero Project 3" class="h-auto w-full" /> -->
       <div class="w-full">
-        <MuxPlayer
+        <MuxVideo
           playbackId="jKdX00whICbkRA3qni4OlyaV01ogVdhq7lwYxx00FE9twY"
-          metadata={{
-            video_title: 'Outdoorz',
-          }}
-          style={{
-            display: 'block',
-            width: '100%',
-            aspectRatio: '16/9',
-            backgroundColor: '#000',
-            '--controls': 'none',
-          }}
-          primaryColor="#f2ec3a"
-          secondaryColor="#0caa09"
-          accentColor="#6e1e99"
-          autoplay={true}
-          muted={true}
-          loop={true}
-          nohotkeys={true}
-          defaultHiddenCaptions={true}
-          streamType="on-demand"
+          videoTitle="Outdoorz"
         />
       </div>
     </ScrollReveal>
