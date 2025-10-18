@@ -1,0 +1,28 @@
+---
+import { MuxPlayer } from '@mux/mux-player-astro';
+
+interface Props {
+  playbackId: string;
+  videoTitle: string;
+}
+
+const { playbackId, videoTitle } = Astro.props;
+---
+
+<MuxPlayer
+  playbackId={playbackId}
+  metadata={{
+    video_title: videoTitle,
+  }}
+  style={{
+    display: 'block',
+    aspectRatio: '16/9',
+    '--controls': 'none',
+  }}
+  autoplay={true}
+  muted={true}
+  loop={true}
+  nohotkeys={true}
+  defaultHiddenCaptions={true}
+  streamType="on-demand"
+/>
