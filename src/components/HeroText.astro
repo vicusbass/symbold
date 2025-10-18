@@ -1,0 +1,82 @@
+---
+interface Props {
+  text: string;
+  color: string;
+  showOnDesktop?: boolean;
+  class?: string;
+}
+
+const { text, color, showOnDesktop = true, class: className = '' } = Astro.props;
+---
+
+<div class={`hero-text-wrapper ${showOnDesktop ? 'md:block' : 'md:hidden'} ${className}`}>
+  <div class="overflow-hidden">
+    <div class="hero-text baseline-scroll px-4 md:px-8" style={`color: ${color};`} data-hero-text>
+      {text}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const heroSection = document.querySelector('#hero');
+    const heroTexts = document.querySelectorAll('[data-hero-text]');
+
+    if (heroSection && heroTexts.length > 0) {
+      // Show mobile text immediately
+      heroTexts.forEach((text) => {
+        const wrapper = text.closest('.hero-text-wrapper');
+        if (wrapper && !wrapper.classList.contains('md:block')) {
+          text.classList.add('visible');
+        }
+      });
+
+      // Show desktop text on hover (only on desktop)
+      if (window.innerWidth >= 768) {
+        heroSection.addEventListener('mouseenter', () => {
+          heroTexts.forEach((text) => {
+            const wrapper = text.closest('.hero-text-wrapper');
+            if (wrapper && wrapper.classList.contains('md:block')) {
+              text.classList.add('visible');
+            }
+          });
+        });
+
+        heroSection.addEventListener('mouseleave', () => {
+          heroTexts.forEach((text) => {
+            const wrapper = text.closest('.hero-text-wrapper');
+            if (wrapper && wrapper.classList.contains('md:block')) {
+              text.classList.remove('visible');
+            }
+          });
+        });
+      } else {
+        // On mobile, show all text
+        heroTexts.forEach((text) => {
+          text.classList.add('visible');
+        });
+      }
+    }
+  });
+</script>
+
+<style>
+  .hero-text-wrapper {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .hero-text {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .hero-text {
+      font-size: 1.5rem;
+    }
+  }
+</style>

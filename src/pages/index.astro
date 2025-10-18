@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import MuxVideo from '../components/MuxVideo.astro';
+import HeroText from '../components/HeroText.astro';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
 import heroProj2 from '../assets/poc/project-hero-2.png';
@@ -28,6 +29,10 @@ const mainPage = await client.fetch<MainPage>(
           playbackId
         }
       },
+      desktopTextColor{
+        hex,
+        alpha
+      },
       mobileMediaType,
       mobileImage{
         asset,
@@ -37,6 +42,10 @@ const mainPage = await client.fetch<MainPage>(
         asset->{
           playbackId
         }
+      },
+      mobileTextColor{
+        hex,
+        alpha
       }
     }
   }`
@@ -57,18 +66,28 @@ const mainPage = await client.fetch<MainPage>(
     <Button class="mt-10" href="/contact">Work with us</Button>
   </section>
 
-  <section id="hero" class="edge-padding mt-10 w-full md:mt-40">
+  <section id="hero" class="relative edge-padding mt-10 w-full md:mt-40">
     {
       mainPage?.hero ? (
         <>
           {/* Mobile Hero */}
           {mainPage.hero.mobileMediaType === 'image' && mainPage.hero.mobileImage ? (
-            <Image
-              src={urlFor(mainPage.hero.mobileImage)?.url() || ''}
-              alt={mainPage.hero.mobileImage.alt || 'Hero'}
-              class="h-auto w-full md:hidden"
-              inferSize
-            />
+            <>
+              <Image
+                src={urlFor(mainPage.hero.mobileImage)?.url() || ''}
+                alt={mainPage.hero.mobileImage.alt || 'Hero'}
+                class="h-auto w-full md:hidden"
+                inferSize
+              />
+              {mainPage.hero.mobileImage.alt && (
+                <HeroText
+                  text={mainPage.hero.mobileImage.alt}
+                  color={mainPage.hero.mobileTextColor?.hex || '#000000'}
+                  showOnDesktop={false}
+                  class="md:hidden"
+                />
+              )}
+            </>
           ) : mainPage.hero.mobileMediaType === 'video' &&
             mainPage.hero.mobileVideo?.asset?.playbackId ? (
             <div class="md:hidden">
@@ -81,12 +100,22 @@ const mainPage = await client.fetch<MainPage>(
 
           {/* Desktop Hero */}
           {mainPage.hero.mediaType === 'image' && mainPage.hero.image ? (
-            <Image
-              src={urlFor(mainPage.hero.image)?.url() || ''}
-              alt={mainPage.hero.image.alt || 'Hero'}
-              class="hidden h-auto w-full md:block"
-              inferSize
-            />
+            <>
+              <Image
+                src={urlFor(mainPage.hero.image)?.url() || ''}
+                alt={mainPage.hero.image.alt || 'Hero'}
+                class="hidden h-auto w-full md:block"
+                inferSize
+              />
+              {mainPage.hero.image.alt && (
+                <HeroText
+                  text={mainPage.hero.image.alt}
+                  color={mainPage.hero.desktopTextColor?.hex || '#000000'}
+                  showOnDesktop={true}
+                  class="hidden"
+                />
+              )}
+            </>
           ) : mainPage.hero.mediaType === 'video' && mainPage.hero.video?.asset?.playbackId ? (
             <div class="hidden md:block">
               <MuxVideo
