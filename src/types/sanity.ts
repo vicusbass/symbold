@@ -15,13 +15,20 @@ export interface SanityImage {
   alt?: string;
 }
 
+export interface SanityColor {
+  hex?: string;
+  alpha?: number;
+}
+
 export interface HeroSection {
   mediaType: 'image' | 'video';
   image?: SanityImage;
   video?: MuxVideo;
+  desktopTextColor?: SanityColor;
   mobileMediaType: 'image' | 'video';
   mobileImage?: SanityImage;
   mobileVideo?: MuxVideo;
+  mobileTextColor?: SanityColor;
 }
 
 export interface MainPage {

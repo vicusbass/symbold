@@ -59,6 +59,13 @@ export const heroSection = defineType({
           return true
         }),
     }),
+    defineField({
+      name: 'desktopTextColor',
+      title: 'Desktop Text Color',
+      type: 'color',
+      description: 'Color for the alternative text overlay on desktop',
+      validation: (Rule) => Rule.required(),
+    }),
     // Mobile Hero
     defineField({
       name: 'mobileMediaType',
@@ -112,6 +119,13 @@ export const heroSection = defineType({
           }
           return true
         }),
+    }),
+    defineField({
+      name: 'mobileTextColor',
+      title: 'Mobile Text Color',
+      type: 'color',
+      description: 'Color for the alternative text overlay on mobile',
+      validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
