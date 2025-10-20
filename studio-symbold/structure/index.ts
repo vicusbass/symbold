@@ -19,12 +19,16 @@ export const structure: StructureResolver = (S) =>
         ),
       // Divider
       S.divider(),
+      // Portfolio
+      S.documentTypeListItem('portfolio').title('Portfolio'),
+      // Divider
+      S.divider(),
       // Other document types
       S.documentTypeListItem('tag').title('Tags'),
       // Divider
       S.divider(),
       // All other types that aren't explicitly listed
       ...S.documentTypeListItems().filter(
-        (listItem) => !['mainPage', 'tag'].includes(listItem.getId() || '')
+        (listItem) => !['mainPage', 'portfolio', 'tag'].includes(listItem.getId() || '')
       ),
     ])
