@@ -71,6 +71,10 @@ export const portfolio = defineType({
           type: 'portfolioRowSplit',
           title: 'Split (Two Media)',
         }),
+        defineArrayMember({
+          type: 'portfolioRowText',
+          title: 'Text Block',
+        }),
       ],
       description: 'Drag and drop to reorder content rows',
     }),

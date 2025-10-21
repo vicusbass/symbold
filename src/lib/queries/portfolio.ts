@@ -59,19 +59,7 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
 
     // Media with Description Row
     _type == "portfolioRowWithDescription" => {
-      desktopMedia{
-        mediaType,
-        image{
-          asset,
-          alt
-        },
-        video{
-          asset->{
-            playbackId
-          }
-        }
-      },
-      mobileMedia{
+      media{
         mediaType,
         image{
           asset,
@@ -113,6 +101,11 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
           }
         }
       }
+    },
+
+    // Text Block Row
+    _type == "portfolioRowText" => {
+      text
     }
   },
   publishedAt
