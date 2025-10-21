@@ -42,14 +42,8 @@ export const portfolioRowWithDescription = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'desktopMedia',
-      title: 'Desktop Media',
-      type: 'portfolioMedia',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'mobileMedia',
-      title: 'Mobile Media',
+      name: 'media',
+      title: 'Media',
       type: 'portfolioMedia',
       validation: (Rule) => Rule.required(),
     }),
@@ -77,15 +71,14 @@ export const portfolioRowWithDescription = defineType({
   ],
   preview: {
     select: {
-      desktopType: 'desktopMedia.mediaType',
-      mobileType: 'mobileMedia.mediaType',
+      mediaType: 'media.mediaType',
       description: 'description',
-      image: 'desktopMedia.image',
+      image: 'media.image',
     },
-    prepare({desktopType, mobileType, description, image}) {
+    prepare({mediaType, description, image}) {
       return {
         title: 'Media + Description',
-        subtitle: description ? description.substring(0, 50) + '...' : `Desktop: ${desktopType} | Mobile: ${mobileType}`,
+        subtitle: description ? description.substring(0, 50) + '...' : `Media: ${mediaType === 'image' ? 'Image' : 'Video'}`,
         media: image,
       }
     },
@@ -122,6 +115,34 @@ export const portfolioRowSplit = defineType({
         title: 'Split Row',
         subtitle: `Desktop: 2 items side-by-side | Mobile: 2 items stacked`,
         media: image,
+      }
+    },
+  },
+})
+
+// Plain text row
+export const portfolioRowText = defineType({
+  name: 'portfolioRowText',
+  title: 'Text Block',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'text',
+      title: 'Text Content',
+      type: 'text',
+      rows: 6,
+      validation: (Rule) => Rule.required(),
+      description: 'Plain text content',
+    }),
+  ],
+  preview: {
+    select: {
+      text: 'text',
+    },
+    prepare({text}) {
+      return {
+        title: 'Text Block',
+        subtitle: text ? text.substring(0, 60) + (text.length > 60 ? '...' : '') : 'No text',
       }
     },
   },

@@ -5,6 +5,7 @@ import {
   portfolioRowFull,
   portfolioRowWithDescription,
   portfolioRowSplit,
+  portfolioRowText,
 } from './objects/portfolioRow'
 import {mainPage} from './documents/mainPage'
 import {portfolio} from './documents/portfolio'
@@ -20,4 +21,5 @@ export const schemaTypes = [
   portfolioRowFull,
   portfolioRowWithDescription,
   portfolioRowSplit,
+  portfolioRowText,
 ]
