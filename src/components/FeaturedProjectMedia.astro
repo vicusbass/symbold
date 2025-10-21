@@ -14,7 +14,6 @@ const { project } = Astro.props;
 <a
   href={`/work/${project.projectReference.slug.current}`}
   class="featured-project-link group relative block"
-  data-cursor-text="See Our Work"
 >
   {
     project.mediaType === 'image' && project.image ? (
@@ -55,42 +54,51 @@ const { project } = Astro.props;
 </a>
 
 <style is:global>
-  .featured-project-link {
-    cursor: none !important;
+  @media (min-width: 768px) {
+    .featured-project-link {
+      cursor: none !important;
+    }
   }
 
   #custom-cursor {
     position: fixed;
     pointer-events: none;
     z-index: 9999;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #44ff00;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.5s ease;
     transform: translate(-50%, -50%);
-    white-space: nowrap;
+    width: 64px;
+    height: 64px;
+    display: none;
   }
 
   @media (min-width: 768px) {
     #custom-cursor {
-      font-size: 1.875rem;
+      display: block;
     }
   }
 
   #custom-cursor.active {
     opacity: 1;
   }
+
+  #custom-cursor svg {
+    width: 100%;
+    height: 100%;
+    color: #44ff00;
+  }
 </style>
 
 <script>
+  import eyeIconSvg from '../assets/ochi.svg?raw';
+
   document.addEventListener('astro:page-load', () => {
     // Create or get the custom cursor element
     let customCursor = document.getElementById('custom-cursor');
     if (!customCursor) {
       customCursor = document.createElement('div');
       customCursor.id = 'custom-cursor';
-      customCursor.textContent = 'See Our Work';
+      customCursor.innerHTML = eyeIconSvg;
       document.body.appendChild(customCursor);
     }
 
