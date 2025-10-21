@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import MuxVideo from './MuxVideo.astro';
+import { urlFor } from '../lib/sanity';
+import type { FeaturedProject } from '../types/sanity';
+
+interface Props {
+  project: FeaturedProject;
+}
+
+const { project } = Astro.props;
+---
+
+<a
+  href={`/work/${project.projectReference.slug.current}`}
+  class="group relative block"
+>
+  {
+    project.mediaType === 'image' && project.image ? (
+      <Image
+        src={urlFor(project.image)?.url() || ''}
+        alt={project.image.alt || ''}
+        class="h-auto w-full"
+        inferSize
+      />
+    ) : project.mediaType === 'video' && project.video?.asset?.playbackId ? (
+      <MuxVideo
+        playbackId={project.video.asset.playbackId}
+        videoTitle={project.projectReference.title}
+      />
+    ) : null
+  }
+  {
+    project.description && (
+      <div
+        class="absolute inset-0 flex items-start justify-start p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-10"
+        style={{
+          backgroundColor: `rgba(0, 0, 0, 0.5)`,
+        }}
+      >
+        <p
+          class="text-xl md:text-3xl"
+          style={{
+            color: project.textColor?.hex || '#FFFFFF',
+          }}
+        >
+          {project.description}
+        </p>
+      </div>
+    )
+  }
+</a>

@@ -24,18 +24,34 @@ export interface HeroSection {
   mediaType: 'image' | 'video';
   image?: SanityImage;
   video?: MuxVideo;
-  desktopTextColor?: SanityColor;
   mobileMediaType: 'image' | 'video';
   mobileImage?: SanityImage;
   mobileVideo?: MuxVideo;
-  mobileTextColor?: SanityColor;
+}
+
+export interface FeaturedProject {
+  _key: string;
+  mediaType: 'image' | 'video';
+  image?: SanityImage;
+  video?: MuxVideo;
+  description: string;
+  textColor: SanityColor;
+  projectReference: {
+    _id: string;
+    title: string;
+    slug: {
+      current: string;
+    };
+  };
+}
+
+export interface FeaturedProjectsSection {
+  projects: FeaturedProject[];
 }
 
 export interface MainPage {
   _id: string;
-  title: string;
-  slug: {
-    current: string;
-  };
+  title?: string;
   hero: HeroSection;
+  featuredProjects?: FeaturedProjectsSection;
 }
