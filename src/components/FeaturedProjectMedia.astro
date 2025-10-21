@@ -21,26 +21,28 @@ const { project } = Astro.props;
       <Image
         src={urlFor(project.image)?.url() || ''}
         alt={project.image.alt || ''}
-        class="h-auto w-full"
+        class="h-auto w-full rounded-md"
         inferSize
       />
     ) : project.mediaType === 'video' && project.video?.asset?.playbackId ? (
-      <MuxVideo
-        playbackId={project.video.asset.playbackId}
-        videoTitle={project.projectReference.title}
-      />
+      <div class="overflow-hidden rounded-md">
+        <MuxVideo
+          playbackId={project.video.asset.playbackId}
+          videoTitle={project.projectReference.title}
+        />
+      </div>
     ) : null
   }
   {
     project.description && (
       <div
-        class="absolute inset-0 flex items-start justify-start p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-10"
+        class="absolute inset-0 flex items-start justify-start rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-4"
         style={{
           backgroundColor: `rgba(0, 0, 0, 0.5)`,
         }}
       >
         <p
-          class="text-xl md:text-3xl"
+          class="max-w-[50%] text-base font-bold"
           style={{
             color: project.textColor?.hex || '#FFFFFF',
           }}
