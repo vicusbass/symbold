@@ -111,8 +111,8 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
   publishedAt
 }`;
 
-// GROQ query to fetch all portfolio projects (for listing pages)
-export const portfolioListQuery = `*[_type == "portfolio"] | order(publishedAt desc){
+// GROQ query to fetch all portfolio projects in the order defined by Work Page
+export const portfolioListQuery = `*[_type == "workPage" && _id == "workPage"][0].projects[]-> {
   _id,
   title,
   slug,
@@ -131,6 +131,7 @@ export const portfolioListQuery = `*[_type == "portfolio"] | order(publishedAt d
   description,
   tags[]->{
     _id,
+    id,
     text,
     hoverColor{
       hex,

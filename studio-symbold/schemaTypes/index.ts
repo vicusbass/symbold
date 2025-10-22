@@ -9,11 +9,13 @@ import {
 } from './objects/portfolioRow'
 import {mainPage} from './documents/mainPage'
 import {portfolio} from './documents/portfolio'
+import {workPage} from './documents/workPage'
 
 export const schemaTypes = [
   // Documents
   mainPage,
   portfolio,
+  workPage,
   tag,
   // Objects
   heroSection,

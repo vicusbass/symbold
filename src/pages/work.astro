@@ -2,23 +2,38 @@
 import type { SanityDocument } from '@sanity/client';
 import { sanityClient } from 'sanity:client';
 
+import { Image } from 'astro:assets';
 import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import BaselineReveal from '../components/BaselineReveal.astro';
 import Layout from '../layouts/Layout.astro';
-import { Image } from 'astro:assets';
 import Tag from '../components/Tag.astro';
-import { projects } from '../context/projects';
 import RightReveal from '../components/RightReveal.astro';
+import MuxVideo from '../components/MuxVideo.astro';
+import { portfolioListQuery } from '../lib/queries/portfolio';
+import { urlFor } from '../lib/sanity';
 
 const TAGS_QUERY = `*[_type == "tag"]{ id, text, hoverColor, order } | order(order asc)`;
 
 const tagsData = await sanityClient.fetch<SanityDocument[]>(TAGS_QUERY);
+const portfolioData = await sanityClient.fetch<SanityDocument[]>(portfolioListQuery);
 
 const tags = tagsData.map((tag) => ({
   id: tag.id.current,
   label: tag.text,
   hoverColor: tag.hoverColor,
+}));
+
+// Transform Sanity portfolio data to match the expected format
+const projects = portfolioData.map((project) => ({
+  id: project.slug.current,
+  hero: project.hero.mediaType === 'image' ? urlFor(project.hero.image)?.url() || '' : null,
+  videoPlaybackId:
+    project.hero.mediaType === 'video' ? project.hero.video?.asset?.playbackId : null,
+  alt: project.hero.image?.alt || project.title,
+  title: project.title,
+  description: project.description,
+  tags: project.tags?.map((tag: any) => tag.id.current) || [],
 }));
 ---
 
@@ -61,7 +76,11 @@ const tags = tagsData.map((tag) => ({
               href={`/work/${project.id}`}
               class="focus-visible:ring-accent block focus:outline-none focus-visible:ring-2"
             >
-              <Image src={project.hero} alt={project.alt} class="h-auto w-full" />
+              {project.hero ? (
+                <Image src={project.hero} alt={project.alt} class="h-auto w-full" inferSize />
+              ) : project.videoPlaybackId ? (
+                <MuxVideo playbackId={project.videoPlaybackId} videoTitle={project.title} />
+              ) : null}
             </a>
           ) : (
             <ScrollReveal>
@@ -69,7 +88,11 @@ const tags = tagsData.map((tag) => ({
                 href={`/work/${project.id}`}
                 class="focus-visible:ring-accent block focus:outline-none focus-visible:ring-2"
               >
-                <Image src={project.hero} alt={project.alt} class="h-auto w-full" />
+                {project.hero ? (
+                  <Image src={project.hero} alt={project.alt} class="h-auto w-full" inferSize />
+                ) : project.videoPlaybackId ? (
+                  <MuxVideo playbackId={project.videoPlaybackId} videoTitle={project.title} />
+                ) : null}
               </a>
             </ScrollReveal>
           )}
