@@ -39,15 +39,16 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
             <Image
               src={urlFor(mainPage.hero.mobileImage)?.url() || ''}
               alt={mainPage.hero.mobileImage.alt || 'Hero'}
-              class="h-auto w-full md:hidden"
+              class="h-auto w-full overflow-hidden rounded-md md:hidden"
               inferSize
             />
           ) : mainPage.hero.mobileMediaType === 'video' &&
             mainPage.hero.mobileVideo?.asset?.playbackId ? (
-            <div class="md:hidden">
+            <div class="overflow-hidden rounded-md md:hidden">
               <MuxVideo
                 playbackId={mainPage.hero.mobileVideo.asset.playbackId}
                 videoTitle={mainPage.title || 'Hero Video'}
+                mobileAspectRatio
               />
             </div>
           ) : null}
@@ -57,11 +58,11 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
             <Image
               src={urlFor(mainPage.hero.image)?.url() || ''}
               alt={mainPage.hero.image.alt || 'Hero'}
-              class="hidden h-auto w-full md:block"
+              class="hidden h-auto w-full overflow-hidden rounded-md md:block"
               inferSize
             />
           ) : mainPage.hero.mediaType === 'video' && mainPage.hero.video?.asset?.playbackId ? (
-            <div class="hidden md:block">
+            <div class="hidden overflow-hidden rounded-md md:block">
               <MuxVideo
                 playbackId={mainPage.hero.video.asset.playbackId}
                 videoTitle={mainPage.title || 'Hero Video'}
@@ -72,15 +73,15 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
       ) : (
         <>
           {/* Fallback to static assets if no Sanity data */}
-          <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
-          <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+          <Image src={heroMobile} alt="Hero" class="h-auto w-full rounded-md md:hidden" />
+          <Image src={hero} alt="Hero" class="hidden h-auto w-full rounded-md md:block" />
         </>
       )
     }
   </section>
 
   <ScrollReveal>
-    <h2 class="mt-20 text-center text-xl leading-tight font-bold md:mt-60 md:text-4xl">
+    <h2 class="edge-padding mt-20 text-center text-xl leading-tight font-bold md:mt-60 md:text-4xl">
       We don't make the logo bigger.
       <br />
       We craft strategic, bold brands that move businesses forward.
@@ -89,7 +90,7 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
     </h2>
   </ScrollReveal>
 
-{
+  {
     mainPage?.featuredProjects?.projects && mainPage.featuredProjects.projects.length >= 3 && (
       <section id="featured-projects" class="edge-padding mt-20 md:mt-60">
         {/* First featured project - full width */}
@@ -117,7 +118,7 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
 
   <ScrollReveal>
     <h2
-      class="mx-auto mt-10 w-full text-center text-xl leading-tight font-bold md:mt-30 md:w-1/2 md:text-4xl"
+      class="edge-padding mx-auto mt-10 w-full text-center text-xl leading-tight font-bold md:mt-30 md:w-1/2 md:text-4xl"
     >
       We are not for everyone.
       <br />

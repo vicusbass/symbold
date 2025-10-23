@@ -13,7 +13,7 @@ const { project } = Astro.props;
 
 <a
   href={`/work/${project.projectReference.slug.current}`}
-  class="featured-project-link group relative block"
+  class="featured-project-link group relative block overflow-hidden"
 >
   {
     project.mediaType === 'image' && project.image ? (
@@ -34,12 +34,7 @@ const { project } = Astro.props;
   }
   {
     project.description && (
-      <div
-        class="absolute inset-0 flex items-start justify-start rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-4"
-        style={{
-          backgroundColor: `rgba(0, 0, 0, 0.5)`,
-        }}
-      >
+      <div class="absolute inset-0 flex items-start justify-start rounded-md p-2 transition-opacity duration-300 group-hover:opacity-100 md:bg-black/50 md:p-4 md:opacity-0">
         <p
           class="max-w-[50%] text-base font-bold"
           style={{
