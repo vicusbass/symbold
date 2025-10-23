@@ -65,16 +65,12 @@ const projects = portfolioData.map((project) => ({
 
   <div id="projects-container" class="mt-20 md:mt-30">
     {
-      projects.map((project, index) => (
-        <div
-          class="project-item hidden"
-          data-project-id={project.id}
-          data-tags={project.tags.join(',')}
-        >
-          {index === 0 ? (
+      projects.map((project) => (
+        <div class="project-item hidden" data-tags={project.tags.join(',')}>
+          <ScrollReveal>
             <a
               href={`/work/${project.id}`}
-              class="focus-visible:ring-accent block focus:outline-none focus-visible:ring-2"
+              class="focus-visible:ring-accent block overflow-hidden rounded-md focus:outline-none focus-visible:ring-2"
             >
               {project.hero ? (
                 <Image src={project.hero} alt={project.alt} class="h-auto w-full" inferSize />
@@ -82,20 +78,7 @@ const projects = portfolioData.map((project) => ({
                 <MuxVideo playbackId={project.videoPlaybackId} videoTitle={project.title} />
               ) : null}
             </a>
-          ) : (
-            <ScrollReveal>
-              <a
-                href={`/work/${project.id}`}
-                class="focus-visible:ring-accent block focus:outline-none focus-visible:ring-2"
-              >
-                {project.hero ? (
-                  <Image src={project.hero} alt={project.alt} class="h-auto w-full" inferSize />
-                ) : project.videoPlaybackId ? (
-                  <MuxVideo playbackId={project.videoPlaybackId} videoTitle={project.title} />
-                ) : null}
-              </a>
-            </ScrollReveal>
-          )}
+          </ScrollReveal>
         </div>
       ))
     }
@@ -103,7 +86,7 @@ const projects = portfolioData.map((project) => ({
 
   <ScrollReveal>
     <h2
-      class="mx-auto mt-30 w-full text-center text-xl leading-tight font-bold md:mt-60 md:w-1/2 md:text-4xl"
+      class="edge-padding mx-auto mt-30 w-full text-center text-xl leading-tight font-bold md:mt-60 md:w-1/2 md:text-4xl"
     >
       We are not for everyone.
       <br />
