@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import MuxVideo from './MuxVideo.astro';
+import ProjectPreview from './ProjectPreview.astro';
 import { urlFor } from '../lib/sanity';
 import type { FeaturedProject } from '../types/sanity';
 
@@ -11,116 +10,16 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<a
+<ProjectPreview
   href={`/work/${project.projectReference.slug.current}`}
-  class="featured-project-link group relative block overflow-hidden"
->
-  {
-    project.mediaType === 'image' && project.image ? (
-      <Image
-        src={urlFor(project.image)?.url() || ''}
-        alt={project.image.alt || ''}
-        class="h-auto w-full rounded-md"
-        inferSize
-      />
-    ) : project.mediaType === 'video' && project.video?.asset?.playbackId ? (
-      <div class="overflow-hidden rounded-md">
-        <MuxVideo
-          playbackId={project.video.asset.playbackId}
-          videoTitle={project.projectReference.title}
-        />
-      </div>
-    ) : null
+  imageUrl={project.mediaType === 'image' && project.image ? urlFor(project.image)?.url() : null}
+  videoPlaybackId={
+    project.mediaType === 'video' && project.video?.asset?.playbackId
+      ? project.video.asset.playbackId
+      : null
   }
-  {
-    project.description && (
-      <div class="absolute inset-0 flex items-start justify-start rounded-md p-2 transition-opacity duration-300 group-hover:opacity-100 md:bg-black/50 md:p-4 md:opacity-0">
-        <p
-          class="max-w-[50%] text-base font-bold"
-          style={{
-            color: project.textColor?.hex || '#FFFFFF',
-          }}
-        >
-          {project.description}
-        </p>
-      </div>
-    )
-  }
-</a>
-
-<style is:global>
-  @media (min-width: 768px) {
-    .featured-project-link {
-      cursor: none !important;
-    }
-  }
-
-  #custom-cursor {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    transform: translate(-50%, -50%);
-    width: 64px;
-    height: 64px;
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    #custom-cursor {
-      display: block;
-    }
-  }
-
-  #custom-cursor.active {
-    opacity: 1;
-  }
-
-  #custom-cursor svg {
-    width: 100%;
-    height: 100%;
-    color: #44ff00;
-  }
-</style>
-
-<script>
-  import eyeIconSvg from '../assets/ochi.svg?raw';
-
-  document.addEventListener('astro:page-load', () => {
-    // Create or get the custom cursor element
-    let customCursor = document.getElementById('custom-cursor');
-    if (!customCursor) {
-      customCursor = document.createElement('div');
-      customCursor.id = 'custom-cursor';
-      customCursor.innerHTML = eyeIconSvg;
-      document.body.appendChild(customCursor);
-    }
-
-    const links = document.querySelectorAll('.featured-project-link');
-
-    // Mouse move handler for the entire document
-    const handleMouseMove = (e: MouseEvent) => {
-      if (customCursor) {
-        customCursor.style.left = `${e.clientX}px`;
-        customCursor.style.top = `${e.clientY}px`;
-      }
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-
-    links.forEach((link) => {
-      link.addEventListener('mouseenter', () => {
-        if (customCursor) {
-          customCursor.classList.add('active');
-        }
-      });
-
-      link.addEventListener('mouseleave', () => {
-        if (customCursor) {
-          customCursor.classList.remove('active');
-        }
-      });
-    });
-  });
-</script>
+  alt={project.image?.alt || ''}
+  videoTitle={project.projectReference.title}
+  description={project.description}
+  textColor={project.textColor?.hex}
+/>

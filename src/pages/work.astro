@@ -2,14 +2,13 @@
 import type { SanityDocument } from '@sanity/client';
 import { sanityClient } from 'sanity:client';
 
-import { Image } from 'astro:assets';
 import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import BaselineReveal from '../components/BaselineReveal.astro';
 import Layout from '../layouts/Layout.astro';
 import Tag from '../components/Tag.astro';
 import RightReveal from '../components/RightReveal.astro';
-import MuxVideo from '../components/MuxVideo.astro';
+import ProjectPreview from '../components/ProjectPreview.astro';
 import { portfolioListQuery } from '../lib/queries/portfolio';
 import { urlFor } from '../lib/sanity';
 
@@ -32,7 +31,7 @@ const projects = portfolioData.map((project) => ({
     project.hero.mediaType === 'video' ? project.hero.video?.asset?.playbackId : null,
   alt: project.hero.image?.alt || project.title,
   title: project.title,
-  description: project.description,
+  description: project.description || '',
   tags: project.tags?.map((tag: any) => tag.id.current) || [],
 }));
 ---
@@ -68,16 +67,14 @@ const projects = portfolioData.map((project) => ({
       projects.map((project) => (
         <div class="project-item hidden" data-tags={project.tags.join(',')}>
           <ScrollReveal>
-            <a
+            <ProjectPreview
               href={`/work/${project.id}`}
-              class="focus-visible:ring-accent block overflow-hidden rounded-md focus:outline-none focus-visible:ring-2"
-            >
-              {project.hero ? (
-                <Image src={project.hero} alt={project.alt} class="h-auto w-full" inferSize />
-              ) : project.videoPlaybackId ? (
-                <MuxVideo playbackId={project.videoPlaybackId} videoTitle={project.title} />
-              ) : null}
-            </a>
+              imageUrl={project.hero}
+              videoPlaybackId={project.videoPlaybackId}
+              alt={project.alt}
+              videoTitle={project.title}
+              description={project.description}
+            />
           </ScrollReveal>
         </div>
       ))
@@ -107,6 +104,14 @@ const projects = portfolioData.map((project) => ({
   document.addEventListener('astro:page-load', () => {
     let selectedTags = new Set(['all']);
     let allProjectsCache: Element[] = [];
+
+    // Function to trigger cursor listener reattachment
+    // The actual cursor logic is handled by ProjectPreview component
+    function reattachCursorListeners() {
+      // Dispatch a custom event to notify ProjectPreview to reattach listeners
+      const event = new CustomEvent('projects-rendered');
+      document.dispatchEvent(event);
+    }
 
     function renderProjects() {
       const container = document.getElementById('projects-container');
@@ -208,6 +213,9 @@ const projects = portfolioData.map((project) => ({
       container.querySelectorAll('[data-scroll-animation]:not(.visible)').forEach((el) => {
         observer.observe(el);
       });
+
+      // Notify that projects have been re-rendered
+      reattachCursorListeners();
     }
 
     function toggleTag(button: Element) {
