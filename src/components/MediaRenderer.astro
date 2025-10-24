@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import MuxVideo from './MuxVideo.astro';
+import { urlFor } from '../lib/sanity';
+import type { SanityImage, MuxVideo as MuxVideoType } from '../types/sanity';
+
+interface MediaContent {
+  mediaType: 'image' | 'video';
+  image?: SanityImage;
+  video?: MuxVideoType;
+}
+
+interface Props {
+  media: MediaContent;
+  videoTitle?: string;
+  class?: string;
+  mobileAspectRatio?: boolean;
+}
+
+const { media, videoTitle = '', class: className, mobileAspectRatio = false } = Astro.props;
+---
+
+{
+  media.mediaType === 'image' && media.image ? (
+    <Image
+      src={urlFor(media.image)?.url() || ''}
+      alt={media.image.alt || ''}
+      class:list={['h-auto w-full rounded-md', className]}
+      inferSize
+    />
+  ) : media.mediaType === 'video' && media.video?.asset?.playbackId ? (
+    <div class:list={['overflow-hidden rounded-md', className]}>
+      <MuxVideo
+        playbackId={media.video.asset.playbackId}
+        videoTitle={videoTitle}
+        mobileAspectRatio={mobileAspectRatio}
+      />
+    </div>
+  ) : null
+}

@@ -1,3 +1,57 @@
+export const allProjectsQuery = `*[_type == "workPage" && _id == "workPage"][0].projects[]->{
+  _id,
+  title,
+  slug,
+  hero{
+    mediaType,
+    image{
+      asset,
+      alt
+    },
+    video{
+      asset->{
+        playbackId
+      }
+    }
+  },
+  team,
+  description,
+  tags[]->{
+    _id,
+    id,
+    text,
+    hoverColor{
+      hex,
+      alpha
+    }
+  },
+  content[]{
+    _type,
+    _key,
+
+    _type == "portfolioRowFull" => {
+      desktopMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } },
+      mobileMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } }
+    },
+
+    _type == "portfolioRowWithDescription" => {
+      media{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } },
+      description,
+      descriptionPosition
+    },
+
+    _type == "portfolioRowSplit" => {
+      leftMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } },
+      rightMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } }
+    },
+
+    _type == "portfolioRowText" => {
+      text
+    }
+  },
+  publishedAt
+}`;
+
 // GROQ query to fetch a single portfolio project by slug
 export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][0]{
   _id,
