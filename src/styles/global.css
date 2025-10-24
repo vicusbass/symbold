@@ -23,7 +23,6 @@
     min-height: 100vh;
     @apply font-sans text-lg font-normal;
     color: var(--color-primary);
-    /* Background color will be updated per scroll position (no CSS transition). */
   }
 
   hr {
@@ -108,6 +107,4 @@
   .bg-custom-gray {
     background-color: var(--custom-gray);
   }
-
-  /* Removed accent utility (now using dynamic inline RGBA updates). */
 }
