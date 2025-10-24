@@ -10,7 +10,6 @@ import Tag from '../components/Tag.astro';
 import RightReveal from '../components/RightReveal.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
 import { portfolioListQuery } from '../lib/queries/portfolio';
-import { urlFor } from '../lib/sanity';
 
 const TAGS_QUERY = `*[_type == "tag"]{ id, text, hoverColor, order } | order(order asc)`;
 
@@ -23,15 +22,16 @@ const tags = tagsData.map((tag) => ({
   hoverColor: tag.hoverColor,
 }));
 
-// Transform Sanity portfolio data to match the expected format
+// Transform Sanity portfolio data to match the FeaturedProject format
 const projects = portfolioData.map((project) => ({
-  id: project.slug.current,
-  hero: project.hero.mediaType === 'image' ? urlFor(project.hero.image)?.url() || '' : null,
-  videoPlaybackId:
-    project.hero.mediaType === 'video' ? project.hero.video?.asset?.playbackId : null,
-  alt: project.hero.image?.alt || project.title,
-  title: project.title,
-  description: project.description || '',
+  project: {
+    _key: project._id,
+    mediaType: project.hero.mediaType,
+    image: project.hero.image,
+    video: project.hero.video,
+    title: project.title,
+    slug: project.slug.current,
+  },
   tags: project.tags?.map((tag: any) => tag.id.current) || [],
 }));
 ---
@@ -64,17 +64,10 @@ const projects = portfolioData.map((project) => ({
 
   <div id="projects-container" class="mt-20 md:mt-30">
     {
-      projects.map((project) => (
-        <div class="project-item hidden" data-tags={project.tags.join(',')}>
+      projects.map((item) => (
+        <div class="project-item hidden" data-tags={item.tags.join(',')}>
           <ScrollReveal>
-            <ProjectPreview
-              href={`/work/${project.id}`}
-              imageUrl={project.hero}
-              videoPlaybackId={project.videoPlaybackId}
-              alt={project.alt}
-              videoTitle={project.title}
-              description={project.description}
-            />
+            <ProjectPreview project={item.project} disableCursor={true} />
           </ScrollReveal>
         </div>
       ))
@@ -104,14 +97,6 @@ const projects = portfolioData.map((project) => ({
   document.addEventListener('astro:page-load', () => {
     let selectedTags = new Set(['all']);
     let allProjectsCache: Element[] = [];
-
-    // Function to trigger cursor listener reattachment
-    // The actual cursor logic is handled by ProjectPreview component
-    function reattachCursorListeners() {
-      // Dispatch a custom event to notify ProjectPreview to reattach listeners
-      const event = new CustomEvent('projects-rendered');
-      document.dispatchEvent(event);
-    }
 
     function renderProjects() {
       const container = document.getElementById('projects-container');
@@ -213,9 +198,6 @@ const projects = portfolioData.map((project) => ({
       container.querySelectorAll('[data-scroll-animation]:not(.visible)').forEach((el) => {
         observer.observe(el);
       });
-
-      // Notify that projects have been re-rendered
-      reattachCursorListeners();
     }
 
     function toggleTag(button: Element) {

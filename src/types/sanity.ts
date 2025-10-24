@@ -34,15 +34,8 @@ export interface FeaturedProject {
   mediaType: 'image' | 'video';
   image?: SanityImage;
   video?: MuxVideo;
-  description: string;
-  textColor: SanityColor;
-  projectReference: {
-    _id: string;
-    title: string;
-    slug: {
-      current: string;
-    };
-  };
+  title: string;
+  slug: string;
 }
 
 export interface FeaturedProjectsSection {

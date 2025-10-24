@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import MuxVideo from '../components/MuxVideo.astro';
-import FeaturedProjectMedia from '../components/FeaturedProjectMedia.astro';
+import ProjectPreview from '../components/ProjectPreview.astro';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
 import BaselineReveal from '../components/BaselineReveal.astro';
@@ -98,17 +98,17 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
       <section id="featured-projects" class="edge-padding mt-20 md:mt-60">
         {/* First featured project - full width */}
         <ScrollReveal>
-          <FeaturedProjectMedia project={mainPage.featuredProjects.projects[0]} />
+          <ProjectPreview project={mainPage.featuredProjects.projects[0]} />
         </ScrollReveal>
 
         {/* Second and third featured projects - side by side */}
         <div class="mt-4 flex flex-col gap-4 md:flex-row md:gap-4">
           <ScrollReveal class="w-full md:w-1/2">
-            <FeaturedProjectMedia project={mainPage.featuredProjects.projects[1]} />
+            <ProjectPreview project={mainPage.featuredProjects.projects[1]} />
           </ScrollReveal>
 
           <ScrollReveal delayed class="w-full md:w-1/2">
-            <FeaturedProjectMedia project={mainPage.featuredProjects.projects[2]} />
+            <ProjectPreview project={mainPage.featuredProjects.projects[2]} />
           </ScrollReveal>
         </div>
       </section>

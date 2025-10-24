@@ -1,58 +1,63 @@
 ---
 import { Image } from 'astro:assets';
 import MuxVideo from './MuxVideo.astro';
+import { urlFor } from '../lib/sanity';
+import type { FeaturedProject } from '../types/sanity';
 
 interface Props {
-  href: string;
-  imageUrl?: string | null;
-  videoPlaybackId?: string | null;
-  alt: string;
-  videoTitle: string;
-  description?: string;
+  project: FeaturedProject;
   textColor?: string;
   class?: string;
+  disableCursor?: boolean;
 }
 
-const {
-  href,
-  imageUrl,
-  videoPlaybackId,
-  alt,
-  videoTitle,
-  description,
-  textColor = '#FFFFFF',
-  class: className,
-} = Astro.props;
+const { project, textColor = '#FFFFFF', class: className, disableCursor = false } = Astro.props;
+
+const imageUrl =
+  project.mediaType === 'image' && project.image ? urlFor(project.image)?.url() : null;
+const videoPlaybackId =
+  project.mediaType === 'video' && project.video?.asset?.playbackId
+    ? project.video.asset.playbackId
+    : null;
+const alt = project.image?.alt || '';
 ---
 
 <a
-  href={href}
+  href={`/work/${project.slug}`}
   class:list={[
-    'project-preview-link group focus-visible:ring-accent relative block overflow-hidden rounded-md focus:outline-none focus-visible:ring-2',
+    !disableCursor && 'project-preview-link',
+    'group focus-visible:ring-accent block focus:outline-none focus-visible:ring-2',
     className,
   ]}
 >
   {
-    imageUrl ? (
-      <Image src={imageUrl} alt={alt} class="h-auto w-full" inferSize />
-    ) : videoPlaybackId ? (
-      <MuxVideo playbackId={videoPlaybackId} videoTitle={videoTitle} />
-    ) : null
-  }
-  {
-    description && (
-      <div class="absolute inset-0 flex items-start justify-start rounded-md p-2 transition-opacity duration-300 group-hover:opacity-100 md:bg-black/50 md:p-4 md:opacity-0">
-        <p
-          class="max-w-[50%] text-base font-bold"
-          style={{
-            color: textColor,
-          }}
-        >
-          {description}
-        </p>
-      </div>
+    project.title && (
+      <h3 class="mb-2 text-base font-bold md:hidden">{project.title}</h3>
     )
   }
+  <div class="relative overflow-hidden rounded-md">
+    {
+      imageUrl ? (
+        <Image src={imageUrl} alt={alt} class="h-auto w-full" inferSize />
+      ) : videoPlaybackId ? (
+        <MuxVideo playbackId={videoPlaybackId} videoTitle={project.title} />
+      ) : null
+    }
+    {
+      project.title && (
+        <div class="absolute inset-0 hidden items-start justify-start rounded-md p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:flex md:bg-black/20">
+          <p
+            class="max-w-[50%] text-xl font-bold"
+            style={{
+              color: textColor,
+            }}
+          >
+            {project.title}
+          </p>
+        </div>
+      )
+    }
+  </div>
   <slot />
 </a>
 
