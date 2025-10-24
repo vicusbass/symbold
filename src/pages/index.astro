@@ -3,12 +3,12 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
-import MuxVideo from '../components/MuxVideo.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
+import ResponsiveHero from '../components/ResponsiveHero.astro';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
 import BaselineReveal from '../components/BaselineReveal.astro';
-import { client, urlFor } from '../lib/sanity';
+import { client } from '../lib/sanity';
 import { mainPageQuery } from '../lib/queries/mainPage';
 import type { MainPage } from '../types/sanity';
 
@@ -33,43 +33,19 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
   <section id="hero" class="edge-padding relative mt-10 w-full md:mt-40">
     {
       mainPage?.hero ? (
-        <>
-          {/* Mobile Hero */}
-          {mainPage.hero.mobileMediaType === 'image' && mainPage.hero.mobileImage ? (
-            <Image
-              src={urlFor(mainPage.hero.mobileImage)?.url() || ''}
-              alt={mainPage.hero.mobileImage.alt || 'Hero'}
-              class="h-auto w-full overflow-hidden rounded-md md:hidden"
-              inferSize
-            />
-          ) : mainPage.hero.mobileMediaType === 'video' &&
-            mainPage.hero.mobileVideo?.asset?.playbackId ? (
-            <div class="overflow-hidden rounded-md md:hidden">
-              <MuxVideo
-                playbackId={mainPage.hero.mobileVideo.asset.playbackId}
-                videoTitle={mainPage.title || 'Hero Video'}
-                mobileAspectRatio
-              />
-            </div>
-          ) : null}
-
-          {/* Desktop Hero */}
-          {mainPage.hero.mediaType === 'image' && mainPage.hero.image ? (
-            <Image
-              src={urlFor(mainPage.hero.image)?.url() || ''}
-              alt={mainPage.hero.image.alt || 'Hero'}
-              class="hidden h-auto w-full overflow-hidden rounded-md md:block"
-              inferSize
-            />
-          ) : mainPage.hero.mediaType === 'video' && mainPage.hero.video?.asset?.playbackId ? (
-            <div class="hidden overflow-hidden rounded-md md:block">
-              <MuxVideo
-                playbackId={mainPage.hero.video.asset.playbackId}
-                videoTitle={mainPage.title || 'Hero Video'}
-              />
-            </div>
-          ) : null}
-        </>
+        <ResponsiveHero
+          desktopMedia={{
+            mediaType: mainPage.hero.mediaType,
+            image: mainPage.hero.image,
+            video: mainPage.hero.video,
+          }}
+          mobileMedia={{
+            mediaType: mainPage.hero.mobileMediaType,
+            image: mainPage.hero.mobileImage,
+            video: mainPage.hero.mobileVideo,
+          }}
+          videoTitle={mainPage.title || 'Hero Video'}
+        />
       ) : (
         <>
           {/* Fallback to static assets if no Sanity data */}
