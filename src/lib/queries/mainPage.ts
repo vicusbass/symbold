@@ -36,16 +36,8 @@ export const mainPageQuery = `*[_type == "mainPage"][0]{
           playbackId
         }
       },
-      description,
-      textColor{
-        hex,
-        alpha
-      },
-      projectReference->{
-        _id,
-        title,
-        slug
-      }
+      "title": projectReference->title,
+      "slug": projectReference->slug.current
     }
   }
 }`;
