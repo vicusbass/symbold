@@ -81,7 +81,10 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
   </section>
 
   <ScrollReveal>
-    <h2 class="edge-padding mt-20 text-center text-xl leading-tight font-bold md:mt-60 md:text-4xl">
+    <h2
+      id="branding-h2"
+      class="edge-padding mt-20 text-center text-xl leading-tight font-bold md:mt-60 md:text-4xl"
+    >
       We don't make the logo bigger.
       <br />
       We craft strategic, bold brands that move businesses forward.
@@ -134,3 +137,63 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
     <hr class="mt-30 mb-10 md:mb-30" />
   </div>
 </Layout>
+
+<script>
+  // Scroll-driven accent background alpha for #branding-h2
+  document.addEventListener('astro:page-load', () => {
+    const heading = document.getElementById('branding-h2');
+    if (!heading) return;
+
+    // Resolve accent color from CSS variable (expects hex like #RRGGBB)
+    const accentHex = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-accent')
+      .trim();
+
+    function hexToRgb(hex: string) {
+      const clean = hex.replace('#', '');
+      const bigint = parseInt(clean, 16);
+      return {
+        r: (bigint >> 16) & 255,
+        g: (bigint >> 8) & 255,
+        b: bigint & 255,
+      };
+    }
+
+    const { r, g, b } = hexToRgb(accentHex || '#44ff00');
+
+    let ticking = false;
+
+    function updateBg() {
+      const rect = heading!.getBoundingClientRect(); // heading guarded above; non-null assertion for TS
+      const headingCenter = rect.top + rect.height / 2;
+      const viewportCenter = window.innerHeight / 2;
+      const distance = Math.abs(headingCenter - viewportCenter);
+
+      // Max distance at which alpha becomes 0 (tweakable). Using half viewport height.
+      const maxDistance = window.innerHeight * 0.8;
+      const rawAlpha = 1 - Math.min(distance / maxDistance, 1);
+      const alpha = Math.max(0, rawAlpha); // clamp to [0,1]
+
+      if (alpha <= 0) {
+        document.body.style.backgroundColor = '#ffffff';
+      } else {
+        document.body.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
+      }
+
+      ticking = false;
+    }
+
+    function requestUpdate() {
+      if (!ticking) {
+        requestAnimationFrame(updateBg);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+
+    // Initial paint
+    updateBg();
+  });
+</script>
