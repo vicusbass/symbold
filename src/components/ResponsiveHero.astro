@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import MuxVideo from './MuxVideo.astro';
+import { urlFor } from '../lib/sanity';
+import type { SanityImage, MuxVideo as MuxVideoType } from '../types/sanity';
+
+interface MediaContent {
+  mediaType: 'image' | 'video';
+  image?: SanityImage;
+  video?: MuxVideoType;
+}
+
+interface Props {
+  desktopMedia: MediaContent;
+  mobileMedia: MediaContent;
+  videoTitle?: string;
+  class?: string;
+}
+
+const { desktopMedia, mobileMedia, videoTitle = '', class: className } = Astro.props;
+---
+
+<!-- Mobile Media -->{
+  mobileMedia.mediaType === 'image' && mobileMedia.image ? (
+    <Image
+      src={urlFor(mobileMedia.image)?.url() || ''}
+      alt={mobileMedia.image.alt || ''}
+      class:list={['h-auto w-full overflow-hidden rounded-md md:hidden', className]}
+      inferSize
+    />
+  ) : mobileMedia.mediaType === 'video' && mobileMedia.video?.asset?.playbackId ? (
+    <div class="overflow-hidden rounded-md md:hidden">
+      <MuxVideo
+        playbackId={mobileMedia.video.asset.playbackId}
+        videoTitle={videoTitle}
+        mobileAspectRatio
+      />
+    </div>
+  ) : null
+}
+
+<!-- Desktop Media -->
+{
+  desktopMedia.mediaType === 'image' && desktopMedia.image ? (
+    <Image
+      src={urlFor(desktopMedia.image)?.url() || ''}
+      alt={desktopMedia.image.alt || ''}
+      class:list={['hidden h-auto w-full overflow-hidden rounded-md md:block', className]}
+      inferSize
+    />
+  ) : desktopMedia.mediaType === 'video' && desktopMedia.video?.asset?.playbackId ? (
+    <div class="hidden overflow-hidden rounded-md md:block">
+      <MuxVideo playbackId={desktopMedia.video.asset.playbackId} videoTitle={videoTitle} />
+    </div>
+  ) : null
+}
