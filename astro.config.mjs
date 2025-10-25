@@ -6,7 +6,6 @@ import tailwindcss from '@tailwindcss/vite';
 import lottie from 'astro-integration-lottie';
 
 import dotenv from 'dotenv';
-import icon from 'astro-icon';
 import sanity from '@sanity/astro';
 dotenv.config({ path: '.env' });
 
@@ -20,7 +19,6 @@ export default defineConfig({
   },
   integrations: [
     lottie(),
-    icon(),
     sanity({
       projectId: 'p0rg3cc2',
       dataset: 'production',
