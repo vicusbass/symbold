@@ -8,10 +8,25 @@ const { class: className = '', delayed = false } = Astro.props;
 ---
 
 <div class="overflow-hidden">
-  <div class={`baseline-scroll ${className}`} data-baseline-animation data-delayed={delayed}>
+  <div class={className} data-baseline-animation data-delayed={delayed}>
     <slot />
   </div>
 </div>
+
+<style>
+  [data-baseline-animation] {
+    opacity: 0;
+    transform: translateY(50%);
+    transition:
+      transform 0.6s ease-out,
+      opacity 0.6s ease-out;
+  }
+
+  [data-baseline-animation].visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
 
 <script>
   document.addEventListener('astro:page-load', () => {
