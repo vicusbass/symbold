@@ -10,6 +10,7 @@ import projectHero2 from '../assets/poc/project-hero-2.png';
 import projectHero3 from '../assets/poc/project-hero-3.png';
 import Tag from '../components/Tag.astro';
 import RightReveal from '../components/RightReveal.astro';
+import BaselineReveal from '../components/BaselineReveal.astro';
 
 const serviceTags = [
   'Brand Identity',
@@ -26,11 +27,18 @@ const serviceTags = [
 
 <Layout title="Symbold | About">
   <section id="headers" class="content-padding">
-    <h1 class="page-title">we don't design logos.</h1>
-    <h2 class="mt-10 text-base font-medium md:text-2xl">
-      Symbold is a branding studio for ambitious companies that value design as strategy, not
-      decoration.
-    </h2>
+    <BaselineReveal>
+      <h1 class="page-title">
+        we don't
+        <br /> design logos
+      </h1>
+    </BaselineReveal>
+    <BaselineReveal delayed>
+      <div class="mt-20 text-base font-medium md:mt-30 md:text-2xl">
+        Symbold is a branding studio for ambitious companies that value design as strategy, not
+        decoration.
+      </div>
+    </BaselineReveal>
 
     <Button class="mt-10" href="/contact">Work with us</Button>
   </section>
@@ -153,8 +161,8 @@ const serviceTags = [
     </div>
   </section>
 
-  <div class="content-padding md:hidden">
-    <hr class="mt-10 mb-10 md:mb-30" />
+  <div class="content-padding">
+    <hr class="mt-30 mb-10" />
   </div>
 
   <div class="md:content-padding px-2">
