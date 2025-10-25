@@ -149,12 +149,17 @@ const alt = project.image?.alt || '';
   }
 
   document.addEventListener('astro:page-load', () => {
-    const customCursor = initializeCursor();
-    attachCursorListeners(customCursor);
+    // Only initialize cursor if there are project preview links on the page
+    const hasProjectLinks = document.querySelectorAll('.project-preview-link').length > 0;
 
-    // Listen for dynamic project renders (e.g., from work page filtering)
-    document.addEventListener('projects-rendered', () => {
+    if (hasProjectLinks) {
+      const customCursor = initializeCursor();
       attachCursorListeners(customCursor);
-    });
+
+      // Listen for dynamic project renders (e.g., from work page filtering)
+      document.addEventListener('projects-rendered', () => {
+        attachCursorListeners(customCursor);
+      });
+    }
   });
 </script>
