@@ -11,6 +11,7 @@ const { playbackId, videoTitle, mobileAspectRatio = false } = Astro.props;
 ---
 
 <MuxPlayer
+  disableCookies={true}
   playbackId={playbackId}
   metadata={{
     video_title: videoTitle,
