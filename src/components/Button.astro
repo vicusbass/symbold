@@ -6,26 +6,31 @@ interface Props {
   type?: 'button' | 'submit' | 'reset';
   class?: string;
   hasArrow?: boolean;
+  disabled?: boolean;
+  id?: string;
 }
 
-const { href, type = 'button', class: className = '', hasArrow = true } = Astro.props;
+const { href, type = 'button', class: className = '', hasArrow = true, disabled = false, id } = Astro.props;
 const Element = href ? 'a' : 'button';
 ---
 
 <Element
+  id={id}
   href={href}
   type={!href ? type : undefined}
+  disabled={!href ? disabled : undefined}
   class={`border-1 bg-accent rounded-md pl-10 pr-15 py-5 font-[600] text-black uppercase
-    inline-flex items-center justify-center w-full md:w-auto group 
+    inline-flex items-center justify-center w-full md:w-auto group
     transition-all duration-400 ease-in-out
     hover:bg-black hover:text-white hover:border-black
+    disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 disabled:hover:text-gray-500
     ${className}
     `}
 >
   {
     hasArrow && (
       <Image
-        class="mr-5 filter transition-all duration-400 ease-in-out group-hover:translate-x-4 group-hover:brightness-0 group-hover:invert"
+        class="mr-5 filter transition-all duration-400 ease-in-out group-hover:translate-x-4 group-hover:brightness-0 group-hover:invert group-disabled:translate-x-0 group-disabled:opacity-50"
         src={arrow}
         alt="Arrow"
         width={20}

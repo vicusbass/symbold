@@ -15,7 +15,7 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
 ---
 
 <div class={wrapperClasses}>
-  <form class={formClasses}>
+  <form id="contact-form" class={formClasses}>
     <div class="flex flex-col gap-6 md:flex-row md:gap-4">
       <input
         type="text"
@@ -32,13 +32,18 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
         required
       />
     </div>
-    <input
-      type="email"
-      name="email"
-      placeholder="Your email"
-      class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
-      required
-    />
+    <div class="flex w-full flex-col">
+      <input
+        type="email"
+        name="email"
+        placeholder="Your email"
+        class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
+        required
+      />
+      <span id="email-error" class="mt-2 hidden text-sm text-red-600"
+        >Please enter a valid email address</span
+      >
+    </div>
     <input
       type="tel"
       name="phone"
@@ -70,8 +75,107 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
         I have read and agree with the Terms and Conditions and with the Privacy Policy
       </label>
     </div>
+    <div id="form-message" class="hidden text-sm"></div>
     <div class="mt-4">
-      <Button type="submit" class="text-base">SUBMIT</Button>
+      <Button type="submit" id="submit-button" class="text-base" disabled>SUBMIT</Button>
     </div>
   </form>
 </div>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const messageDiv = document.getElementById('form-message') as HTMLDivElement;
+  const submitButton = document.getElementById('submit-button') as HTMLButtonElement;
+  const emailInput = form?.querySelector('[name="email"]') as HTMLInputElement;
+  const emailError = document.getElementById('email-error') as HTMLSpanElement;
+
+  function isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  function validateEmail() {
+    if (!emailInput || !emailError) return true;
+
+    const email = emailInput.value.trim();
+
+    if (email && !isValidEmail(email)) {
+      emailError.classList.remove('hidden');
+      emailInput.classList.remove('border-gray-300', 'focus:border-black');
+      emailInput.classList.add('border-red-600', 'focus:border-red-600');
+      return false;
+    } else {
+      emailError.classList.add('hidden');
+      emailInput.classList.remove('border-red-600', 'focus:border-red-600');
+      emailInput.classList.add('border-gray-300', 'focus:border-black');
+      return true;
+    }
+  }
+
+  function checkFormValidity() {
+    if (!form || !submitButton) return;
+
+    const firstName = (form.querySelector('[name="firstName"]') as HTMLInputElement)?.value.trim();
+    const lastName = (form.querySelector('[name="lastName"]') as HTMLInputElement)?.value.trim();
+    const email = emailInput?.value.trim();
+    const subject = (form.querySelector('[name="subject"]') as HTMLInputElement)?.value.trim();
+    const message = (form.querySelector('[name="message"]') as HTMLTextAreaElement)?.value.trim();
+    const terms = (form.querySelector('[name="terms"]') as HTMLInputElement)?.checked;
+
+    validateEmail();
+
+    const isValid =
+      firstName && lastName && email && isValidEmail(email) && subject && message && terms;
+    submitButton.disabled = !isValid;
+  }
+
+  if (form) {
+    // Add event listeners to all form fields
+    const fields = form.querySelectorAll('input, textarea');
+    fields.forEach((field) => {
+      field.addEventListener('input', checkFormValidity);
+      field.addEventListener('change', checkFormValidity);
+    });
+
+    checkFormValidity();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        firstName: formData.get('firstName') as string,
+        lastName: formData.get('lastName') as string,
+        email: formData.get('email') as string,
+        phone: formData.get('phone') as string,
+        subject: formData.get('subject') as string,
+        message: formData.get('message') as string,
+        terms: formData.get('terms') === 'on',
+      };
+
+      try {
+        submitButton.disabled = true;
+        submitButton.textContent = 'SENDING...';
+
+        const response = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          // Redirect to success page
+          window.location.href = '/thank-you?status=success';
+        } else {
+          // Redirect to error page
+          window.location.href = '/thank-you?status=error';
+        }
+      } catch (error) {
+        // Redirect to error page on network failure
+        window.location.href = '/thank-you?status=error';
+      }
+    });
+  }
+</script>
