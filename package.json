@@ -11,6 +11,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@astrojs/vercel": "^9.0.0",
     "@mux/mux-player-astro": "^3.6.1",
     "@portabletext/types": "^2.0.15",
     "@sanity/astro": "^3.2.10",

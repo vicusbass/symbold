@@ -7,6 +7,7 @@ import lottie from 'astro-integration-lottie';
 
 import dotenv from 'dotenv';
 import sanity from '@sanity/astro';
+import vercel from '@astrojs/vercel';
 dotenv.config({ path: '.env' });
 
 // https://astro.build/config
@@ -14,9 +15,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
   image: {
     domains: ['cdn.sanity.io'],
   },
+
   integrations: [
     lottie(),
     sanity({
@@ -25,4 +28,6 @@ export default defineConfig({
       useCdn: false, // for static builds
     }),
   ],
+
+  adapter: vercel(),
 });
