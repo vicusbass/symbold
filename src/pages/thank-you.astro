@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Thank You | Symbold">
+  <main class="flex min-h-screen items-center justify-center px-6 py-24">
+    <div class="max-w-2xl text-center">
+      <!-- Success state -->
+      <div id="success-state" class="hidden">
+        <div class="mb-8 text-6xl">✓</div>
+        <h1 class="mb-6 text-5xl font-bold md:text-7xl">Thank You!</h1>
+        <p class="mb-8 text-xl leading-relaxed text-gray-700 md:text-2xl">
+          Your message has been successfully sent. We'll get back to you as soon as possible.
+        </p>
+        <a
+          href="/"
+          class="inline-block border-1 border-black bg-accent px-10 py-4 text-base font-semibold uppercase transition-all hover:bg-black hover:text-white"
+        >
+          Back to Home
+        </a>
+      </div>
+
+      <!-- Error state -->
+      <div id="error-state" class="hidden">
+        <div class="mb-8 text-6xl">✕</div>
+        <h1 class="mb-6 text-5xl font-bold md:text-7xl">Oops!</h1>
+        <p class="mb-4 text-xl leading-relaxed text-gray-700 md:text-2xl">
+          Something went wrong while sending your message.
+        </p>
+        <p class="mb-8 text-lg text-gray-600">
+          Please contact us directly at
+          <a
+            href="mailto:symboldstudio@gmail.com"
+            class="font-semibold text-black underline hover:text-gray-700"
+          >
+            symboldstudio@gmail.com
+          </a>
+        </p>
+        <div class="flex flex-col gap-4 md:flex-row md:justify-center">
+          <a
+            href="/contact"
+            class="inline-block border-1 border-black bg-accent px-10 py-4 text-base font-semibold uppercase transition-all hover:bg-black hover:text-white"
+          >
+            Try Again
+          </a>
+          <a
+            href="/"
+            class="inline-block border-1 border-black bg-white px-10 py-4 text-base font-semibold uppercase transition-all hover:bg-black hover:text-white"
+          >
+            Back to Home
+          </a>
+        </div>
+      </div>
+
+      <!-- Default state -->
+      <div id="default-state" class="hidden">
+        <h1 class="mb-6 text-5xl font-bold md:text-7xl">Page Not Found</h1>
+        <p class="mb-8 text-xl leading-relaxed text-gray-700 md:text-2xl">
+          This page requires a status parameter.
+        </p>
+        <a
+          href="/"
+          class="inline-block border-1 border-black bg-accent px-10 py-4 text-base font-semibold uppercase transition-all hover:bg-black hover:text-white"
+        >
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  // Get status from URL on client side
+  const url = new URL(window.location.href);
+  const status = url.searchParams.get('status');
+
+  const successState = document.getElementById('success-state');
+  const errorState = document.getElementById('error-state');
+  const defaultState = document.getElementById('default-state');
+
+  if (status === 'success' && successState) {
+    successState.classList.remove('hidden');
+  } else if (status === 'error' && errorState) {
+    errorState.classList.remove('hidden');
+  } else if (defaultState) {
+    defaultState.classList.remove('hidden');
+  }
+</script>
