@@ -43,7 +43,7 @@ const { desktopMedia, mobileMedia, videoTitle = '', class: className } = Astro.p
 {
   desktopMedia.mediaType === 'image' && desktopMedia.image ? (
     <Image
-      src={urlFor(desktopMedia.image)?.url() || ''}
+      src={(!!desktopMedia.image && urlFor(desktopMedia.image)?.url()) || ''}
       alt={desktopMedia.image.alt || ''}
       class:list={['hidden h-auto w-full overflow-hidden rounded-md md:block', className]}
       inferSize
