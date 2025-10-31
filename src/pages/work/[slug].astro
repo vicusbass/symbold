@@ -43,9 +43,9 @@ const projectsWithMatchingTags = allProjects.filter((p: any) => {
   return projectTagIds.some((tagId: string) => currentProjectTagIds.includes(tagId));
 });
 
-// Select 2 random projects from matching projects - changes on every page load
+// Select 3 random projects from matching projects - changes on every page load
 const shuffled = projectsWithMatchingTags.sort(() => 0.5 - Math.random());
-const suggestedProjects: FeaturedProject[] = shuffled.slice(0, 2).map((p: any) => ({
+const suggestedProjects: FeaturedProject[] = shuffled.slice(0, 3).map((p: any) => ({
   _key: p._id,
   mediaType: p.hero.mediaType,
   image: p.hero.image,
@@ -94,7 +94,7 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
       <div class="mt-5 flex min-w-70 flex-col justify-end md:mt-0">
         <BaselineReveal delayed>
           <h2 class="text-base font-semibold">Team:</h2>
-          <div class="mt-1 text-base font-semibold text-gray-500">
+          <div class="mt-1 text-base font-semibold text-gray-400">
             {teamLines.map((line) => <p>{line}</p>)}
           </div>
         </BaselineReveal>
@@ -139,8 +139,8 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
 
           const mediaOrderClasses = isDescriptionLeft ? 'order-2 md:order-2' : 'order-1 md:order-1';
           const descriptionOrderClasses = isDescriptionLeft
-            ? 'order-1 md:order-1 md:pr-12'
-            : 'order-2 md:order-2 md:pl-12';
+            ? 'order-1 md:pr-10'
+            : 'order-2 md:pl-10';
 
           return (
             <article class="mt-4 flex flex-col gap-8 md:flex-row md:items-center md:gap-16">
@@ -165,7 +165,7 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
         // portfolioRowSplit - Two media items side by side
         if (row._type === 'portfolioRowSplit') {
           return (
-            <article class="mt-4 flex flex-col gap-4 md:flex-row md:gap-4">
+            <article class="mt-4 flex flex-col gap-4 md:flex-row">
               <div class="w-full md:w-1/2">
                 <ScrollReveal>
                   <MediaRenderer media={row.leftMedia} videoTitle={project.title} />
@@ -200,9 +200,9 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
 
   {
     suggestedProjects.length ? (
-      <section class="edge-padding mt-30 md:mt-40">
-        <h2 class="text-2xl font-bold md:text-4xl">Suggested projects</h2>
-        <div class="mt-10 grid gap-6 md:grid-cols-2 md:gap-10">
+      <section class="content-padding mt-30 md:mt-40">
+        <h2 class="text-2xl font-[800] tracking-tighter md:text-4xl">Suggested projects</h2>
+        <div class="mt-10 grid gap-4 md:grid-cols-3">
           {suggestedProjects.map((suggested) => (
             <ScrollReveal>
               <ProjectPreview project={suggested} disableCursor={true} />
@@ -213,14 +213,10 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
     ) : null
   }
 
-  <section class="edge-padding mt-30 md:mt-40">
+  <section class="content-padding mt-30 md:mt-40">
     <div class="flex flex-col gap-12 md:flex-row md:items-start md:gap-20">
       <div class="w-full md:w-1/3">
         <h2 class="text-3xl font-bold md:text-5xl">Let's talk about you.</h2>
-        <p class="mt-6 text-base leading-relaxed text-neutral-700 md:text-lg">
-          Symbold collaborates with leaders who see design as leverage. Share your challenges and
-          we'll shape a brand experience that moves your business forward.
-        </p>
       </div>
       <ContactForm wrapperClass="md:w-[55.67%]" />
     </div>
