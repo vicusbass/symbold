@@ -96,6 +96,7 @@
     -webkit-text-stroke: 2px black;
     paint-order: stroke fill;
     font-stretch: ultra-expanded;
+    /* transform: translateX(-1px); */
   }
 
   @media (min-width: 768px) {

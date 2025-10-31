@@ -143,7 +143,7 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
             : 'order-2 md:pl-10';
 
           return (
-            <article class="mt-4 flex flex-col gap-8 md:flex-row md:items-center md:gap-16">
+            <article class="mt-4 flex flex-col gap-8 md:flex-row md:items-center md:gap-4">
               <div class={`w-full md:w-1/2 ${mediaOrderClasses}`}>
                 <ScrollReveal>
                   <MediaRenderer media={row.media} videoTitle={project.title} />
@@ -154,7 +154,7 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
                   class={`w-full text-base leading-relaxed md:w-1/2 md:text-lg ${descriptionOrderClasses}`}
                 >
                   <ScrollReveal>
-                    <p>{description}</p>
+                    <p class="md:px-16">{description}</p>
                   </ScrollReveal>
                 </div>
               )}
