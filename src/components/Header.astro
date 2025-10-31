@@ -31,7 +31,7 @@ const menuItems = [
   <!-- Mobile Hamburger -->
   <button
     id="menu-toggle"
-    class="relative flex h-8 w-8 items-center justify-center md:hidden"
+    class="relative z-50 flex h-8 w-8 items-center justify-center md:hidden"
     aria-label="Toggle menu"
     aria-expanded="false"
   >
@@ -60,13 +60,30 @@ const menuItems = [
     opacity: 1;
     transform: rotate(0deg);
   }
+
+  #mobile-menu {
+    z-index: 40;
+    transform: scale(0.1);
+    opacity: 0.9;
+    /* dynamic transform-origin set via JS each open */
+    transform-origin: top right;
+    transition:
+      opacity 0.4s ease-out,
+      transform 0.4s ease-out;
+    will-change: opacity, transform;
+  }
+
+  #mobile-menu.active {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
 </style>
 
 <!-- Mobile Menu -->
 <nav
   id="mobile-menu"
-  class="fixed inset-0 top-[76px] z-50 flex flex-col items-center justify-center gap-6 bg-white transition-transform duration-500 ease-in-out md:hidden"
-  style="transform: translateY(-100%); visibility: hidden;"
+  class="fixed inset-0 z-50 flex hidden flex-col items-center justify-center gap-6 bg-white"
 >
   {
     menuItems.map((item) => (
@@ -81,21 +98,42 @@ const menuItems = [
   document.addEventListener('astro:page-load', () => {
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
+    if (!menuToggle || !mobileMenu) return;
 
-    menuToggle?.addEventListener('click', () => {
+    const openMenu = () => {
+      if (mobileMenu) {
+        // reveal first so transition can play
+        mobileMenu.classList.remove('hidden');
+        // force reflow to ensure transition starts
+        void mobileMenu.offsetWidth;
+        mobileMenu.classList.add('active');
+      }
+    };
+
+    const closeMenu = () => {
+      if (mobileMenu) {
+        mobileMenu.classList.remove('active');
+        // after transition hide completely
+        // @ts-ignore - runtime JS only, event typing not required
+        const handleTransitionEnd = (e) => {
+          if (e.target === mobileMenu && e.propertyName === 'opacity') {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
+          }
+        };
+        mobileMenu.addEventListener('transitionend', handleTransitionEnd);
+      }
+    };
+
+    menuToggle.addEventListener('click', () => {
       const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+      const nextExpanded = (!isExpanded).toString();
+      menuToggle.setAttribute('aria-expanded', nextExpanded);
 
-      if (isExpanded) {
-        mobileMenu!.style.transform = 'translateY(-100%)';
-        setTimeout(() => {
-          mobileMenu!.style.visibility = 'hidden';
-        }, 500);
+      if (nextExpanded === 'true') {
+        openMenu();
       } else {
-        mobileMenu!.style.visibility = 'visible';
-        setTimeout(() => {
-          mobileMenu!.style.transform = 'translateY(0)';
-        }, 10);
+        closeMenu();
       }
     });
   });
