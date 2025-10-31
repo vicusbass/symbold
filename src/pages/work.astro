@@ -22,6 +22,11 @@ const tags = tagsData.map((tag) => ({
   hoverColor: tag.hoverColor,
 }));
 
+console.log(
+  'Fetched tags:',
+  tags.map((t) => t.hoverColor.hex)
+);
+
 // Transform Sanity portfolio data to match the FeaturedProject format
 const projects = portfolioData.map((project) => ({
   project: {

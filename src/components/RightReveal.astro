@@ -3,21 +3,22 @@ interface Props {
   class?: string;
   delayed?: boolean;
   index?: number;
+  isTitle?: boolean;
 }
 
-const { class: className = '', delayed = false, index = 0 } = Astro.props;
+const { class: className = '', delayed = false, index = 0, isTitle = false } = Astro.props;
 ---
 
-<!-- <div class="overflow-hidden"> -->
-<div
-  class={`right-fade ${className}`}
-  data-right-fade-animation
-  data-delayed={delayed}
-  data-index={index}
->
-  <slot />
+<div class=`${isTitle ? 'overflow-hidden' : ''}`>
+  <div
+    class={`right-fade ${className}`}
+    data-right-fade-animation
+    data-delayed={delayed}
+    data-index={index}
+  >
+    <slot />
+  </div>
 </div>
-<!-- </div> -->
 
 <script>
   document.addEventListener('astro:page-load', () => {

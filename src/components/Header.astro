@@ -4,14 +4,14 @@ import MenuIcon from '../assets/menu.svg';
 import MenuCloseIcon from '../assets/menu-close.svg';
 
 const menuItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Work', href: '/work' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'home', href: '/' },
+  { name: 'work', href: '/work' },
+  { name: 'about', href: '/about' },
+  { name: 'contact', href: '/contact' },
 ];
 ---
 
-<header class="content-padding flex h-[76px] items-center justify-between">
+<header class="content-padding z-50 flex h-[76px] items-center justify-between">
   <div class="logo">
     <a href="/">
       <Logo class="h-auto w-auto" />
@@ -21,7 +21,7 @@ const menuItems = [
   <nav class="hidden items-center gap-6 md:flex">
     {
       menuItems.map((item) => (
-        <a href={item.href} class="text-base font-medium uppercase">
+  <a href={item.href} class="text-base font-medium uppercase">
           {item.name}
         </a>
       ))
@@ -31,7 +31,7 @@ const menuItems = [
   <!-- Mobile Hamburger -->
   <button
     id="menu-toggle"
-    class="relative z-50 flex h-8 w-8 items-center justify-center md:hidden"
+    class="relative flex h-8 w-8 items-center justify-center md:hidden"
     aria-label="Toggle menu"
     aria-expanded="false"
   >
@@ -74,7 +74,6 @@ const menuItems = [
   }
 
   #mobile-menu.active {
-    display: flex;
     opacity: 1;
     transform: scale(1);
   }
@@ -83,11 +82,11 @@ const menuItems = [
 <!-- Mobile Menu -->
 <nav
   id="mobile-menu"
-  class="fixed inset-0 z-50 flex hidden flex-col items-center justify-center gap-6 bg-white"
+  class="fixed inset-0 z-50 hidden flex flex-col justify-end bg-white p-8"
 >
   {
-    menuItems.map((item) => (
-      <a href={item.href} class="text-2xl font-medium uppercase">
+    menuItems.map((item, index) => (
+      <a href={item.href} class=`text-6xl font-[1000] leading-tighter ${index === 0 ? 'text-accent' : 'text-black'}`>
         {item.name}
       </a>
     ))
@@ -107,6 +106,15 @@ const menuItems = [
         // force reflow to ensure transition starts
         void mobileMenu.offsetWidth;
         mobileMenu.classList.add('active');
+        // Lock body scroll
+        const scrollY = window.scrollY;
+        document.body.dataset.scrollLockY = scrollY.toString();
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
       }
     };
 
@@ -119,6 +127,17 @@ const menuItems = [
           if (e.target === mobileMenu && e.propertyName === 'opacity') {
             mobileMenu.classList.add('hidden');
             mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
+            // Restore body scroll
+            const lockedY = parseInt(document.body.dataset.scrollLockY || '0', 10);
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+            // Restore scroll position
+            window.scrollTo(0, lockedY);
+            delete document.body.dataset.scrollLockY;
           }
         };
         mobileMenu.addEventListener('transitionend', handleTransitionEnd);

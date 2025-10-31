@@ -23,6 +23,8 @@ const serviceTags = [
   'UI/UX',
   'Brand Manual',
 ];
+
+const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb', '#e33424'];
 ---
 
 <Layout title="Symbold | About">
@@ -34,10 +36,10 @@ const serviceTags = [
       </h1>
     </BaselineReveal>
     <BaselineReveal delayed>
-      <div class="mt-20 py-1 text-base font-medium md:mt-20 md:pr-30 md:text-xl">
+      <h2 class="mt-2 text-base font-medium md:pb-0.5 md:text-2xl">
         Symbold is a branding studio for ambitious companies that value design as strategy, not
         decoration.
-      </div>
+      </h2>
     </BaselineReveal>
 
     <Button class="mt-10" href="/contact">Work with us</Button>
@@ -48,7 +50,7 @@ const serviceTags = [
     <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
   </section>
 
-  <RightReveal>
+  <RightReveal isTitle>
     <h2
       class="mt-10 text-center text-8xl font-black tracking-tighter md:mt-20 md:text-[clamp(9rem,17vw,17.5rem)]"
     >
@@ -79,7 +81,7 @@ const serviceTags = [
     <ScrollReveal>
       <div
         id="service-tags"
-        class="mt-10 flex flex-wrap items-center justify-center gap-4 px-0 md:mt-20 md:px-30"
+        class="mt-10 flex flex-wrap items-center justify-center gap-4 overflow-hidden px-0 md:mt-20 md:px-30"
       >
         {
           serviceTags.map((tag, index) => (
@@ -89,6 +91,7 @@ const serviceTags = [
                 label={tag}
                 class="px-6 py-2 text-xl md:px-10 md:py-4"
                 interactive={false}
+                hoverColor={{ hex: serviceTagColors[index % serviceTagColors.length] }}
               />
             </RightReveal>
           ))
@@ -167,7 +170,7 @@ const serviceTags = [
 
   <div class="md:content-padding px-2">
     <h2
-      class="mx-auto pt-8 text-center text-xl leading-relaxed font-bold md:px-30 md:pt-50 md:text-[2.5rem]"
+      class="mx-auto pt-8 text-center text-xl leading-relaxed font-bold md:px-30 md:pt-35 md:text-[2.5rem]"
     >
       We're not here to please everyone.
       <br class="md:hidden" />
@@ -179,7 +182,7 @@ const serviceTags = [
       <br class="md:hidden" />
       right.
     </h2>
-    <div class="mx-auto mb-10 flex justify-center pt-30 md:mb-40 md:pt-60">
+    <div class="mx-auto mb-10 flex justify-center pt-30 md:mb-40 md:pt-35">
       <Button class="mx-2" href="/contact">Work with us</Button>
     </div>
   </div>
