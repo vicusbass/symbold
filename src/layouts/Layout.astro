@@ -22,13 +22,7 @@ const { title = 'SYMBOLD' } = Astro.props;
     <link rel="preconnect" href="https://use.typekit.net" />
     <link rel="stylesheet" href="https://use.typekit.net/smx5jap.css" />
     <title>{title}</title>
-    <SpeedInsights />
-    <style is:inline>
-      /* Prevent FOUC during page transitions */
-      html.astro-transitioning body {
-        visibility: hidden;
-      }
-    </style>
+    <ClientRouter />
   </head>
   <body class="flex min-h-screen flex-col">
     <Header transition:persist />
@@ -36,6 +30,6 @@ const { title = 'SYMBOLD' } = Astro.props;
       <slot />
     </main>
     <Footer transition:persist />
-    <ClientRouter />
+    <SpeedInsights />
   </body>
 </html>
