@@ -83,21 +83,6 @@ export const mainPage = defineType({
                   description: 'Video to display on the main page',
                 },
                 {
-                  name: 'description',
-                  title: 'Description',
-                  type: 'text',
-                  rows: 3,
-                  validation: (Rule) => Rule.required(),
-                  description: 'Text overlay for the project',
-                },
-                {
-                  name: 'textColor',
-                  title: 'Text Color',
-                  type: 'color',
-                  validation: (Rule) => Rule.required(),
-                  description: 'Color for the text overlay',
-                },
-                {
                   name: 'projectReference',
                   title: 'Project Reference',
                   type: 'reference',
@@ -123,7 +108,8 @@ export const mainPage = defineType({
             },
           ],
           validation: (Rule) => Rule.required().length(3),
-          description: 'Add exactly 3 featured projects (first will be full width, other two split)',
+          description:
+            'Add exactly 3 featured projects (first will be full width, other two split)',
         },
       ],
     }),
