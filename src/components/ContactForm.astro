@@ -72,7 +72,9 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
         required
       />
       <label for="terms" class="cursor-pointer text-sm leading-relaxed">
-        I have read and agree with the Terms and Conditions and with the Privacy Policy
+        I have read and agree with the <a href="/terms" class="text-black underline"
+          >Terms and Conditions</a
+        > and with the <a href="/privacy" class="text-black underline">Privacy Policy</a>
       </label>
     </div>
     <div id="form-message" class="hidden text-sm"></div>
