@@ -29,22 +29,22 @@ export interface HeroSection {
   mobileVideo?: MuxVideo;
 }
 
-export interface FeaturedProject {
-  _key: string;
+export interface PortfolioHero {
   mediaType: 'image' | 'video';
   image?: SanityImage;
   video?: MuxVideo;
-  title: string;
-  slug: string;
 }
 
-export interface FeaturedProjectsSection {
-  projects: FeaturedProject[];
+export interface FeaturedProject {
+  _id: string;
+  title: string;
+  slug: string;
+  hero: PortfolioHero;
 }
 
 export interface MainPage {
   _id: string;
   title?: string;
   hero: HeroSection;
-  featuredProjects?: FeaturedProjectsSection;
+  featuredProjects?: FeaturedProject[];
 }

@@ -23,9 +23,11 @@ export const mainPageQuery = `*[_type == "mainPage"][0]{
       }
     }
   },
-  featuredProjects{
-    projects[]{
-      _key,
+  "featuredProjects": *[_type == "workPage"][0].projects[0...3]->{
+    _id,
+    title,
+    "slug": slug.current,
+    hero{
       mediaType,
       image{
         asset,
@@ -35,9 +37,7 @@ export const mainPageQuery = `*[_type == "mainPage"][0]{
         asset->{
           playbackId
         }
-      },
-      "title": projectReference->title,
-      "slug": projectReference->slug.current
+      }
     }
   }
 }`;

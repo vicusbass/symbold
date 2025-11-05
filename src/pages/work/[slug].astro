@@ -46,12 +46,10 @@ const projectsWithMatchingTags = allProjects.filter((p: any) => {
 // Select 3 random projects from matching projects - changes on every page load
 const shuffled = projectsWithMatchingTags.sort(() => 0.5 - Math.random());
 const suggestedProjects: FeaturedProject[] = shuffled.slice(0, 3).map((p: any) => ({
-  _key: p._id,
-  mediaType: p.hero.mediaType,
-  image: p.hero.image,
-  video: p.hero.video,
+  _id: p._id,
   title: p.title,
   slug: p.slug.current,
+  hero: p.hero,
 }));
 
 const heroLabelledTags =
