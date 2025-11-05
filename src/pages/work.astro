@@ -24,12 +24,10 @@ const tags = tagsData.map((tag) => ({
 // Transform Sanity portfolio data to match the FeaturedProject format
 const projects = portfolioData.map((project) => ({
   project: {
-    _key: project._id,
-    mediaType: project.hero.mediaType,
-    image: project.hero.image,
-    video: project.hero.video,
+    _id: project._id,
     title: project.title,
     slug: project.slug.current,
+    hero: project.hero,
   },
   tags: project.tags?.map((tag: any) => tag.id.current) || [],
 }));

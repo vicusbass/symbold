@@ -70,21 +70,21 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
   </ScrollReveal>
 
   {
-    mainPage?.featuredProjects?.projects && mainPage.featuredProjects.projects.length >= 3 && (
+    mainPage?.featuredProjects && mainPage.featuredProjects.length >= 3 && (
       <section id="featured-projects" class="edge-padding mt-20 md:mt-60">
         {/* First featured project - full width */}
         <ScrollReveal>
-          <ProjectPreview project={mainPage.featuredProjects.projects[0]} />
+          <ProjectPreview project={mainPage.featuredProjects[0]} />
         </ScrollReveal>
 
         {/* Second and third featured projects - side by side */}
         <div class="mt-4 flex flex-col gap-4 md:flex-row md:gap-4">
           <ScrollReveal class="w-full md:w-1/2">
-            <ProjectPreview project={mainPage.featuredProjects.projects[1]} />
+            <ProjectPreview project={mainPage.featuredProjects[1]} />
           </ScrollReveal>
 
           <ScrollReveal delayed class="w-full md:w-1/2">
-            <ProjectPreview project={mainPage.featuredProjects.projects[2]} />
+            <ProjectPreview project={mainPage.featuredProjects[2]} />
           </ScrollReveal>
         </div>
       </section>

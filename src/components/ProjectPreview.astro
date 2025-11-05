@@ -14,12 +14,14 @@ interface Props {
 const { project, textColor = '#FFFFFF', class: className, disableCursor = false } = Astro.props;
 
 const imageUrl =
-  project.mediaType === 'image' && project.image ? urlFor(project.image)?.url() : null;
-const videoPlaybackId =
-  project.mediaType === 'video' && project.video?.asset?.playbackId
-    ? project.video.asset.playbackId
+  project.hero?.mediaType === 'image' && project.hero.image
+    ? urlFor(project.hero.image)?.url()
     : null;
-const alt = project.image?.alt || '';
+const videoPlaybackId =
+  project.hero?.mediaType === 'video' && project.hero.video?.asset?.playbackId
+    ? project.hero.video.asset.playbackId
+    : null;
+const alt = project.hero?.image?.alt || project.title || '';
 ---
 
 <a
