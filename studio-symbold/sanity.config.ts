@@ -20,7 +20,10 @@ export default defineConfig({
     structureTool({structure}),
     visionTool(),
     colorInput(),
-    muxInput(),
+    muxInput({
+      max_resolution_tier: '2160p',
+      encoding_tier: 'smart',
+    }),
     dashboardTool({
       widgets: [vercelWidget({layout: {width: 'full'}})],
     }),
