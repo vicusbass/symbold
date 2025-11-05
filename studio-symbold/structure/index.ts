@@ -17,6 +17,9 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title('Work Page')
                 .child(S.document().schemaType('workPage').documentId('workPage')),
+              S.listItem()
+                .title('About Page')
+                .child(S.document().schemaType('aboutPage').documentId('aboutPage')),
               // Add more page types here as they are created
             ])
         ),
@@ -32,6 +35,6 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       // All other types that aren't explicitly listed
       ...S.documentTypeListItems().filter(
-        (listItem) => !['mainPage', 'workPage', 'portfolio', 'tag'].includes(listItem.getId() || '')
+        (listItem) => !['mainPage', 'workPage', 'aboutPage', 'portfolio', 'tag'].includes(listItem.getId() || '')
       ),
     ])

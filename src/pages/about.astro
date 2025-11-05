@@ -5,12 +5,16 @@ import ScrollReveal from '../components/ScrollReveal.astro';
 import { Image } from 'astro:assets';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
-import projectHero1 from '../assets/poc/project-hero-1.png';
-import projectHero2 from '../assets/poc/project-hero-2.png';
-import projectHero3 from '../assets/poc/project-hero-3.png';
 import Tag from '../components/Tag.astro';
 import RightReveal from '../components/RightReveal.astro';
 import BaselineReveal from '../components/BaselineReveal.astro';
+import ResponsiveHero from '../components/ResponsiveHero.astro';
+import { client } from '../lib/sanity';
+import { aboutPageQuery } from '../lib/queries/aboutPage';
+import type { AboutPage } from '../types/sanity';
+
+// Fetch AboutPage data from Sanity
+const aboutPage = await client.fetch<AboutPage>(aboutPageQuery);
 
 const serviceTags = [
   'Brand Identity',
@@ -46,8 +50,29 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
   </section>
 
   <section id="hero" class="edge-padding mt-10 w-full md:mt-40">
-    <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
-    <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+    {
+      aboutPage?.media1Desktop && aboutPage?.media1Mobile ? (
+        <ResponsiveHero
+          desktopMedia={{
+            mediaType: aboutPage.media1Desktop.mediaType,
+            image: aboutPage.media1Desktop.image,
+            video: aboutPage.media1Desktop.video,
+          }}
+          mobileMedia={{
+            mediaType: aboutPage.media1Mobile.mediaType,
+            image: aboutPage.media1Mobile.image,
+            video: aboutPage.media1Mobile.video,
+          }}
+          videoTitle="About"
+        />
+      ) : (
+        <>
+          {/* Fallback to static assets if no Sanity data */}
+          <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+          <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+        </>
+      )
+    }
   </section>
 
   <RightReveal isTitle>
@@ -70,8 +95,29 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
 
   <ScrollReveal>
     <div class="edge-padding mt-10 w-full md:mt-40">
-      <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
-      <Image src={projectHero1} alt="Hero" class="hidden h-auto w-full md:block" />
+      {
+        aboutPage?.media2Desktop && aboutPage?.media2Mobile ? (
+          <ResponsiveHero
+            desktopMedia={{
+              mediaType: aboutPage.media2Desktop.mediaType,
+              image: aboutPage.media2Desktop.image,
+              video: aboutPage.media2Desktop.video,
+            }}
+            mobileMedia={{
+              mediaType: aboutPage.media2Mobile.mediaType,
+              image: aboutPage.media2Mobile.image,
+              video: aboutPage.media2Mobile.video,
+            }}
+            videoTitle="About"
+          />
+        ) : (
+          <>
+            {/* Fallback to static assets if no Sanity data */}
+            <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+            <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+          </>
+        )
+      }
     </div>
   </ScrollReveal>
 
@@ -102,8 +148,29 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
 
   <ScrollReveal>
     <div class="edge-padding mt-10 w-full md:mt-40">
-      <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
-      <Image src={projectHero1} alt="Hero" class="hidden h-auto w-full md:block" />
+      {
+        aboutPage?.media3Desktop && aboutPage?.media3Mobile ? (
+          <ResponsiveHero
+            desktopMedia={{
+              mediaType: aboutPage.media3Desktop.mediaType,
+              image: aboutPage.media3Desktop.image,
+              video: aboutPage.media3Desktop.video,
+            }}
+            mobileMedia={{
+              mediaType: aboutPage.media3Mobile.mediaType,
+              image: aboutPage.media3Mobile.image,
+              video: aboutPage.media3Mobile.video,
+            }}
+            videoTitle="About"
+          />
+        ) : (
+          <>
+            {/* Fallback to static assets if no Sanity data */}
+            <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+            <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+          </>
+        )
+      }
     </div>
   </ScrollReveal>
 

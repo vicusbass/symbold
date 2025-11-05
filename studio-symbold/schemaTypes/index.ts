@@ -7,12 +7,14 @@ import {
   portfolioRowSplit,
   portfolioRowText,
 } from './objects/portfolioRow'
+import {aboutPage} from './documents/aboutPage'
 import {mainPage} from './documents/mainPage'
 import {portfolio} from './documents/portfolio'
 import {workPage} from './documents/workPage'
 
 export const schemaTypes = [
   // Documents
+  aboutPage,
   mainPage,
   portfolio,
   workPage,
