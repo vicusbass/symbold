@@ -48,3 +48,13 @@ export interface MainPage {
   hero: HeroSection;
   featuredProjects?: FeaturedProject[];
 }
+
+export interface AboutPage {
+  _id: string;
+  media1Desktop?: PortfolioHero;
+  media1Mobile?: PortfolioHero;
+  media2Desktop?: PortfolioHero;
+  media2Mobile?: PortfolioHero;
+  media3Desktop?: PortfolioHero;
+  media3Mobile?: PortfolioHero;
+}
