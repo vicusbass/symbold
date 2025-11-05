@@ -21,7 +21,7 @@ const menuItems = [
   <nav class="hidden items-center gap-6 md:flex">
     {
       menuItems.map((item) => (
-  <a href={item.href} class="text-base font-medium uppercase">
+        <a href={item.href} class="text-base font-medium uppercase">
           {item.name}
         </a>
       ))
@@ -80,13 +80,14 @@ const menuItems = [
 </style>
 
 <!-- Mobile Menu -->
-<nav
-  id="mobile-menu"
-  class="fixed inset-0 z-50 hidden flex flex-col justify-end bg-white p-8"
->
+<nav id="mobile-menu" class="fixed inset-0 z-50 flex hidden flex-col justify-end bg-white p-8">
   {
-    menuItems.map((item, index) => (
-      <a href={item.href} class=`text-6xl font-[1000] leading-tighter ${index === 0 ? 'text-accent' : 'text-black'}`>
+    menuItems.map((item) => (
+      <a
+        href={item.href}
+        data-mi={item.href}
+        class="block overflow-hidden pb-4 text-6xl leading-12 font-[1000]"
+      >
         {item.name}
       </a>
     ))
@@ -95,6 +96,13 @@ const menuItems = [
 
 <script>
   document.addEventListener('astro:page-load', () => {
+    const mobileMenuLinks = document.querySelectorAll('#mobile-menu a[data-mi]');
+    mobileMenuLinks.forEach((link) => {
+      if (document.location.pathname === link.getAttribute('href'))
+        link.classList.add('text-accent');
+      else link.classList.add('text-black');
+    });
+
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     if (!menuToggle || !mobileMenu) return;
