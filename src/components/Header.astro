@@ -21,7 +21,7 @@ const menuItems = [
   <nav class="hidden items-center gap-6 md:flex">
     {
       menuItems.map((item) => (
-        <a href={item.href} class="text-base font-medium uppercase">
+        <a href={item.href} class="nav-link text-base font-medium uppercase" data-href={item.href}>
           {item.name}
         </a>
       ))
@@ -41,6 +41,31 @@ const menuItems = [
 </header>
 
 <style>
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .nav-link.active::after {
+    transform: scaleX(1);
+  }
+
   .menu-icon {
     opacity: 1;
     transform: rotate(0deg);
@@ -96,6 +121,17 @@ const menuItems = [
 
 <script>
   document.addEventListener('astro:page-load', () => {
+    // Mark active desktop nav link
+    const desktopNavLinks = document.querySelectorAll('.nav-link[data-href]');
+    desktopNavLinks.forEach((link) => {
+      if (document.location.pathname === link.getAttribute('href')) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // Mark active mobile menu link
     const mobileMenuLinks = document.querySelectorAll('#mobile-menu a[data-mi]');
     mobileMenuLinks.forEach((link) => {
       if (document.location.pathname === link.getAttribute('href'))
