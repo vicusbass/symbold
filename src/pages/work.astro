@@ -61,10 +61,10 @@ const projects = portfolioData.map((project) => ({
     </div>
   </section>
 
-  <div id="projects-container" class="mt-20 md:mt-30">
+  <div class="edge-padding mt-20 md:mt-30">
     {
       projects.map((item) => (
-        <div class="project-item hidden" data-tags={item.tags.join(',')}>
+        <div class="mt-4" data-tags={item.tags.join(',')}>
           <ScrollReveal>
             <ProjectPreview project={item.project} disableCursor={true} />
           </ScrollReveal>
@@ -95,107 +95,39 @@ const projects = portfolioData.map((project) => ({
 <script>
   document.addEventListener('astro:page-load', () => {
     let selectedTags = new Set(['all']);
-    let allProjectsCache: Element[] = [];
+
+    function toggleProjectVisibility(projectElement: HTMLElement, isVisible: boolean) {
+      const scrollAnimationChild = projectElement.querySelector(
+        '[data-scroll-animation]'
+      ) as HTMLElement;
+
+      if (isVisible) {
+        projectElement.style.display = 'block';
+        const isInViewport = scrollAnimationChild.getBoundingClientRect().top < window.innerHeight;
+        if (isInViewport) {
+          scrollAnimationChild?.classList.add('visible');
+        } else {
+          scrollAnimationChild?.classList.remove('visible');
+        }
+      } else {
+        projectElement.style.display = 'none';
+        scrollAnimationChild?.classList.remove('visible');
+      }
+    }
 
     function renderProjects() {
-      const container = document.getElementById('projects-container');
-      if (!container) return;
+      const projectElements = document.querySelectorAll('[data-tags]');
 
-      // Cache all project items on first run
-      if (allProjectsCache.length === 0) {
-        allProjectsCache = Array.from(container.querySelectorAll('.project-item'));
+      if (selectedTags.has('all')) {
+        projectElements.forEach((el) => toggleProjectVisibility(el as HTMLElement, true));
+        return;
       }
 
-      // Filter projects based on selected tags
-      const visibleProjects = allProjectsCache.filter((project) => {
-        const projectTags = project.getAttribute('data-tags')?.split(',') || [];
-        return selectedTags.has('all') || projectTags.some((tag) => selectedTags.has(tag));
-      });
-
-      // Clear container
-      container.innerHTML = '';
-
-      // Render with alternating pattern: 1 large, 2 half, repeat
-      visibleProjects.forEach((project, index) => {
-        const position = index % 3;
-
-        if (position === 0) {
-          // Large single image
-          const wrapper = document.createElement('div');
-          wrapper.className = 'edge-padding mt-4';
-          wrapper.appendChild(project.cloneNode(true));
-          const clonedProject = wrapper.querySelector('.project-item');
-          if (clonedProject) {
-            clonedProject.classList.remove('hidden');
-            // Make first project visible immediately
-            if (index === 0) {
-              const scrollElement = clonedProject.querySelector('[data-scroll-animation]');
-              if (scrollElement) {
-                scrollElement.classList.add('visible');
-              }
-            }
-          }
-          container.appendChild(wrapper);
-        } else if (position === 1) {
-          // First half of two-column row
-          const row = document.createElement('div');
-          row.className = 'edge-padding mt-4 flex flex-col gap-4 md:flex-row md:gap-4';
-
-          const halfWrapper = document.createElement('div');
-          halfWrapper.className = 'w-full md:w-1/2';
-          halfWrapper.appendChild(project.cloneNode(true));
-          const clonedProject = halfWrapper.querySelector('.project-item');
-          if (clonedProject) {
-            clonedProject.classList.remove('hidden');
-            // Make first project visible immediately
-            if (index === 0) {
-              const scrollElement = clonedProject.querySelector('[data-scroll-animation]');
-              if (scrollElement) {
-                scrollElement.classList.add('visible');
-              }
-            }
-          }
-          row.appendChild(halfWrapper);
-
-          // Check if there's a next project for the second half
-          const nextProject = visibleProjects[index + 1];
-          if (nextProject) {
-            const halfWrapper2 = document.createElement('div');
-            halfWrapper2.className = 'w-full md:w-1/2';
-            halfWrapper2.appendChild(nextProject.cloneNode(true));
-            const clonedProject2 = halfWrapper2.querySelector('.project-item');
-            if (clonedProject2) {
-              clonedProject2.classList.remove('hidden');
-            }
-            row.appendChild(halfWrapper2);
-          }
-
-          container.appendChild(row);
-        }
-        // position === 2 is handled in position === 1 (second half of row)
-      });
-
-      // Re-initialize scroll animations for newly added elements (except first one)
-      const observerOptions = {
-        threshold: 0.2,
-        rootMargin: '0px 0px -100px 0px',
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const delay = parseInt(entry.target.getAttribute('data-delay') || '300');
-            setTimeout(() => {
-              entry.target.classList.add('visible');
-            }, delay);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
-
-      // Observe all scroll animation elements in the container (except those already visible)
-      container.querySelectorAll('[data-scroll-animation]:not(.visible)').forEach((el) => {
-        observer.observe(el);
+      projectElements.forEach((el) => {
+        const projectTags = el.getAttribute('data-tags')?.split(',') || [];
+        const hasMatchingTag = projectTags.some((tag) => selectedTags.has(tag));
+        const projectElement = el as HTMLElement;
+        toggleProjectVisibility(projectElement, hasMatchingTag);
       });
     }
 
@@ -255,8 +187,5 @@ const projects = portfolioData.map((project) => ({
     document.querySelectorAll('.tag-button').forEach((button) => {
       button.addEventListener('click', () => toggleTag(button));
     });
-
-    // Initial render
-    renderProjects();
   });
 </script>
