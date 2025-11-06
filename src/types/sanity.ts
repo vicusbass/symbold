@@ -20,6 +20,26 @@ export interface SanityColor {
   alpha?: number;
 }
 
+export interface PortableTextBlock {
+  _type: 'block';
+  _key: string;
+  style?: string;
+  markDefs?: Array<{
+    _key: string;
+    _type: string;
+    href?: string;
+    blank?: boolean;
+  }>;
+  children: Array<{
+    _key: string;
+    _type: 'span';
+    text: string;
+    marks?: string[];
+  }>;
+}
+
+export type PortableText = PortableTextBlock[];
+
 export interface HeroSection {
   mediaType: 'image' | 'video';
   image?: SanityImage;

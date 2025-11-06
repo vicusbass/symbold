@@ -36,7 +36,16 @@ export const allProjectsQuery = `*[_type == "workPage" && _id == "workPage"][0].
 
     _type == "portfolioRowWithDescription" => {
       media{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } },
-      description,
+      description[]{
+        ...,
+        markDefs[]{
+          ...,
+          _type == "link" => {
+            "href": @.href,
+            "blank": @.blank
+          }
+        }
+      },
       descriptionPosition
     },
 
@@ -125,7 +134,16 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
           }
         }
       },
-      description,
+      description[]{
+        ...,
+        markDefs[]{
+          ...,
+          _type == "link" => {
+            "href": @.href,
+            "blank": @.blank
+          }
+        }
+      },
       descriptionPosition
     },
 

@@ -50,8 +50,8 @@ export const portfolioRowWithDescription = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
-      rows: 4,
+      type: 'array',
+      of: [{type: 'block'}],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -76,9 +76,22 @@ export const portfolioRowWithDescription = defineType({
       image: 'media.image',
     },
     prepare({mediaType, description, image}) {
+      // Extract text from block content
+      const descriptionText = description
+        ? description
+            .map((block: any) =>
+              block._type === 'block' && block.children
+                ? block.children.map((child: any) => child.text).join('')
+                : '',
+            )
+            .join(' ')
+        : ''
+
       return {
         title: 'Media + Description',
-        subtitle: description ? description.substring(0, 50) + '...' : `Media: ${mediaType === 'image' ? 'Image' : 'Video'}`,
+        subtitle: descriptionText
+          ? descriptionText.substring(0, 50) + (descriptionText.length > 50 ? '...' : '')
+          : `Media: ${mediaType === 'image' ? 'Image' : 'Video'}`,
         media: image,
       }
     },
@@ -129,10 +142,9 @@ export const portfolioRowText = defineType({
     defineField({
       name: 'text',
       title: 'Text Content',
-      type: 'text',
-      rows: 6,
+      type: 'array',
+      of: [{type: 'block'}],
       validation: (Rule) => Rule.required(),
-      description: 'Plain text content',
     }),
   ],
   preview: {
@@ -140,9 +152,22 @@ export const portfolioRowText = defineType({
       text: 'text',
     },
     prepare({text}) {
+      // Extract text from block content
+      const textContent = text
+        ? text
+            .map((block: any) =>
+              block._type === 'block' && block.children
+                ? block.children.map((child: any) => child.text).join('')
+                : '',
+            )
+            .join(' ')
+        : ''
+
       return {
         title: 'Text Block',
-        subtitle: text ? text.substring(0, 60) + (text.length > 60 ? '...' : '') : 'No text',
+        subtitle: textContent
+          ? textContent.substring(0, 60) + (textContent.length > 60 ? '...' : '')
+          : 'No text',
       }
     },
   },
