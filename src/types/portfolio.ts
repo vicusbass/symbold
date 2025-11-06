@@ -1,4 +1,4 @@
-import type { MuxVideo, SanityImage, SanityColor } from './sanity';
+import type { MuxVideo, SanityImage, SanityColor, PortableText } from './sanity';
 
 export interface PortfolioMedia {
   mediaType: 'image' | 'video';
@@ -24,9 +24,8 @@ export interface PortfolioRowFull {
 export interface PortfolioRowWithDescription {
   _type: 'portfolioRowWithDescription';
   _key: string;
-  desktopMedia: PortfolioMedia;
-  mobileMedia: PortfolioMedia;
-  description: string;
+  media: PortfolioMedia;
+  description: PortableText;
   descriptionPosition: 'left' | 'right';
 }
 

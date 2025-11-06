@@ -12,6 +12,7 @@ import type { FeaturedProject } from '../../types/sanity';
 import { allProjectsQuery } from '../../lib/queries/portfolio';
 import BaselineReveal from '../../components/BaselineReveal.astro';
 import RightReveal from '../../components/RightReveal.astro';
+import StyledPortableText from '../../components/StyledPortableText.astro';
 
 export async function getStaticPaths() {
   // Fetch all projects with full details in one query
@@ -132,7 +133,7 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
 
         // portfolioRowWithDescription - Media with description
         if (row._type === 'portfolioRowWithDescription') {
-          const description = row.description?.trim();
+          const description = row.description;
           const isDescriptionLeft = row.descriptionPosition === 'left';
 
           const mediaOrderClasses = isDescriptionLeft ? 'order-2 md:order-2' : 'order-1 md:order-1';
@@ -147,12 +148,14 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
                   <MediaRenderer media={row.media} videoTitle={project.title} />
                 </ScrollReveal>
               </div>
-              {description && (
+              {description && description.length > 0 && (
                 <div
                   class={`w-full text-base leading-relaxed md:w-1/2 md:text-lg ${descriptionOrderClasses}`}
                 >
                   <ScrollReveal>
-                    <p class="md:px-16">{description}</p>
+                    <div class="md:px-16">
+                      <StyledPortableText value={description} />
+                    </div>
                   </ScrollReveal>
                 </div>
               )}
@@ -181,10 +184,12 @@ const teamLines = Array.isArray(project.team) ? project.team : [];
         // portfolioRowText - Text only block
         if (row._type === 'portfolioRowText') {
           return (
-            <article class="mt-4">
+            <article class="mt-40 mb-40">
               <ScrollReveal>
                 <div class="md:flex md:justify-center">
-                  <p class="max-w-3xl text-base leading-relaxed md:text-lg">{row.text}</p>
+                  <div class="max-w-3xl text-base leading-relaxed md:text-lg">
+                    <StyledPortableText value={row.text} />
+                  </div>
                 </div>
               </ScrollReveal>
             </article>

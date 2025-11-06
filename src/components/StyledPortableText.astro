@@ -1,0 +1,61 @@
+---
+import { PortableText } from 'astro-portabletext';
+import type { PortableTextBlock } from '@portabletext/types';
+
+interface Props {
+  value: PortableTextBlock[];
+}
+
+const { value } = Astro.props;
+
+type StyleClasses = {
+  h1: string;
+  h2: string;
+  h3: string;
+  h4: string;
+  normal: string;
+  [key: string]: string;
+};
+
+type MarkClasses = {
+  strong: string;
+  em: string;
+  link: string;
+  [key: string]: string;
+};
+---
+
+<PortableText value={value}>
+  <fragment slot="block">
+    {({ Component, props, children }: { Component: any; props: any; children: any }) => {
+      const style = (props.node?.style as string) || 'normal';
+      const styleClasses: StyleClasses = {
+        h1: 'mb-4 text-3xl font-bold md:text-5xl',
+        h2: 'mb-3 text-2xl font-bold md:text-4xl',
+        h3: 'mb-3 text-xl font-bold md:text-3xl',
+        h4: 'mb-2 text-lg font-bold md:text-2xl',
+        normal: 'mb-4',
+      };
+      return (
+        <Component {...props} class={styleClasses[style] || styleClasses.normal}>
+          {children}
+        </Component>
+      );
+    }}
+  </fragment>
+  <fragment slot="mark">
+    {({ Component, props, children }: { Component: any; props: any; children: any }) => {
+      const markType = (props.node?._type as string) || '';
+      const markClasses: MarkClasses = {
+        strong: 'font-bold',
+        em: 'italic',
+        link: 'underline hover:opacity-70',
+      };
+      return (
+        <Component {...props} class={markClasses[markType] || ''}>
+          {children}
+        </Component>
+      );
+    }}
+  </fragment>
+</PortableText>
