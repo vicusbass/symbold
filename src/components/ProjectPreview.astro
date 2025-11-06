@@ -32,19 +32,17 @@ const alt = project.hero?.image?.alt || project.title || '';
     className,
   ]}
 >
-  {
-    project.title && (
-      <h3 class="mb-2 text-base font-bold md:hidden">{project.title}</h3>
-    )
-  }
-  <div class="relative aspect-[4/3] overflow-hidden rounded-md">
+  {project.title && <h3 class="mb-2 text-base font-bold md:hidden">{project.title}</h3>}
+  <div class="relative overflow-hidden rounded-md">
     {
       imageUrl ? (
-        <Image src={imageUrl} alt={alt} class="h-full w-full object-cover" inferSize />
+        <Image src={imageUrl} alt={alt} class="h-auto w-full" inferSize />
       ) : videoPlaybackId ? (
-        <div class="absolute inset-0">
-          <MuxVideo playbackId={videoPlaybackId} videoTitle={project.title} />
-        </div>
+        <MuxVideo
+          playbackId={videoPlaybackId}
+          videoTitle={project.title}
+          enforceAspectRatio={true}
+        />
       ) : null
     }
     {
