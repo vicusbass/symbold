@@ -11,7 +11,9 @@ import vercel from '@astrojs/vercel';
 dotenv.config({ path: '.env' });
 
 export default defineConfig({
-  site: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://symbold.ro',
+  site: process.env.VERCEL_SITE_URL
+    ? `https://${process.env.VERCEL_SITE_URL}`
+    : 'https://symbold.ro',
 
   vite: {
     plugins: [tailwindcss()],
