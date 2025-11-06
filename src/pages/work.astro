@@ -63,16 +63,33 @@ const projects = portfolioData.map((project) => ({
 
   <div class="edge-padding mt-20 flex flex-row flex-wrap md:mt-30">
     {
-      projects.map((item, index) => (
-        <div
-          class={`mt-4 w-full ${index === 0 || index % 3 === 1 ? 'md:w-full' : 'md:w-[calc(50%-8px)]'} ${index % 3 === 2 ? 'md:mr-4' : ''} `}
-          data-tags={item.tags.join(',')}
-        >
-          <ScrollReveal>
-            <ProjectPreview project={item.project} disableCursor={true} />
-          </ScrollReveal>
-        </div>
-      ))
+      projects.map((item, index) => {
+        let rowNumber = 0;
+        let itemsProcessed = 0;
+        let tempIndex = index;
+
+        while (tempIndex >= 0) {
+          const itemsInRow = rowNumber % 2 === 0 ? 1 : 2;
+          if (tempIndex < itemsInRow) break;
+          tempIndex -= itemsInRow;
+          itemsProcessed += itemsInRow;
+          rowNumber++;
+        }
+
+        const isFullWidthRow = rowNumber % 2 === 0;
+        const isFirstInSplitRow = !isFullWidthRow && index === itemsProcessed;
+
+        return (
+          <div
+            class={`mt-4 w-full ${isFullWidthRow ? 'md:w-full' : 'md:w-[calc(50%-8px)]'} ${isFirstInSplitRow ? 'md:mr-4' : ''} `}
+            data-tags={item.tags.join(',')}
+          >
+            <ScrollReveal>
+              <ProjectPreview project={item.project} disableCursor={true} />
+            </ScrollReveal>
+          </div>
+        );
+      })
     }
   </div>
 
@@ -136,14 +153,30 @@ const projects = portfolioData.map((project) => ({
       );
 
       visibleProjects.forEach((el, index) => {
-        if (index === 0 || index % 3 === 1) {
+        let rowNumber = 0;
+        let itemsProcessed = 0;
+        let tempIndex = index;
+
+        while (tempIndex >= 0) {
+          const itemsInRow = rowNumber % 2 === 0 ? 1 : 2;
+          if (tempIndex < itemsInRow) break;
+          tempIndex -= itemsInRow;
+          itemsProcessed += itemsInRow;
+          rowNumber++;
+        }
+
+        const isFullWidthRow = rowNumber % 2 === 0;
+        const isFirstInSplitRow = !isFullWidthRow && index === itemsProcessed;
+
+        if (isFullWidthRow) {
           el.classList.add('md:w-full');
           el.classList.remove('md:w-[calc(50%-8px)]');
         } else {
           el.classList.add('md:w-[calc(50%-8px)]');
           el.classList.remove('md:w-full');
         }
-        if (index % 3 === 2) {
+
+        if (isFirstInSplitRow) {
           el.classList.add('md:mr-4');
         } else {
           el.classList.remove('md:mr-4');
