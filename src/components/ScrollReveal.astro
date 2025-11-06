@@ -31,9 +31,9 @@ const { delay = 600, class: className = '', delayed = false } = Astro.props;
           const delayed = entry.target.getAttribute('data-delayed') === 'true';
           const extraDelay = delayed && window.innerWidth > 768 ? delay : 0;
           setTimeout(() => {
-            entry.target.classList.add('visible');
+            if (!entry.target.classList.contains('visible')) entry.target.classList.add('visible');
           }, extraDelay);
-          observer.unobserve(entry.target);
+          // observer.unobserve(entry.target);
         }
       });
     }, observerOptions);

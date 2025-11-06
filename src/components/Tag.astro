@@ -35,8 +35,10 @@ const {
   .tag-button {
     background-color: transparent;
   }
-  .tag-button:hover {
-    background-color: var(--hover-color, var(--color-accent));
+  @media (min-width: 768px) {
+    .tag-button:hover {
+      background-color: var(--hover-color, var(--color-accent));
+    }
   }
   .tag-button[data-active='true'] {
     background-color: var(--hover-color, var(--color-accent));
