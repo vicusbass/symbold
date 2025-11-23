@@ -33,10 +33,10 @@ const alt = project.hero?.image?.alt || project.title || '';
   ]}
 >
   {project.title && <h3 class="mb-2 text-base font-bold md:hidden">{project.title}</h3>}
-  <div class="relative overflow-hidden rounded-md">
+  <div class="relative aspect-video overflow-hidden rounded-md">
     {
       imageUrl ? (
-        <Image src={imageUrl} alt={alt} class="h-auto w-full" inferSize />
+        <Image src={imageUrl} alt={alt} class="h-full w-full object-cover" inferSize />
       ) : videoPlaybackId ? (
         <MuxVideo
           playbackId={videoPlaybackId}
