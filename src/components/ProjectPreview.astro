@@ -14,7 +14,7 @@ interface Props {
 const { project, textColor = '#FFFFFF', class: className, disableCursor = false } = Astro.props;
 
 const imageUrl =
-  project.hero?.mediaType === 'image' && project.hero.image
+  project.hero?.mediaType === 'image' && project.hero.image?.asset?._ref
     ? urlFor(project.hero.image)?.url()
     : null;
 const videoPlaybackId =

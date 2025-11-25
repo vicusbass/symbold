@@ -21,13 +21,22 @@ const { desktopMedia, mobileMedia, videoTitle = '', class: className } = Astro.p
 ---
 
 <!-- Mobile Media -->{
-  mobileMedia.mediaType === 'image' && mobileMedia.image ? (
-    <Image
-      src={urlFor(mobileMedia.image)?.url() || ''}
-      alt={mobileMedia.image.alt || ''}
-      class:list={['h-auto w-full overflow-hidden rounded-md md:hidden', className]}
-      inferSize
-    />
+  mobileMedia.mediaType === 'image' && mobileMedia.image?.asset?._ref ? (
+    (() => {
+      try {
+        const imageUrl = urlFor(mobileMedia.image)?.url();
+        return imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={mobileMedia.image.alt || ''}
+            class:list={['h-auto w-full overflow-hidden rounded-md md:hidden', className]}
+            inferSize
+          />
+        ) : null;
+      } catch {
+        return null;
+      }
+    })()
   ) : mobileMedia.mediaType === 'video' && mobileMedia.video?.asset?.playbackId ? (
     <div class="overflow-hidden rounded-md md:hidden">
       <MuxVideo
@@ -41,13 +50,22 @@ const { desktopMedia, mobileMedia, videoTitle = '', class: className } = Astro.p
 
 <!-- Desktop Media -->
 {
-  desktopMedia.mediaType === 'image' && desktopMedia.image ? (
-    <Image
-      src={(!!desktopMedia.image && urlFor(desktopMedia.image)?.url()) || ''}
-      alt={desktopMedia.image.alt || ''}
-      class:list={['hidden h-auto w-full overflow-hidden rounded-md md:block', className]}
-      inferSize
-    />
+  desktopMedia.mediaType === 'image' && desktopMedia.image?.asset?._ref ? (
+    (() => {
+      try {
+        const imageUrl = urlFor(desktopMedia.image)?.url();
+        return imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={desktopMedia.image.alt || ''}
+            class:list={['hidden h-auto w-full overflow-hidden rounded-md md:block', className]}
+            inferSize
+          />
+        ) : null;
+      } catch {
+        return null;
+      }
+    })()
   ) : desktopMedia.mediaType === 'video' && desktopMedia.video?.asset?.playbackId ? (
     <div class="hidden overflow-hidden rounded-md md:block">
       <MuxVideo playbackId={desktopMedia.video.asset.playbackId} videoTitle={videoTitle} />

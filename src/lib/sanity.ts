@@ -23,6 +23,13 @@ if (projectId && dataset) {
   );
 }
 
-export function urlFor(source: SanityImageSource) {
-  return builder?.image(source);
+export function urlFor(source: SanityImageSource | null | undefined) {
+  if (!source || !builder) {
+    return null;
+  }
+  try {
+    return builder.image(source);
+  } catch {
+    return null;
+  }
 }

@@ -21,13 +21,18 @@ const { media, videoTitle = '', class: className, mobileAspectRatio = false } = 
 ---
 
 {
-  media.mediaType === 'image' && media.image ? (
-    <Image
-      src={urlFor(media.image)?.url() || ''}
-      alt={media.image.alt || ''}
-      class:list={['h-auto w-full rounded-md', className]}
-      inferSize
-    />
+  media.mediaType === 'image' && media.image?.asset?._ref ? (
+    (() => {
+      const imageUrl = urlFor(media.image)?.url();
+      return imageUrl ? (
+        <Image
+          src={imageUrl}
+          alt={media.image.alt || ''}
+          class:list={['h-auto w-full rounded-md', className]}
+          inferSize
+        />
+      ) : null;
+    })()
   ) : media.mediaType === 'video' && media.video?.asset?.playbackId ? (
     <div class:list={['overflow-hidden rounded-md', className]}>
       <MuxVideo
