@@ -8,11 +8,11 @@ import lottie from 'astro-integration-lottie';
 import dotenv from 'dotenv';
 import sanity from '@sanity/astro';
 import vercel from '@astrojs/vercel';
+import sitemap from '@astrojs/sitemap';
 dotenv.config({ path: '.env' });
 
 export default defineConfig({
-  // TODO change with the final domain before production
-  site: 'https://symbold.vercel.app',
+  site: 'https://symbold.ro',
 
   vite: {
     plugins: [tailwindcss()],
@@ -33,6 +33,7 @@ export default defineConfig({
       dataset: 'production',
       useCdn: false, // for static builds
     }),
+    sitemap(),
   ],
 
   adapter: vercel(),
