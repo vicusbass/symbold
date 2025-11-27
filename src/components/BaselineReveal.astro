@@ -29,10 +29,27 @@ const { class: className = '', delayed = false } = Astro.props;
 </style>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
-    document.querySelectorAll('[data-baseline-animation]').forEach((el) => {
-      const delayed = el.getAttribute('data-delayed') === 'true';
-      setTimeout(() => el.classList.add('visible'), delayed ? 300 : 0);
+  function initBaselineAnimations() {
+    // Use requestAnimationFrame to ensure browser has painted initial state
+    requestAnimationFrame(() => {
+      document.querySelectorAll('[data-baseline-animation]').forEach((el) => {
+        // Skip if already visible
+        if (el.classList.contains('visible')) return;
+
+        const delayed = el.getAttribute('data-delayed') === 'true';
+        setTimeout(() => el.classList.add('visible'), delayed ? 300 : 0);
+      });
     });
-  });
+  }
+
+  // Run immediately if DOM is ready (for initial page load)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBaselineAnimations);
+  } else {
+    // DOM is already ready, run immediately
+    initBaselineAnimations();
+  }
+
+  // Also listen for Astro page loads (for client-side navigation)
+  document.addEventListener('astro:page-load', initBaselineAnimations);
 </script>
