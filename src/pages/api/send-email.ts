@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const { data, error } = await resend.emails.send({
-      from: 'request@symbold.ro',
+      from: `${firstName} ${lastName} <request@symbold.ro>`,
       to: 'office@symbold.ro',
       replyTo: email,
       subject: `New contact message from ${firstName} ${lastName} - ${subject}`,
