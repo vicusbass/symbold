@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { ClientRouter } from 'astro:transitions';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -128,5 +129,6 @@ const siteName = 'Symbold';
     </main>
     <Footer transition:persist />
     <SpeedInsights />
+    <Analytics />
   </body>
 </html>
