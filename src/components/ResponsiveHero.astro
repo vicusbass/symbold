@@ -43,6 +43,7 @@ const { desktopMedia, mobileMedia, videoTitle = '', class: className } = Astro.p
         playbackId={mobileMedia.video.asset.playbackId}
         videoTitle={videoTitle}
         mobileAspectRatio
+        enforceAspectRatio={true}
       />
     </div>
   ) : null
@@ -68,7 +69,11 @@ const { desktopMedia, mobileMedia, videoTitle = '', class: className } = Astro.p
     })()
   ) : desktopMedia.mediaType === 'video' && desktopMedia.video?.asset?.playbackId ? (
     <div class="hidden overflow-hidden rounded-md md:block">
-      <MuxVideo playbackId={desktopMedia.video.asset.playbackId} videoTitle={videoTitle} />
+      <MuxVideo
+        playbackId={desktopMedia.video.asset.playbackId}
+        videoTitle={videoTitle}
+        enforceAspectRatio={true}
+      />
     </div>
   ) : null
 }
