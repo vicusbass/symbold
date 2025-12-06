@@ -25,8 +25,9 @@ const { playbackId, videoTitle, mobileAspectRatio = false, class: className, enf
       width: '100%',
       height: enforceAspectRatio ? '100%' : 'auto',
       objectFit: enforceAspectRatio ? 'cover' : 'contain',
+      borderRadius: '0.375rem',
     }}
-    class={enforceAspectRatio ? 'w-full h-full' : 'h-auto w-full'}
+    class={enforceAspectRatio ? 'w-full h-full rounded-md' : 'h-auto w-full rounded-md'}
     autoplay={true}
     muted={true}
     loop={true}

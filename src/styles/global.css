@@ -33,6 +33,15 @@
   mux-player::part(cast) {
     display: none;
   }
+
+  mux-player {
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+
+  mux-player video {
+    border-radius: 0.375rem;
+  }
 }
 
 @layer components {
