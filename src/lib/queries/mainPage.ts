@@ -9,7 +9,8 @@ export const mainPageQuery = `*[_type == "mainPage"][0]{
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     },
     mobileMediaType,

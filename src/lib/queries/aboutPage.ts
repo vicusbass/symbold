@@ -9,7 +9,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0]{
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },
@@ -21,7 +22,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0]{
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },
@@ -33,7 +35,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0]{
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },
@@ -45,7 +48,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0]{
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },
@@ -57,7 +61,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0]{
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },
@@ -69,7 +74,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0]{
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   }

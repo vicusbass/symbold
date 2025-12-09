@@ -21,6 +21,7 @@ const videoPlaybackId =
   project.hero?.mediaType === 'video' && project.hero.video?.asset?.playbackId
     ? project.hero.video.asset.playbackId
     : null;
+const videoAspectRatio = project.hero?.video?.asset?.aspectRatio;
 const alt = project.hero?.image?.alt || project.title || '';
 ---
 
@@ -41,7 +42,7 @@ const alt = project.hero?.image?.alt || project.title || '';
         <MuxVideo
           playbackId={videoPlaybackId}
           videoTitle={project.title}
-          enforceAspectRatio={true}
+          aspectRatio={videoAspectRatio}
         />
       ) : null
     }

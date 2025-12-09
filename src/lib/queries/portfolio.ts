@@ -10,7 +10,8 @@ export const allProjectsQuery = `*[_type == "workPage" && _id == "workPage"][0].
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },
@@ -30,12 +31,12 @@ export const allProjectsQuery = `*[_type == "workPage" && _id == "workPage"][0].
     _key,
 
     _type == "portfolioRowFull" => {
-      desktopMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } },
-      mobileMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } }
+      desktopMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId, "aspectRatio": data.aspect_ratio } } },
+      mobileMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId, "aspectRatio": data.aspect_ratio } } }
     },
 
     _type == "portfolioRowWithDescription" => {
-      media{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } },
+      media{ mediaType, image{ asset, alt }, video{ asset->{ playbackId, "aspectRatio": data.aspect_ratio } } },
       description[]{
         ...,
         markDefs[]{
@@ -50,8 +51,8 @@ export const allProjectsQuery = `*[_type == "workPage" && _id == "workPage"][0].
     },
 
     _type == "portfolioRowSplit" => {
-      leftMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } },
-      rightMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId } } }
+      leftMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId, "aspectRatio": data.aspect_ratio } } },
+      rightMedia{ mediaType, image{ asset, alt }, video{ asset->{ playbackId, "aspectRatio": data.aspect_ratio } } }
     },
 
     _type == "portfolioRowText" => {
@@ -74,7 +75,8 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },
@@ -102,7 +104,8 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
         },
         video{
           asset->{
-            playbackId
+            playbackId,
+            "aspectRatio": data.aspect_ratio
           }
         }
       },
@@ -114,7 +117,8 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
         },
         video{
           asset->{
-            playbackId
+            playbackId,
+            "aspectRatio": data.aspect_ratio
           }
         }
       }
@@ -130,7 +134,8 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
         },
         video{
           asset->{
-            playbackId
+            playbackId,
+            "aspectRatio": data.aspect_ratio
           }
         }
       },
@@ -157,7 +162,8 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
         },
         video{
           asset->{
-            playbackId
+            playbackId,
+            "aspectRatio": data.aspect_ratio
           }
         }
       },
@@ -169,7 +175,8 @@ export const portfolioQuery = `*[_type == "portfolio" && slug.current == $slug][
         },
         video{
           asset->{
-            playbackId
+            playbackId,
+            "aspectRatio": data.aspect_ratio
           }
         }
       }
@@ -196,7 +203,8 @@ export const portfolioListQuery = `*[_type == "workPage" && _id == "workPage"][0
     },
     video{
       asset->{
-        playbackId
+        playbackId,
+        "aspectRatio": data.aspect_ratio
       }
     }
   },

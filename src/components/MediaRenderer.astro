@@ -14,10 +14,9 @@ interface Props {
   media: MediaContent;
   videoTitle?: string;
   class?: string;
-  mobileAspectRatio?: boolean;
 }
 
-const { media, videoTitle = '', class: className, mobileAspectRatio = false } = Astro.props;
+const { media, videoTitle = '', class: className } = Astro.props;
 ---
 
 {
@@ -38,7 +37,7 @@ const { media, videoTitle = '', class: className, mobileAspectRatio = false } = 
       <MuxVideo
         playbackId={media.video.asset.playbackId}
         videoTitle={videoTitle}
-        mobileAspectRatio={mobileAspectRatio}
+        aspectRatio={media.video.asset.aspectRatio}
       />
     </div>
   ) : null
