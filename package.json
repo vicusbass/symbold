@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",
-    "@astrojs/vercel": "^9.0.1",
+    "@astrojs/vercel": "^9.0.2",
     "@mux/mux-player-astro": "^3.6.1",
     "@portabletext/types": "^2.0.15",
     "@sanity/astro": "^3.2.10",
@@ -21,7 +21,7 @@
     "@tailwindcss/vite": "^4.1.14",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "astro": "^5.16.0",
+    "astro": "^5.16.6",
     "astro-integration-lottie": "^0.3.2",
     "astro-portabletext": "^0.11.3",
     "dotenv": "^17.2.2",
