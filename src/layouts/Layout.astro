@@ -19,7 +19,7 @@ const {
   title = 'Symbold - Brutally Honest Branding Agency | Strategic Brand Design',
   description = 'We create conceptual, ambitious, and profound brand identities. Strategic branding, graphic design, web design, and digital experiences for visionary businesses in Romania and beyond.',
   image = '/OG.jpg',
-  keywords = 'branding agency, brand identity, graphic design, web design, logo design, strategic branding, Romania branding, Cluj design agency, Bucharest design agency, brand strategy, visual identity',
+  keywords = 'Symbold, Symbold branding agency, Symbold studio, branding agency, brand identity, graphic design, web design, logo design, strategic branding, Romania branding, Cluj design agency, Bucharest design agency, brand strategy, visual identity',
   type = 'website',
   author = 'Symbold',
 } = Astro.props;
@@ -98,25 +98,82 @@ const sanitizedDescription = description.trim().replace(/\s+/g, ' ');
       is:inline
       set:html={JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'Organization',
-        name: 'Symbold',
-        description: 'Brutally honest branding agency creating strategic brand identities',
-        url: Astro.site,
-        logo: new URL('/32.svg', Astro.site),
-        sameAs: [
-          'https://www.facebook.com/symboldstudio/',
-          'https://www.linkedin.com/company/symboldstudio/',
-          'https://www.instagram.com/symboldbrands/',
+        '@graph': [
+          {
+            '@type': ['Organization', 'Brand'],
+            '@id': 'https://symbold.ro/#organization',
+            name: 'Symbold',
+            alternateName: ['Symbold Studio', 'Symbold Branding Agency', 'Symbold Brands'],
+            legalName: 'Symbold',
+            description: 'Brutally honest branding agency creating strategic brand identities',
+            url: 'https://symbold.ro',
+            logo: 'https://symbold.ro/32.svg',
+            foundingDate: '2021',
+            sameAs: [
+              'https://www.facebook.com/symboldstudio/',
+              'https://www.linkedin.com/company/symboldstudio/',
+              'https://www.instagram.com/symboldbrands/',
+            ],
+            knowsAbout: [
+              'Brand Identity Design',
+              'Graphic Design',
+              'Web Design',
+              'Logo Design',
+              'Strategic Branding',
+              'Visual Identity',
+              'Brand Strategy',
+            ],
+            areaServed: [
+              {
+                '@type': 'Country',
+                name: 'Romania',
+              },
+              {
+                '@type': 'Place',
+                name: 'Worldwide',
+              },
+            ],
+            contactPoint: {
+              '@type': 'ContactPoint',
+              contactType: 'Customer Service',
+              availableLanguage: ['English', 'Romanian'],
+            },
+          },
+          {
+            '@type': 'WebSite',
+            '@id': 'https://symbold.ro/#website',
+            name: 'Symbold',
+            alternateName: 'Symbold Branding Agency',
+            url: 'https://symbold.ro',
+            publisher: {
+              '@id': 'https://symbold.ro/#organization',
+            },
+          },
+          {
+            '@type': 'ProfessionalService',
+            '@id': 'https://symbold.ro/#localbusiness',
+            name: 'Symbold',
+            alternateName: 'Symbold Branding Agency',
+            description: 'Brutally honest branding agency specializing in strategic brand identities',
+            url: 'https://symbold.ro',
+            image: 'https://symbold.ro/OG.jpg',
+            priceRange: '$$',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Cluj-Napoca',
+              addressRegion: 'Cluj',
+              addressCountry: 'RO',
+            },
+            geo: {
+              '@type': 'GeoCoordinates',
+              latitude: 46.7712,
+              longitude: 23.6236,
+            },
+            parentOrganization: {
+              '@id': 'https://symbold.ro/#organization',
+            },
+          },
         ],
-        contactPoint: {
-          '@type': 'ContactPoint',
-          contactType: 'Customer Service',
-          availableLanguage: ['English', 'Romanian'],
-        },
-        address: {
-          '@type': 'PostalAddress',
-          addressCountry: 'RO',
-        },
       })}
     />
 
