@@ -12,12 +12,17 @@ const { playbackId, videoTitle, aspectRatio = '16:9', class: className } = Astro
 
 // Convert Mux aspect ratio format (e.g., "16:9", "1:1") to CSS format (e.g., "16/9", "1/1")
 const cssAspectRatio = aspectRatio.replace(':', '/');
+
+// Generate optimized poster URL with smaller dimensions for better Lighthouse scores
+// Using webp format and 480px width for a good balance of quality and file size
+const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.webp?width=1920&fit_mode=preserve`;
 ---
 
 <div class:list={['w-full overflow-hidden', className]} style={{ aspectRatio: cssAspectRatio }}>
   <MuxPlayer
     disableCookies={true}
     playbackId={playbackId}
+    poster={posterUrl}
     metadata={{
       video_title: videoTitle,
     }}
