@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import MuxVideo from './MuxVideo.astro';
 import { urlFor } from '../lib/sanity';
 import type { FeaturedProject } from '../types/sanity';
@@ -9,13 +8,20 @@ interface Props {
   textColor?: string;
   class?: string;
   disableCursor?: boolean;
+  imageWidth?: number;
 }
 
-const { project, textColor = '#FFFFFF', class: className, disableCursor = false } = Astro.props;
+const {
+  project,
+  textColor = '#FFFFFF',
+  class: className,
+  disableCursor = false,
+  imageWidth = 960,
+} = Astro.props;
 
 const imageUrl =
   project.hero?.mediaType === 'image' && project.hero.image?.asset?._ref
-    ? urlFor(project.hero.image)?.url()
+    ? urlFor(project.hero.image)?.auto('format').quality(75).width(imageWidth).url()
     : null;
 const videoPlaybackId =
   project.hero?.mediaType === 'video' && project.hero.video?.asset?.playbackId
@@ -37,7 +43,7 @@ const alt = project.hero?.image?.alt || project.title || '';
   <div class="relative aspect-video overflow-hidden rounded-md">
     {
       imageUrl ? (
-        <Image src={imageUrl} alt={alt} class="h-full w-full object-cover" inferSize />
+        <img src={imageUrl} alt={alt} class="h-full w-full object-cover" loading="lazy" decoding="async" />
       ) : videoPlaybackId ? (
         <MuxVideo
           playbackId={videoPlaybackId}

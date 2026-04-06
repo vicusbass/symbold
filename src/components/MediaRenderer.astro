@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import MuxVideo from './MuxVideo.astro';
 import { urlFor } from '../lib/sanity';
 import type { SanityImage, MuxVideo as MuxVideoType } from '../types/sanity';
@@ -17,21 +16,22 @@ interface Props {
 }
 
 const { media, videoTitle = '', class: className } = Astro.props;
+
+const imageUrl =
+  media.mediaType === 'image' && media.image?.asset?._ref
+    ? urlFor(media.image)?.auto('format').quality(75).width(1920).url()
+    : null;
 ---
 
 {
-  media.mediaType === 'image' && media.image?.asset?._ref ? (
-    (() => {
-      const imageUrl = urlFor(media.image)?.url();
-      return imageUrl ? (
-        <Image
-          src={imageUrl}
-          alt={media.image.alt || ''}
-          class:list={['h-auto w-full rounded-md', className]}
-          inferSize
-        />
-      ) : null;
-    })()
+  imageUrl ? (
+    <img
+      src={imageUrl}
+      alt={media.image?.alt || ''}
+      class:list={['h-auto w-full rounded-md', className]}
+      loading="lazy"
+      decoding="async"
+    />
   ) : media.mediaType === 'video' && media.video?.asset?.playbackId ? (
     <div class:list={['overflow-hidden rounded-md', className]}>
       <MuxVideo
