@@ -24,6 +24,11 @@
     "sanity-plugin-mux-input": "^2.17.0",
     "styled-components": "^6.1.18"
   },
+  "overrides": {
+    "@sanity/cli-core": {
+      "jsdom": "26.1.0"
+    }
+  },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^5.0.2",
     "@types/react": "^19.1",
