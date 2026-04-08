@@ -13,19 +13,21 @@ interface Props {
   keywords?: string;
   type?: 'website';
   author?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
-  title = 'Symbold - Brutally Honest Branding Agency | Strategic Brand Design',
-  description = 'We create conceptual, ambitious, and profound brand identities. Strategic branding, graphic design, web design, and digital experiences for visionary businesses in Romania and beyond.',
+  title = 'Symbold | Brutally Honest Branding & Web Design Agency',
+  description = 'Symbold is a branding and web design agency in Cluj, Romania. We create bold, strategic brand identities for visionary businesses. Agenție de branding și web design.',
   image = '/OG.jpg',
-  keywords = 'Symbold, Symbold branding agency, Symbold studio, branding agency, brand identity, graphic design, web design, logo design, strategic branding, Romania branding, Cluj design agency, Bucharest design agency, brand strategy, visual identity',
+  keywords = 'Symbold, Symbold branding agency, Symbold studio, branding agency, brand identity, graphic design, web design, logo design, strategic branding, Romania branding, Cluj design agency, Bucharest design agency, brand strategy, visual identity, agenție de branding, identitate vizuală, design grafic, web design, design logo, strategie de brand',
   type = 'website',
   author = 'Symbold',
+  schema,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL(image, Astro.site);
+const ogImageURL = image.startsWith('http') ? image : new URL(image, Astro.site);
 const siteName = 'Symbold';
 
 // Sanitize description for LinkedIn (remove extra whitespace, ensure proper encoding)
@@ -176,6 +178,18 @@ const sanitizedDescription = description.trim().replace(/\s+/g, ' ');
         ],
       })}
     />
+
+    {schema && (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(
+          Array.isArray(schema)
+            ? { '@context': 'https://schema.org', '@graph': schema }
+            : { '@context': 'https://schema.org', ...schema }
+        )}
+      />
+    )}
 
     <ClientRouter />
   </head>
