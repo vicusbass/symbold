@@ -31,7 +31,17 @@ const serviceTags = [
 const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb', '#e33424'];
 ---
 
-<Layout title="Symbold | About">
+<Layout
+  title="About Symbold | Branding & Web Design Studio"
+  description="We design bold visual identity systems — brand strategy, web design, and graphic design for ambitious companies. Studio de branding și design grafic din Cluj."
+  schema={{
+    '@type': 'AboutPage',
+    name: 'About Symbold',
+    description: 'We design bold visual identity systems — brand strategy, web design, and graphic design for ambitious companies.',
+    url: 'https://symbold.ro/about',
+    publisher: { '@id': 'https://symbold.ro/#organization' },
+  }}
+>
   <section id="headers" class="content-padding">
     <BaselineReveal>
       <h1 class="page-title">
