@@ -33,7 +33,22 @@ const projects = portfolioData.map((project) => ({
 }));
 ---
 
-<Layout title="Symbold | Work">
+<Layout
+  title="Portfolio | Branding & Web Design Projects | Symbold"
+  description="Explore our branding and web design portfolio — bold brand identities, packaging, and digital experiences. Proiecte de branding și identitate vizuală."
+  schema={{
+    '@type': 'CollectionPage',
+    name: 'Portfolio',
+    description: 'Branding and web design portfolio — bold brand identities, packaging, and digital experiences.',
+    url: 'https://symbold.ro/work',
+    publisher: { '@id': 'https://symbold.ro/#organization' },
+    hasPart: projects.map((item) => ({
+      '@type': 'CreativeWork',
+      name: item.project.title,
+      url: `https://symbold.ro/work/${item.project.slug}`,
+    })),
+  }}
+>
   <section id="headers" class="content-padding">
     <BaselineReveal>
       <h1 class="page-title">
