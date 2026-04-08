@@ -13,6 +13,9 @@ import { allProjectsQuery } from '../../lib/queries/portfolio';
 import BaselineReveal from '../../components/BaselineReveal.astro';
 import RightReveal from '../../components/RightReveal.astro';
 import StyledPortableText from '../../components/StyledPortableText.astro';
+import { extractPlainText } from '../../lib/seo';
+import { urlFor } from '../../lib/sanity';
+import type { PortableTextBlock } from '../../types/sanity';
 
 export async function getStaticPaths() {
   // Fetch all projects with full details in one query
@@ -61,9 +64,34 @@ const heroLabelledTags =
   })) || [];
 
 const teamLines = Array.isArray(project.team) ? project.team : [];
+
+const seoDescription = extractPlainText(
+  Array.isArray(project.description) ? (project.description as PortableTextBlock[]) : undefined,
+);
+
+const heroImageUrl =
+  project.hero?.mediaType === 'image' && project.hero.image?.asset
+    ? urlFor(project.hero.image)?.width(1200).height(630).fit('crop').auto('format').url()
+    : null;
+
+const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
 ---
 
-<Layout title={`Symbold | ${project.title}`}>
+<Layout
+  title={`${project.title} | Brand Identity by Symbold`}
+  description={seoDescription}
+  image={heroImageUrl || '/OG.jpg'}
+  schema={{
+    '@type': 'CreativeWork',
+    name: project.title,
+    description: seoDescription,
+    url: `https://symbold.ro/work/${project.slug.current}`,
+    image: heroImageUrl || 'https://symbold.ro/OG.jpg',
+    keywords: projectKeywords,
+    author: { '@id': 'https://symbold.ro/#organization' },
+    ...(project.publishedAt && { datePublished: project.publishedAt }),
+  }}
+>
   <section class="content-padding">
     <div class="flex flex-col md:flex-row">
       <div class="md:w-3/4 md:pr-[10vw]">
