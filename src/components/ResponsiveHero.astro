@@ -30,14 +30,14 @@ let desktopImageUrl: string | null = null;
 
 if (mobileIsImage) {
   try {
-    mobileImageUrl = urlFor(mobileMedia.image)?.auto('format').quality(75).width(768).url() ?? null;
+    mobileImageUrl = urlFor(mobileMedia.image)?.auto('format').quality(90).width(1024).url() ?? null;
   } catch {}
 }
 
 if (desktopIsImage) {
   try {
     desktopImageUrl =
-      urlFor(desktopMedia.image)?.auto('format').quality(75).width(1920).url() ?? null;
+      urlFor(desktopMedia.image)?.auto('format').quality(90).width(2560).url() ?? null;
   } catch {}
 }
 

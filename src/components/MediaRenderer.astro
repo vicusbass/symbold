@@ -19,7 +19,7 @@ const { media, videoTitle = '', class: className } = Astro.props;
 
 const imageUrl =
   media.mediaType === 'image' && media.image?.asset?._ref
-    ? urlFor(media.image)?.auto('format').quality(75).width(1920).url()
+    ? urlFor(media.image)?.auto('format').quality(90).width(2560).url()
     : null;
 ---
 
