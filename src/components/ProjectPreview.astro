@@ -8,7 +8,6 @@ interface Props {
   textColor?: string;
   class?: string;
   disableCursor?: boolean;
-  imageWidth?: number;
 }
 
 const {
@@ -16,12 +15,11 @@ const {
   textColor = '#FFFFFF',
   class: className,
   disableCursor = false,
-  imageWidth = 960,
 } = Astro.props;
 
 const imageUrl =
   project.hero?.mediaType === 'image' && project.hero.image?.asset?._ref
-    ? urlFor(project.hero.image)?.auto('format').quality(75).width(imageWidth).url()
+    ? urlFor(project.hero.image)?.auto('format').quality(90).width(1920).url()
     : null;
 const videoPlaybackId =
   project.hero?.mediaType === 'video' && project.hero.video?.asset?.playbackId
