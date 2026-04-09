@@ -92,7 +92,7 @@ const alt = desktopAlt || mobileAlt;
 {/* Mobile video */}
 {
   mobileIsVideo ? (
-    <div class:list={['overflow-hidden rounded-md', !desktopIsVideo && 'md:hidden']}>
+    <div class:list={['overflow-hidden rounded-md', (desktopIsVideo || desktopImageUrl) && 'md:hidden']}>
       <MuxVideo
         playbackId={mobileMedia.video!.asset!.playbackId!}
         videoTitle={videoTitle}
@@ -105,7 +105,7 @@ const alt = desktopAlt || mobileAlt;
 {/* Desktop video */}
 {
   desktopIsVideo ? (
-    <div class:list={['overflow-hidden rounded-md', !mobileIsVideo && 'hidden md:block']}>
+    <div class:list={['overflow-hidden rounded-md', (mobileIsVideo || mobileImageUrl) && 'hidden md:block']}>
       <MuxVideo
         playbackId={desktopMedia.video!.asset!.playbackId!}
         videoTitle={videoTitle}
