@@ -20,10 +20,6 @@ export default defineConfig({
     domains: ['cdn.sanity.io'],
   },
 
-  experimental: {
-    svgo: true,
-  },
-
   integrations: [
     lottie(),
     sanity({
