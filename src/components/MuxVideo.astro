@@ -13,7 +13,7 @@ const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.webp?width=1920
 
 <div
   class:list={['w-full overflow-hidden', className]}
-  style={`aspect-ratio: ${cssAspectRatio}; background-image: url('${posterUrl}'); background-size: cover; background-position: center;`}
+  style={`aspect-ratio: ${cssAspectRatio}; background-color: #111; background-image: url('${posterUrl}'); background-size: cover; background-position: center;`}
 >
   <mux-video
     playback-id={playbackId}
@@ -31,8 +31,6 @@ const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.webp?width=1920
 </div>
 
 <script>
-  import '@mux/mux-video';
-
   function initMuxVideos() {
     document.querySelectorAll<HTMLMediaElement>('[data-mux-video]').forEach((player) => {
       if (player.dataset.muxVideoInit) return;
@@ -48,6 +46,10 @@ const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.webp?width=1920
 
   initMuxVideos();
   document.addEventListener('astro:page-load', initMuxVideos);
+
+  // Load mux-video asynchronously so it doesn't block the main JS bundle.
+  // The custom element upgrade fires 'playing' on any already-attached listeners.
+  import('@mux/mux-video').then(() => initMuxVideos());
 </script>
 
 <style>
