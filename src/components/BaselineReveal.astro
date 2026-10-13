@@ -57,5 +57,7 @@ const { class: className = '', delayed = false } = Astro.props;
   }
 
   // Also listen for Astro page loads (for client-side navigation)
-  document.addEventListener('astro:page-load', () => afterViewTransition().then(initBaselineAnimations));
+  document.addEventListener('astro:page-load', () =>
+    afterViewTransition().then(initBaselineAnimations)
+  );
 </script>
