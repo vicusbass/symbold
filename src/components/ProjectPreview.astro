@@ -10,12 +10,7 @@ interface Props {
   disableCursor?: boolean;
 }
 
-const {
-  project,
-  textColor = '#FFFFFF',
-  class: className,
-  disableCursor = false,
-} = Astro.props;
+const { project, textColor = '#FFFFFF', class: className, disableCursor = false } = Astro.props;
 
 const imageUrl =
   project.hero?.mediaType === 'image' && project.hero.image?.asset?._ref
@@ -39,32 +34,34 @@ const alt = project.hero?.image?.alt || project.title || '';
 >
   {project.title && <h3 class="mb-2 text-base font-bold md:hidden">{project.title}</h3>}
   <div class="relative aspect-video overflow-hidden rounded-md">
-    {
-      imageUrl ? (
-        <img src={imageUrl} alt={alt} class="h-full w-full object-cover" loading="lazy" decoding="async" />
-      ) : videoPlaybackId ? (
-        <MuxVideo
-          playbackId={videoPlaybackId}
-          videoTitle={project.title}
-          aspectRatio={videoAspectRatio}
-          class="pointer-events-none"
-        />
-      ) : null
-    }
-    {
-      project.title && (
-        <div class="absolute inset-0 hidden items-start justify-start rounded-md p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:flex md:bg-black/20">
-          <p
-            class="max-w-[50%] text-xl font-bold"
-            style={{
-              color: textColor,
-            }}
-          >
-            {project.title}
-          </p>
-        </div>
-      )
-    }
+    {imageUrl ? (
+      <img
+        src={imageUrl}
+        alt={alt}
+        class="h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : videoPlaybackId ? (
+      <MuxVideo
+        playbackId={videoPlaybackId}
+        videoTitle={project.title}
+        aspectRatio={videoAspectRatio}
+        class="pointer-events-none"
+      />
+    ) : null}
+    {project.title && (
+      <div class="absolute inset-0 hidden items-start justify-start rounded-md p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:flex md:bg-black/20">
+        <p
+          class="max-w-[50%] text-xl font-bold"
+          style={{
+            color: textColor,
+          }}
+        >
+          {project.title}
+        </p>
+      </div>
+    )}
   </div>
   <slot />
 </a>

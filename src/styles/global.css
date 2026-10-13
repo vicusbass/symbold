@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
 @theme {
   --font-sans: 'area-normal', sans-serif;
@@ -69,7 +69,7 @@
 
   /* Target the media-controller inside mux-player */
   mux-player media-controller,
-  mux-player [part="container"] {
+  mux-player [part='container'] {
     background: transparent !important;
     border: none !important;
     outline: none !important;

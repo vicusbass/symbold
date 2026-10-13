@@ -19,13 +19,11 @@ const menuItems = [
   </div>
   <!-- Desktop Navigation -->
   <nav class="hidden items-center gap-6 md:flex">
-    {
-      menuItems.map((item) => (
-        <a href={item.href} class="nav-link text-base font-medium uppercase" data-href={item.href}>
-          {item.name}
-        </a>
-      ))
-    }
+    {menuItems.map((item) => (
+      <a href={item.href} class="nav-link text-base font-medium uppercase" data-href={item.href}>
+        {item.name}
+      </a>
+    ))}
   </nav>
 
   <!-- Mobile Hamburger -->
@@ -106,17 +104,15 @@ const menuItems = [
 
 <!-- Mobile Menu -->
 <nav id="mobile-menu" class="fixed inset-0 z-50 flex hidden flex-col justify-end bg-white p-8">
-  {
-    menuItems.map((item) => (
-      <a
-        href={item.href}
-        data-mi={item.href}
-        class="block overflow-hidden pb-4 text-6xl leading-12 font-[1000]"
-      >
-        {item.name}
-      </a>
-    ))
-  }
+  {menuItems.map((item) => (
+    <a
+      href={item.href}
+      data-mi={item.href}
+      class="block overflow-hidden pb-4 text-6xl leading-12 font-[1000]"
+    >
+      {item.name}
+    </a>
+  ))}
 </nav>
 
 <script>

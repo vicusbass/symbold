@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity';
+import {defineField, defineType} from 'sanity'
 
 export const tag = defineType({
   name: 'tag',
@@ -44,7 +44,7 @@ export const tag = defineType({
       return {
         title: title,
         subtitle: `Order: ${order}`,
-      };
+      }
     },
   },
   orderings: [
@@ -54,4 +54,4 @@ export const tag = defineType({
       by: [{field: 'order', direction: 'asc'}],
     },
   ],
-});
+})

@@ -23,22 +23,20 @@ const imageUrl =
     : null;
 ---
 
-{
-  imageUrl ? (
-    <img
-      src={imageUrl}
-      alt={media.image?.alt || ''}
-      class:list={['h-auto w-full rounded-md', className]}
-      loading="lazy"
-      decoding="async"
+{imageUrl ? (
+  <img
+    src={imageUrl}
+    alt={media.image?.alt || ''}
+    class:list={['h-auto w-full rounded-md', className]}
+    loading="lazy"
+    decoding="async"
+  />
+) : media.mediaType === 'video' && media.video?.asset?.playbackId ? (
+  <div class:list={['overflow-hidden rounded-md', className]}>
+    <MuxVideo
+      playbackId={media.video.asset.playbackId}
+      videoTitle={videoTitle}
+      aspectRatio={media.video.asset.aspectRatio}
     />
-  ) : media.mediaType === 'video' && media.video?.asset?.playbackId ? (
-    <div class:list={['overflow-hidden rounded-md', className]}>
-      <MuxVideo
-        playbackId={media.video.asset.playbackId}
-        videoTitle={videoTitle}
-        aspectRatio={media.video.asset.aspectRatio}
-      />
-    </div>
-  ) : null
-}
+  </div>
+) : null}

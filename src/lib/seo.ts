@@ -6,7 +6,7 @@ import type { PortableTextBlock } from '../types/sanity';
  */
 export function extractPlainText(
   blocks: PortableTextBlock[] | undefined,
-  maxLength: number = 155,
+  maxLength: number = 155
 ): string {
   if (!blocks || blocks.length === 0) return '';
 
