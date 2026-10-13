@@ -28,6 +28,7 @@ const menuItems = [
 
   <!-- Mobile Hamburger -->
   <button
+    type="button"
     id="menu-toggle"
     class="relative flex h-8 w-8 items-center justify-center md:hidden"
     aria-label="Toggle menu"
@@ -162,7 +163,7 @@ const menuItems = [
       if (mobileMenu) {
         mobileMenu.classList.remove('active');
         // after transition hide completely
-        // @ts-ignore - runtime JS only, event typing not required
+        // @ts-expect-error - runtime JS only, event typing not required
         const handleTransitionEnd = (e) => {
           if (e.target === mobileMenu && e.propertyName === 'opacity') {
             mobileMenu.classList.add('hidden');

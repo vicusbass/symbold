@@ -1,16 +1,16 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Button from '../components/Button.astro';
-import ScrollReveal from '../components/ScrollReveal.astro';
 import { Image } from 'astro:assets';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
-import Tag from '../components/Tag.astro';
-import RightReveal from '../components/RightReveal.astro';
 import BaselineReveal from '../components/BaselineReveal.astro';
+import Button from '../components/Button.astro';
 import ResponsiveHero from '../components/ResponsiveHero.astro';
-import { client } from '../lib/sanity';
+import RightReveal from '../components/RightReveal.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import Tag from '../components/Tag.astro';
+import Layout from '../layouts/Layout.astro';
 import { aboutPageQuery } from '../lib/queries/aboutPage';
+import { client } from '../lib/sanity';
 import type { AboutPage } from '../types/sanity';
 
 // Fetch AboutPage data from Sanity
@@ -58,9 +58,7 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
       </h2>
     </BaselineReveal>
 
-    <Button class="mt-10" href="/contact">
-      Work with us
-    </Button>
+    <Button class="mt-10" href="/contact"> Work with us </Button>
   </section>
 
   <section id="hero" class="edge-padding mt-10 w-full md:mt-40">
@@ -88,15 +86,19 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
   </section>
 
   <RightReveal isTitle>
-    <h2 class="mt-10 text-center text-8xl font-black tracking-tighter md:mt-20 md:text-[clamp(9rem,17vw,17.5rem)]">
+    <h2
+      class="mt-10 text-center text-8xl font-black tracking-tighter md:mt-20 md:text-[clamp(9rem,17vw,17.5rem)]"
+    >
       who we are
     </h2>
   </RightReveal>
 
   <ScrollReveal>
-    <h2 class="content-padding mx-auto mt-20 w-full text-center text-xl leading-relaxed font-bold md:mt-50 md:text-4xl">
-      Symbold is not a traditional agency. <br /> We are a studio of branding experts, based in Cluj
-      and working internationally. <br />
+    <h2
+      class="content-padding mx-auto mt-20 w-full text-center text-xl leading-relaxed font-bold md:mt-50 md:text-4xl"
+    >
+      Symbold is not a traditional agency. <br />
+      We are a studio of branding experts, based in Cluj and working internationally. <br />
       We move fast, deliver a lot, and do it with depth and precision.
     </h2>
   </ScrollReveal>
@@ -181,31 +183,33 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
       <div class="flex w-full flex-col md:w-1/2">
         <h2 class="pt-8 text-left text-4xl font-black md:pt-20 md:text-6xl">Our values</h2>
       </div>
-      <div class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm md:w-1/2 md:pt-20 md:pl-0 md:text-2xl">
+      <div
+        class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm md:w-1/2 md:pt-20 md:pl-0 md:text-2xl"
+      >
         <p>
           <span class="font-bold md:font-normal">Brutally honest</span>{' '}
-          <span class="text-accent hidden md:inline">→</span>
-          <br class="md:hidden" /> no sugarcoating, only clarity
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" />
+          no sugarcoating, only clarity
         </p>
         <p>
           <span class="font-bold md:font-normal">Conceptual</span>{' '}
-          <span class="text-accent hidden md:inline">→</span>
-          <br class="md:hidden" /> every brand built on strong ideas
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" />
+          every brand built on strong ideas
         </p>
         <p>
           <span class="font-bold md:font-normal">Efficient</span>{' '}
-          <span class="text-accent hidden md:inline">→</span>
-          <br class="md:hidden" /> fast, structured, reliable
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" />
+          fast, structured, reliable
         </p>
         <p>
           <span class="font-bold md:font-normal">Ambitious</span>{' '}
-          <span class="text-accent hidden md:inline">→</span>
-          <br class="md:hidden" /> aiming higher, always
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" />
+          aiming higher, always
         </p>
         <p>
           <span class="font-bold md:font-normal">Profound</span>{' '}
-          <span class="text-accent hidden md:inline">→</span>
-          <br class="md:hidden" /> depth over superficial design
+          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" />
+          depth over superficial design
         </p>
       </div>
     </div>
@@ -220,7 +224,9 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
       <div class="flex w-full flex-col md:w-1/2">
         <h2 class="pt-8 text-left text-4xl font-black md:pt-20 md:text-6xl">Differentiators</h2>
       </div>
-      <div class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm leading-8 md:w-1/2 md:pt-20 md:pl-0 md:text-2xl md:leading-14">
+      <div
+        class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm leading-8 md:w-1/2 md:pt-20 md:pl-0 md:text-2xl md:leading-14"
+      >
         <p class="pr:30 md:w-3/4 md:pr-20">
           Fast delivery, integrated services, and a proven methodology that combines strategic
           clarity with design excellence.
@@ -234,7 +240,9 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
   </div>
 
   <div class="md:content-padding px-2">
-    <h2 class="mx-auto pt-8 text-center text-xl leading-relaxed font-bold md:px-30 md:pt-35 md:text-[2.5rem]">
+    <h2
+      class="mx-auto pt-8 text-center text-xl leading-relaxed font-bold md:px-30 md:pt-35 md:text-[2.5rem]"
+    >
       We're not here to please everyone. <br class="md:hidden" />
       We're here to partner with clients <br class="md:hidden" />
       who <br class="md:hidden" />
@@ -242,9 +250,7 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
       right.
     </h2>
     <div class="mx-auto mb-10 flex justify-center pt-30 md:mb-40 md:pt-35">
-      <Button class="mx-2" href="/contact">
-        Work with us
-      </Button>
+      <Button class="mx-2" href="/contact"> Work with us </Button>
     </div>
   </div>
 

@@ -29,7 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `${firstName} ${lastName} <request@symbold.ro>`,
       to: 'office@symbold.ro',
       replyTo: email,

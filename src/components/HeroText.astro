@@ -36,7 +36,7 @@ const { text, color, showOnDesktop = true, class: className = '' } = Astro.props
         heroSection.addEventListener('mouseenter', () => {
           heroTexts.forEach((text) => {
             const wrapper = text.closest('.hero-text-wrapper');
-            if (wrapper && wrapper.classList.contains('md:block')) {
+            if (wrapper?.classList.contains('md:block')) {
               text.classList.add('visible');
             }
           });
@@ -45,7 +45,7 @@ const { text, color, showOnDesktop = true, class: className = '' } = Astro.props
         heroSection.addEventListener('mouseleave', () => {
           heroTexts.forEach((text) => {
             const wrapper = text.closest('.hero-text-wrapper');
-            if (wrapper && wrapper.classList.contains('md:block')) {
+            if (wrapper?.classList.contains('md:block')) {
               text.classList.remove('visible');
             }
           });

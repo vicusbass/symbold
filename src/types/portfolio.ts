@@ -1,4 +1,4 @@
-import type { MuxVideo, SanityImage, SanityColor, PortableText } from './sanity';
+import type { MuxVideo, PortableText, SanityColor, SanityImage } from './sanity';
 
 export interface PortfolioMedia {
   mediaType: 'image' | 'video';

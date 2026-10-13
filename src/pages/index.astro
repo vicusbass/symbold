@@ -1,15 +1,15 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
-import Button from '../components/Button.astro';
-import ScrollReveal from '../components/ScrollReveal.astro';
-import ProjectPreview from '../components/ProjectPreview.astro';
-import ResponsiveHero from '../components/ResponsiveHero.astro';
 import hero from '../assets/hero.png';
 import heroMobile from '../assets/hero-mobile.png';
 import BaselineReveal from '../components/BaselineReveal.astro';
-import { client } from '../lib/sanity';
+import Button from '../components/Button.astro';
+import ProjectPreview from '../components/ProjectPreview.astro';
+import ResponsiveHero from '../components/ResponsiveHero.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import Layout from '../layouts/Layout.astro';
 import { mainPageQuery } from '../lib/queries/mainPage';
+import { client } from '../lib/sanity';
 import type { MainPage } from '../types/sanity';
 
 // Fetch MainPage data from Sanity
@@ -23,7 +23,9 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
   <section id="headers" class="content-padding">
     <BaselineReveal>
       <h1 class="page-title">
-        symbold, <br /> brutally honest <br /> branding
+        symbold, <br />
+        brutally honest <br />
+        branding
       </h1>
     </BaselineReveal>
     <BaselineReveal delayed>
@@ -33,9 +35,7 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
       </h2>
     </BaselineReveal>
 
-    <Button class="mt-10" href="/contact">
-      Work with us
-    </Button>
+    <Button class="mt-10" href="/contact"> Work with us </Button>
   </section>
 
   <section id="hero" class="edge-padding relative mt-10 w-full md:mt-40">
@@ -96,13 +96,13 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
   )}
 
   <ScrollReveal>
-    <a href="/work" class="link-primary mt-10 block text-center">
-      See our work
-    </a>
+    <a href="/work" class="link-primary mt-10 block text-center"> See our work </a>
   </ScrollReveal>
 
   <ScrollReveal>
-    <h2 class="edge-padding mx-auto mt-10 w-full text-center text-xl leading-tight font-bold md:mt-30 md:text-4xl">
+    <h2
+      class="edge-padding mx-auto mt-10 w-full text-center text-xl leading-tight font-bold md:mt-30 md:text-4xl"
+    >
       We are not for everyone.
       <br />
       Symbold partners only with visionaries who value <br class="hidden lg:block" />

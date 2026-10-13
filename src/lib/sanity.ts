@@ -1,9 +1,9 @@
+import { sanityClient } from 'sanity:client';
 import {
   createImageUrlBuilder,
   type ImageUrlBuilder,
   type SanityImageSource,
 } from '@sanity/image-url';
-import { sanityClient } from 'sanity:client';
 
 export const client = sanityClient;
 
