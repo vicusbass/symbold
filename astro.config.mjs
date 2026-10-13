@@ -1,16 +1,17 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
 
-import tailwindcss from '@tailwindcss/vite';
-
-import lottie from 'astro-integration-lottie';
-
-import sanity from '@sanity/astro';
-import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
+import vercel from '@astrojs/vercel';
+import sanity from '@sanity/astro';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'astro/config';
+import lottie from 'astro-integration-lottie';
 
 export default defineConfig({
   site: 'https://symbold.ro',
+
+  // HTML whitespace rules (Astro 7 defaults to 'jsx'), matching how Biome formats templates
+  compressHTML: true,
 
   vite: {
     plugins: [tailwindcss()],

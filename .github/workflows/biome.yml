@@ -1,0 +1,28 @@
+name: Biome
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: biome-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Format & lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Installs the Biome version pinned in package-lock.json
+      - uses: biomejs/setup-biome@0d181e85625cb7dafc75257719de900eda7393c6 # v2.7.1
+
+      - name: Check formatting and lint rules
+        run: biome ci .

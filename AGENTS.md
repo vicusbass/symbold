@@ -11,8 +11,9 @@ This is an Astro-based website for a design agency called SYMBOLD, built with Ta
 - `npm run dev` - Start development server at localhost:4321
 - `npm run build` - Build production site to ./dist/
 - `npm run preview` - Preview built site locally
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
+- `npm run lint` - Check formatting and lint rules with Biome (same as CI)
+- `npm run lint:fix` - Apply Biome formatting, safe lint fixes and import sorting
+- `npm run format` - Format code with Biome
 
 ## Architecture & Key Files
 
@@ -20,7 +21,7 @@ This is an Astro-based website for a design agency called SYMBOLD, built with Ta
 - **Styles**: Global styles in `src/styles/global.css` using TailwindCSS v4 with custom theme variables
 - **Configuration**:
   - `astro.config.mjs` - Astro config with TailwindCSS Vite plugin
-  - `.prettierrc.cjs` - Prettier config with Astro and TailwindCSS plugins
+  - `biome.json` - Biome formatter/linter config (covers the site and `studio-symbold/`)
   - `tsconfig.json` - Extends Astro's strict TypeScript config
 
 ## Styling System
@@ -32,9 +33,9 @@ This is an Astro-based website for a design agency called SYMBOLD, built with Ta
 
 ## Code Style
 
-- Prettier configured for single quotes, semicolons, 2-space tabs, 100 character line width
-- ES5 trailing commas
-- Astro-specific formatting rules applied
+- Biome configured for single quotes, semicolons, 2-space indentation, 100 character line width
+- ES5 trailing commas (the Studio keeps its own style: no semicolons, no bracket spacing)
+- `.astro` templates are formatted by Biome's HTML formatter, which follows HTML whitespace rules; `astro.config.mjs` sets `compressHTML: true` so rendering matches
 
 ## Workflow
 
