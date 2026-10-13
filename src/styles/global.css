@@ -153,6 +153,15 @@
     font-weight: 600;
   }
 
+  @media (min-width: 768px) {
+    /* Matches the old desktop title (Area Normal 900 + stroke); Google Sans tops out at 700 */
+    .page-title {
+      font-weight: 700;
+      -webkit-text-stroke: 1.5px black;
+      paint-order: stroke fill;
+    }
+  }
+
   .bg-custom-gray {
     background-color: var(--custom-gray);
   }
