@@ -124,7 +124,16 @@ const projects = portfolioData.map((project) => ({
   </div>
 </Layout>
 
+<style is:global>
+  /* Returning to /work: show restored cards in place instead of fading them in again */
+  html.restoring-work-grid .fade-in-scroll {
+    transition: none;
+  }
+</style>
+
 <script>
+  import { afterViewTransition } from '../lib/view-transition';
+
   function toggleProjectVisibility(projectElement: HTMLElement, isVisible: boolean) {
     const scrollAnimationChild = projectElement.querySelector(
       '[data-scroll-animation]'
@@ -223,8 +232,14 @@ const projects = portfolioData.map((project) => ({
     const top = workScrollY ?? routerScrollY ?? 0;
     if (top > 0) {
       window.scrollTo({ top, behavior: 'instant' });
-      // Reveal what is now on screen without waiting for the IntersectionObserver
+      // Reveal what is now on screen without waiting for the IntersectionObserver. Do it without the
+      // fade: Safari draws the view transition ahead of a running fade, so the cards would dip and
+      // fade in a second time once the transition ends.
+      document.documentElement.classList.add('restoring-work-grid');
       renderProjects(getActiveTags());
+      afterViewTransition().then(() =>
+        document.documentElement.classList.remove('restoring-work-grid')
+      );
     }
 
     // Only valid for this return; later scrolling here is tracked by ClientRouter again
