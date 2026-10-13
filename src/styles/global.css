@@ -148,7 +148,8 @@
   }
 
   .page-title {
-    @apply mt-4 pb-8 leading-[1.1] md:mt-[8.75rem] md:tracking-tight;
+    /* Google Sans' shorter ascenders need tighter leading for the same row gap as Area Normal at 1.1 */
+    @apply mt-4 pb-8 leading-none md:mt-[8.75rem] md:tracking-tight;
     font-size: clamp(3.5rem, 0.938rem + 4.688vw, 6rem);
     font-weight: 600;
   }
