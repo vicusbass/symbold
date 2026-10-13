@@ -14,7 +14,7 @@ export const GET: APIRoute = async () => {
   const projectLinks = (projects ?? [])
     .map((p) => {
       const desc = p.description ? `: ${p.description.replace(/\s+/g, ' ').trim()}` : '';
-      return `- [${p.title}](https://symbold.ro/work/${p.slug.current})${desc}`;
+      return `- [${p.title}](https://www.symbold.ro/work/${p.slug.current}/)${desc}`;
     })
     .join('\n');
 
@@ -38,10 +38,10 @@ We are not a traditional agency. We move fast, deliver with depth and precision,
 
 ## Core pages
 
-- [Home](https://symbold.ro/): Overview of Symbold and featured work.
-- [About](https://symbold.ro/about): Who we are, our services, values, and differentiators.
-- [Work](https://symbold.ro/work): Portfolio of branding, packaging, and web design projects.
-- [Contact](https://symbold.ro/contact): Get in touch to start a project.
+- [Home](https://www.symbold.ro/): Overview of Symbold and featured work.
+- [About](https://www.symbold.ro/about/): Who we are, our services, values, and differentiators.
+- [Work](https://www.symbold.ro/work/): Portfolio of branding, packaging, and web design projects.
+- [Contact](https://www.symbold.ro/contact/): Get in touch to start a project.
 
 ## Selected work
 
@@ -49,10 +49,10 @@ ${projectLinks}
 
 ## Optional
 
-- [Sitemap](https://symbold.ro/sitemap-index.xml)
-- [Privacy Policy](https://symbold.ro/privacy)
-- [Cookie Policy](https://symbold.ro/cookie-policy)
-- [Terms](https://symbold.ro/terms)
+- [Sitemap](https://www.symbold.ro/sitemap-index.xml)
+- [Privacy Policy](https://www.symbold.ro/privacy/)
+- [Cookie Policy](https://www.symbold.ro/cookie-policy/)
+- [Terms](https://www.symbold.ro/terms/)
 `;
 
   return new Response(body, {

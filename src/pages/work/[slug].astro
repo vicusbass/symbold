@@ -84,10 +84,10 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
     '@type': 'CreativeWork',
     name: project.title,
     description: seoDescription,
-    url: `https://symbold.ro/work/${project.slug.current}`,
-    image: heroImageUrl || 'https://symbold.ro/OG.jpg',
+    url: `https://www.symbold.ro/work/${project.slug.current}/`,
+    image: heroImageUrl || 'https://www.symbold.ro/OG.jpg',
     keywords: projectKeywords,
-    author: { '@id': 'https://symbold.ro/#organization' },
+    author: { '@id': 'https://www.symbold.ro/#organization' },
     ...(project.publishedAt && { datePublished: project.publishedAt }),
   }}
 >
