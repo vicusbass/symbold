@@ -16,19 +16,25 @@ const { class: className = '', delayed = false } = Astro.props;
 <style>
   [data-baseline-animation] {
     opacity: 0;
+    /* Safari's view transition snapshot ignores opacity: 0 here, so hide it explicitly too */
+    visibility: hidden;
     transform: translateY(50%);
     transition:
       transform 0.6s ease-out,
-      opacity 0.6s ease-out;
+      opacity 0.6s ease-out,
+      visibility 0.6s;
   }
 
   [data-baseline-animation].visible {
     opacity: 1;
+    visibility: visible;
     transform: translateY(0);
   }
 </style>
 
 <script>
+  import { afterViewTransition } from '../lib/view-transition';
+
   function initBaselineAnimations() {
     // Use requestAnimationFrame to ensure browser has painted initial state
     requestAnimationFrame(() => {
@@ -51,5 +57,5 @@ const { class: className = '', delayed = false } = Astro.props;
   }
 
   // Also listen for Astro page loads (for client-side navigation)
-  document.addEventListener('astro:page-load', initBaselineAnimations);
+  document.addEventListener('astro:page-load', () => afterViewTransition().then(initBaselineAnimations));
 </script>
