@@ -128,81 +128,126 @@ const projects = portfolioData.map((project) => ({
 </Layout>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
-    let selectedTags = new Set(['all']);
+  function toggleProjectVisibility(projectElement: HTMLElement, isVisible: boolean) {
+    const scrollAnimationChild = projectElement.querySelector(
+      '[data-scroll-animation]'
+    ) as HTMLElement;
 
-    function toggleProjectVisibility(projectElement: HTMLElement, isVisible: boolean) {
-      const scrollAnimationChild = projectElement.querySelector(
-        '[data-scroll-animation]'
-      ) as HTMLElement;
-
-      if (isVisible) {
-        projectElement.style.display = 'block';
-        const isInViewport = scrollAnimationChild.getBoundingClientRect().top < window.innerHeight;
-        if (isInViewport) {
-          scrollAnimationChild?.classList.add('visible');
-        } else {
-          scrollAnimationChild?.classList.remove('visible');
-        }
+    if (isVisible) {
+      projectElement.style.display = 'block';
+      const isInViewport = scrollAnimationChild.getBoundingClientRect().top < window.innerHeight;
+      if (isInViewport) {
+        scrollAnimationChild?.classList.add('visible');
       } else {
-        projectElement.style.display = 'none';
         scrollAnimationChild?.classList.remove('visible');
       }
+    } else {
+      projectElement.style.display = 'none';
+      scrollAnimationChild?.classList.remove('visible');
+    }
+  }
+
+  function renderProjects(selectedTags: Set<string>) {
+    const projectElements = document.querySelectorAll('[data-tags]');
+
+    const { visibleProjects, hiddenProjects } = Array.from(projectElements).reduce(
+      (acc, el) => {
+        const projectTags = el.getAttribute('data-tags')?.split(',') || [];
+        const hasMatchingTag = projectTags.some((tag) => selectedTags.has(tag));
+        if (selectedTags.has('all') || hasMatchingTag) {
+          acc.visibleProjects.push(el);
+        } else {
+          acc.hiddenProjects.push(el);
+        }
+        return acc;
+      },
+      { visibleProjects: [] as Element[], hiddenProjects: [] as Element[] }
+    );
+
+    visibleProjects.forEach((el, index) => {
+      let rowNumber = 0;
+      let itemsProcessed = 0;
+      let tempIndex = index;
+
+      while (tempIndex >= 0) {
+        const itemsInRow = rowNumber % 2 === 0 ? 1 : 2;
+        if (tempIndex < itemsInRow) break;
+        tempIndex -= itemsInRow;
+        itemsProcessed += itemsInRow;
+        rowNumber++;
+      }
+
+      const isFullWidthRow = rowNumber % 2 === 0;
+      const isFirstInSplitRow = !isFullWidthRow && index === itemsProcessed;
+
+      if (isFullWidthRow) {
+        el.classList.add('md:w-full');
+        el.classList.remove('md:w-[calc(50%-8px)]');
+      } else {
+        el.classList.add('md:w-[calc(50%-8px)]');
+        el.classList.remove('md:w-full');
+      }
+
+      if (isFirstInSplitRow) {
+        el.classList.add('md:mr-4');
+      } else {
+        el.classList.remove('md:mr-4');
+      }
+
+      toggleProjectVisibility(el as HTMLElement, true);
+    });
+    hiddenProjects.forEach((el) => {
+      toggleProjectVisibility(el as HTMLElement, false);
+    });
+  }
+
+  function getActiveTags() {
+    const active = [...document.querySelectorAll('.tag-button[data-active="true"]')];
+    return new Set(active.map((btn) => btn.getAttribute('data-tag-id')!));
+  }
+
+  // Returning to /work (Back button or "Back to work"): reapply the saved filters and scroll
+  // position. Runs inside the page swap, before the browser captures the new page for the view
+  // transition; restoring later (on page-load) left Safari showing unrevealed (blank) cards.
+  function restoreSavedView() {
+    if (!document.querySelector('[data-tags]')) return;
+
+    const { workTags, workScrollY, scrollY: routerScrollY } = history.state ?? {};
+    if (workTags && !workTags.includes('all')) {
+      const selectedTags = new Set<string>(workTags);
+      document.querySelectorAll('.tag-button').forEach((btn) => {
+        btn.setAttribute('data-active', String(selectedTags.has(btn.getAttribute('data-tag-id')!)));
+      });
+      renderProjects(selectedTags);
     }
 
-    function renderProjects() {
-      const projectElements = document.querySelectorAll('[data-tags]');
-
-      const { visibleProjects, hiddenProjects } = Array.from(projectElements).reduce(
-        (acc, el) => {
-          const projectTags = el.getAttribute('data-tags')?.split(',') || [];
-          const hasMatchingTag = projectTags.some((tag) => selectedTags.has(tag));
-          if (selectedTags.has('all') || hasMatchingTag) {
-            acc.visibleProjects.push(el);
-          } else {
-            acc.hiddenProjects.push(el);
-          }
-          return acc;
-        },
-        { visibleProjects: [] as Element[], hiddenProjects: [] as Element[] }
-      );
-
-      visibleProjects.forEach((el, index) => {
-        let rowNumber = 0;
-        let itemsProcessed = 0;
-        let tempIndex = index;
-
-        while (tempIndex >= 0) {
-          const itemsInRow = rowNumber % 2 === 0 ? 1 : 2;
-          if (tempIndex < itemsInRow) break;
-          tempIndex -= itemsInRow;
-          itemsProcessed += itemsInRow;
-          rowNumber++;
-        }
-
-        const isFullWidthRow = rowNumber % 2 === 0;
-        const isFirstInSplitRow = !isFullWidthRow && index === itemsProcessed;
-
-        if (isFullWidthRow) {
-          el.classList.add('md:w-full');
-          el.classList.remove('md:w-[calc(50%-8px)]');
-        } else {
-          el.classList.add('md:w-[calc(50%-8px)]');
-          el.classList.remove('md:w-full');
-        }
-
-        if (isFirstInSplitRow) {
-          el.classList.add('md:mr-4');
-        } else {
-          el.classList.remove('md:mr-4');
-        }
-
-        toggleProjectVisibility(el as HTMLElement, true);
-      });
-      hiddenProjects.forEach((el) => {
-        toggleProjectVisibility(el as HTMLElement, false);
-      });
+    // Prefer our own value: ClientRouter's scrollY can be overwritten by a late `scrollend` from
+    // the page we just left. Jump instantly; `scroll-behavior: smooth` would animate from the top.
+    const top = workScrollY ?? routerScrollY ?? 0;
+    if (top > 0) {
+      window.scrollTo({ top, behavior: 'instant' });
+      // Reveal what is now on screen without waiting for the IntersectionObserver
+      renderProjects(getActiveTags());
     }
+
+    // Only valid for this return; later scrolling here is tracked by ClientRouter again
+    if (workScrollY !== undefined) {
+      const { workScrollY: _, ...state } = history.state;
+      history.replaceState(state, '');
+    }
+  }
+
+  restoreSavedView(); // full page loads (e.g. reload)
+  document.addEventListener('astro:after-swap', restoreSavedView);
+
+  // Leaving /work through a link: save the scroll position for restoreSavedView
+  document.addEventListener('astro:before-preparation', (event) => {
+    if (event.navigationType === 'traverse' || !document.querySelector('[data-tags]')) return;
+    history.replaceState({ ...history.state, workScrollY: window.scrollY }, '');
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    let selectedTags = getActiveTags();
 
     function toggleTag(button: Element) {
       const tagId = button.getAttribute('data-tag-id');
@@ -253,12 +298,25 @@ const projects = portfolioData.map((project) => ({
         }
       }
 
-      renderProjects();
+      renderProjects(selectedTags);
+
+      // Keep the filters in this page's history entry so returning here restores the same grid
+      history.replaceState({ ...history.state, workTags: [...selectedTags] }, '');
     }
 
     // Attach click handlers to all tag buttons
     document.querySelectorAll('.tag-button').forEach((button) => {
       button.addEventListener('click', () => toggleTag(button));
+    });
+
+    // Remember which history entry opened a project, so its "Back to work" link can go back here
+    document.querySelectorAll<HTMLAnchorElement>('[data-tags] a').forEach((link) => {
+      link.addEventListener('click', () => {
+        sessionStorage.setItem(
+          'work-origin',
+          JSON.stringify({ path: link.pathname.replace(/\/$/, ''), index: history.state?.index })
+        );
+      });
     });
   });
 </script>

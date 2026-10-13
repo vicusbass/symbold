@@ -229,6 +229,12 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
     }
   </section>
 
+  <ScrollReveal>
+    <a href="/work" class="link-primary mt-16 block text-center md:mt-24" data-back-to-work>
+      Back to work
+    </a>
+  </ScrollReveal>
+
   {
     suggestedProjects.length ? (
       <section class="content-padding mt-30 md:mt-40">
@@ -257,3 +263,25 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
     <hr class="mt-30 mb-10 md:mb-30" />
   </div>
 </Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const backLink = document.querySelector('[data-back-to-work]');
+
+    backLink?.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      // Opened straight from the /work grid: go back to that entry so its scroll position and
+      // filters are restored. Otherwise (direct visit, suggested project, ...) open /work fresh.
+      const origin = JSON.parse(sessionStorage.getItem('work-origin') ?? 'null');
+      const openedFromWork =
+        origin?.path === location.pathname.replace(/\/$/, '') &&
+        origin.index + 1 === history.state?.index;
+
+      if (openedFromWork) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  });
+</script>
