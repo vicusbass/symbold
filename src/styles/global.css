@@ -150,15 +150,7 @@
   .page-title {
     @apply mt-4 pb-8 leading-[1.1] md:mt-[8.75rem] md:tracking-tight;
     font-size: clamp(3.5rem, 0.938rem + 4.688vw, 6rem);
-    font-weight: 700;
-  }
-
-  @media (min-width: 768px) {
-    /* Google Sans tops out at 700; the stroke adds the extra heft the old 900 + stroke title had */
-    .page-title {
-      -webkit-text-stroke: 1.5px black;
-      paint-order: stroke fill;
-    }
+    font-weight: 600;
   }
 
   .bg-custom-gray {
