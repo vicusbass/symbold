@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
@@ -86,13 +87,11 @@ const sanitizedDescription = description.trim().replace(/\s+/g, ' ');
     <meta name="format-detection" content="telephone=no" />
 
     <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
-    <link rel="dns-prefetch" href="https://use.typekit.net" />
     <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://use.typekit.net/smx5jap.css" crossorigin />
+    <!-- Fonts (self-hosted by the Astro Fonts API); preload only the upright latin file -->
+    <Font cssVariable="--font-google-sans" preload={[{ subset: 'latin', style: 'normal' }]} />
 
     <!-- JSON-LD Structured Data -->
     <script

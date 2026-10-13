@@ -8,14 +8,27 @@ interface Props {
   textColor?: string;
   class?: string;
   disableCursor?: boolean;
+  /** `sizes` for the preview image/poster srcset */
+  sizes?: string;
 }
 
-const { project, textColor = '#FFFFFF', class: className, disableCursor = false } = Astro.props;
+const {
+  project,
+  textColor = '#FFFFFF',
+  class: className,
+  disableCursor = false,
+  sizes = '100vw',
+} = Astro.props;
 
-const imageUrl =
+const imageWidths = [480, 720, 960, 1280, 1920];
+const imageBuilder =
   project.hero?.mediaType === 'image' && project.hero.image?.asset?._ref
-    ? urlFor(project.hero.image)?.auto('format').quality(90).width(1920).url()
+    ? urlFor(project.hero.image)?.auto('format').quality(90)
     : null;
+const imageUrl = imageBuilder?.width(1920).url() ?? null;
+const imageSrcset = imageBuilder
+  ? imageWidths.map((w) => `${imageBuilder.width(w).url()} ${w}w`).join(', ')
+  : undefined;
 const videoPlaybackId =
   project.hero?.mediaType === 'video' && project.hero.video?.asset?.playbackId
     ? project.hero.video.asset.playbackId
@@ -37,6 +50,8 @@ const alt = project.hero?.image?.alt || project.title || '';
     {imageUrl ? (
       <img
         src={imageUrl}
+        srcset={imageSrcset}
+        sizes={sizes}
         alt={alt}
         class="h-full w-full object-cover"
         loading="lazy"
@@ -47,6 +62,7 @@ const alt = project.hero?.image?.alt || project.title || '';
         playbackId={videoPlaybackId}
         videoTitle={project.title}
         aspectRatio={videoAspectRatio}
+        sizes={sizes}
         class="pointer-events-none"
       />
     ) : null}

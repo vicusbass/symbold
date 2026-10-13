@@ -29,7 +29,7 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
       </h1>
     </BaselineReveal>
     <BaselineReveal delayed>
-      <h2 class="mt-2 text-base font-medium md:pb-0.5 md:text-2xl">
+      <h2 class="mt-2 text-base font-normal md:pb-0.5 md:text-2xl">
         Symbold is a branding studio from Cluj that creates conceptual, ambitious, and profound
         brand identities.
       </h2>
@@ -65,7 +65,7 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
   <ScrollReveal>
     <h2
       id="branding-h2"
-      class="edge-padding mt-20 text-center text-xl leading-tight font-bold md:mt-60 md:text-4xl"
+      class="edge-padding mt-20 text-center text-xl leading-tight font-[500] md:mt-60 md:text-4xl"
     >
       We don't make the logo bigger.
       <br />
@@ -85,11 +85,17 @@ const mainPage = await client.fetch<MainPage>(mainPageQuery);
       {/* Second and third featured projects - side by side */}
       <div class="mt-4 flex flex-col gap-4 md:flex-row md:gap-4">
         <ScrollReveal class="w-full md:w-1/2">
-          <ProjectPreview project={mainPage.featuredProjects[1]} />
+          <ProjectPreview
+            project={mainPage.featuredProjects[1]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+          />
         </ScrollReveal>
 
         <ScrollReveal delayed class="w-full md:w-1/2">
-          <ProjectPreview project={mainPage.featuredProjects[2]} />
+          <ProjectPreview
+            project={mainPage.featuredProjects[2]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+          />
         </ScrollReveal>
       </div>
     </section>

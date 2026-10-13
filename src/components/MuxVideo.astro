@@ -4,19 +4,49 @@ interface Props {
   videoTitle?: string;
   aspectRatio?: string;
   class?: string;
+  /** Above-the-fold video: poster is fetched eagerly with high priority (LCP candidate) */
+  priority?: boolean;
+  /** Media query this video is visible at; the poster isn't downloaded outside it */
+  media?: string;
+  /** `sizes` for the poster srcset */
+  sizes?: string;
 }
 
-const { playbackId, aspectRatio = '16:9', class: className } = Astro.props;
+const {
+  playbackId,
+  aspectRatio = '16:9',
+  class: className,
+  priority = false,
+  media,
+  sizes = '100vw',
+} = Astro.props;
 const cssAspectRatio = aspectRatio.replace(':', '/');
-const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.webp?width=1920&fit_mode=preserve`;
+const posterUrl = (width: number) =>
+  `https://image.mux.com/${playbackId}/thumbnail.webp?width=${width}&fit_mode=preserve`;
+const posterSrcset = [480, 720, 960, 1280, 1920].map((w) => `${posterUrl(w)} ${w}w`).join(', ');
+// 1x1 transparent GIF, chosen by <picture> when `media` doesn't match
+const emptyImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 ---
 
 <div
-  class:list={['w-full overflow-hidden', className]}
-  style={`aspect-ratio: ${cssAspectRatio}; background-color: #111; background-image: url('${posterUrl}'); background-size: cover; background-position: center;`}
+  class:list={['relative w-full overflow-hidden', className]}
+  style={`aspect-ratio: ${cssAspectRatio}; background-color: #111;`}
 >
+  <picture>
+    {media && <source media={`not all and ${media}`} srcset={emptyImage} />}
+    <img
+      src={posterUrl(1920)}
+      srcset={posterSrcset}
+      sizes={sizes}
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+    />
+  </picture>
   <mux-video
-    playback-id={playbackId}
+    data-playback-id={playbackId}
     muted
     autoplay
     loop
@@ -24,32 +54,64 @@ const posterUrl = `https://image.mux.com/${playbackId}/thumbnail.webp?width=1920
     disable-cookies
     disable-tracking
     rendition-order="desc"
-    class="mux-video h-full w-full"
+    class="mux-video relative h-full w-full"
     style="--media-object-fit: cover;"
     data-mux-video
   ></mux-video>
 </div>
 
 <script>
+  let muxLoaded: Promise<unknown> | undefined;
+
+  // Highest rendition the rendered box can use; `rendition-order="desc"` then starts there
+  // instead of at the source resolution (no 1080p+ chunks for a phone-sized player).
+  function maxResolutionFor(el: HTMLElement) {
+    const { width, height } = el.getBoundingClientRect();
+    const shortSide = Math.min(width, height) * window.devicePixelRatio;
+    if (shortSide <= 720) return '720p';
+    if (shortSide <= 1080) return '1080p';
+    if (shortSide <= 1440) return '1440p';
+    return null;
+  }
+
+  function startVideo(player: HTMLElement) {
+    const playbackId = player.dataset.playbackId;
+    if (!playbackId) return;
+    const maxResolution = maxResolutionFor(player);
+    if (maxResolution) player.setAttribute('max-resolution', maxResolution);
+    player.setAttribute('playback-id', playbackId);
+
+    // Load mux-video on first use so it doesn't block the main JS bundle.
+    // The custom element upgrade fires 'playing' on any already-attached listeners.
+    muxLoaded ??= import('@mux/mux-video');
+  }
+
+  // Streams only start once a video is near the viewport. Videos hidden with
+  // display:none (the other breakpoint's hero) never intersect, so they never load.
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        startVideo(entry.target as HTMLElement);
+      });
+    },
+    { rootMargin: '200px 0px' }
+  );
+
   function initMuxVideos() {
     document.querySelectorAll<HTMLMediaElement>('[data-mux-video]').forEach((player) => {
       if (player.dataset.muxVideoInit) return;
       player.dataset.muxVideoInit = 'true';
-      const reveal = () => player.classList.add('is-playing');
-      if (!player.paused) {
-        reveal();
-      } else {
-        player.addEventListener('playing', reveal, { once: true });
-      }
+      player.addEventListener('playing', () => player.classList.add('is-playing'), {
+        once: true,
+      });
+      observer.observe(player);
     });
   }
 
   initMuxVideos();
   document.addEventListener('astro:page-load', initMuxVideos);
-
-  // Load mux-video asynchronously so it doesn't block the main JS bundle.
-  // The custom element upgrade fires 'playing' on any already-attached listeners.
-  import('@mux/mux-video').then(() => initMuxVideos());
 </script>
 
 <style>
