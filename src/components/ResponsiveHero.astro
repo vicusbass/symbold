@@ -54,7 +54,7 @@ const alt = desktopAlt || mobileAlt;
       src={desktopImageUrl}
       alt={alt}
       class:list={['h-auto w-full overflow-hidden rounded-md', className]}
-      loading="lazy"
+      fetchpriority="high"
       decoding="async"
     />
   </picture>
@@ -91,6 +91,8 @@ const alt = desktopAlt || mobileAlt;
       playbackId={mobileMedia.video!.asset!.playbackId!}
       videoTitle={videoTitle}
       aspectRatio={mobileMedia.video!.asset!.aspectRatio}
+      priority
+      media={desktopIsVideo || desktopImageUrl ? '(max-width: 767px)' : undefined}
     />
   </div>
 ) : null}
@@ -107,6 +109,8 @@ const alt = desktopAlt || mobileAlt;
       playbackId={desktopMedia.video!.asset!.playbackId!}
       videoTitle={videoTitle}
       aspectRatio={desktopMedia.video!.asset!.aspectRatio}
+      priority
+      media={mobileIsVideo || mobileImageUrl ? '(min-width: 768px)' : undefined}
     />
   </div>
 ) : null}

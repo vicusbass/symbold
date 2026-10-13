@@ -99,7 +99,11 @@ const projects = portfolioData.map((project) => ({
           data-tags={item.tags.join(',')}
         >
           <ScrollReveal>
-            <ProjectPreview project={item.project} disableCursor={true} />
+            <ProjectPreview
+              project={item.project}
+              disableCursor={true}
+              sizes={isFullWidthRow ? '100vw' : '(min-width: 768px) 50vw, 100vw'}
+            />
           </ScrollReveal>
         </div>
       );

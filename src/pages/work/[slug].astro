@@ -234,7 +234,11 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
       <div class="mt-10 grid gap-4 md:grid-cols-3">
         {suggestedProjects.map((suggested) => (
           <ScrollReveal>
-            <ProjectPreview project={suggested} disableCursor={true} />
+            <ProjectPreview
+              project={suggested}
+              disableCursor={true}
+              sizes="(min-width: 768px) 33vw, 100vw"
+            />
           </ScrollReveal>
         ))}
       </div>
