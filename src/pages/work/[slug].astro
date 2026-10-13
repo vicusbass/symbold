@@ -66,7 +66,7 @@ const heroLabelledTags =
 const teamLines = Array.isArray(project.team) ? project.team : [];
 
 const seoDescription = extractPlainText(
-  Array.isArray(project.description) ? (project.description as PortableTextBlock[]) : undefined,
+  Array.isArray(project.description) ? (project.description as PortableTextBlock[]) : undefined
 );
 
 const heroImageUrl =
@@ -104,25 +104,25 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
           </div>
         </BaselineReveal>
         <div class="mt-10 flex flex-wrap gap-4">
-          {
-            heroLabelledTags.map(
-              (
-                tag: { id: string; label: string; hoverColor: { hex?: string } | undefined },
-                index: number
-              ) => (
-                <RightReveal index={index + 1}>
-                  <Tag id={tag.id} label={tag.label} active={false} hoverColor={tag.hoverColor} />
-                </RightReveal>
-              )
+          {heroLabelledTags.map(
+            (
+              tag: { id: string; label: string; hoverColor: { hex?: string } | undefined },
+              index: number
+            ) => (
+              <RightReveal index={index + 1}>
+                <Tag id={tag.id} label={tag.label} active={false} hoverColor={tag.hoverColor} />
+              </RightReveal>
             )
-          }
+          )}
         </div>
       </div>
       <div class="mt-5 flex min-w-70 flex-col justify-end md:mt-0">
         <BaselineReveal delayed>
           <h2 class="text-base font-semibold">Team:</h2>
           <div class="mt-1 text-base font-semibold text-gray-400">
-            {teamLines.map((line) => <p>{line}</p>)}
+            {teamLines.map((line) => (
+              <p>{line}</p>
+            ))}
           </div>
         </BaselineReveal>
       </div>
@@ -134,99 +134,95 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
   </section>
 
   <section class="edge-padding">
-    {
-      project.content?.map((row: any) => {
-        // portfolioRowFull - Full width responsive media
-        if (row._type === 'portfolioRowFull') {
-          return (
-            <article class="mt-4">
+    {project.content?.map((row: any) => {
+      // portfolioRowFull - Full width responsive media
+      if (row._type === 'portfolioRowFull') {
+        return (
+          <article class="mt-4">
+            <ScrollReveal>
+              <ResponsiveHero
+                desktopMedia={{
+                  mediaType: row.desktopMedia.mediaType,
+                  image: row.desktopMedia.image,
+                  video: row.desktopMedia.video,
+                }}
+                mobileMedia={{
+                  mediaType: row.mobileMedia.mediaType,
+                  image: row.mobileMedia.image,
+                  video: row.mobileMedia.video,
+                }}
+                videoTitle={project.title}
+              />
+            </ScrollReveal>
+          </article>
+        );
+      }
+
+      // portfolioRowWithDescription - Media with description
+      if (row._type === 'portfolioRowWithDescription') {
+        const description = row.description;
+        const isDescriptionLeft = row.descriptionPosition === 'left';
+
+        const mediaOrderClasses = isDescriptionLeft ? 'order-2 md:order-2' : 'order-1 md:order-1';
+        const descriptionOrderClasses = isDescriptionLeft ? 'order-1 md:pr-10' : 'order-2 md:pl-10';
+
+        return (
+          <article class="mt-4 flex flex-col gap-8 md:flex-row md:items-center md:gap-4">
+            <div class={`w-full md:w-1/2 ${mediaOrderClasses}`}>
               <ScrollReveal>
-                <ResponsiveHero
-                  desktopMedia={{
-                    mediaType: row.desktopMedia.mediaType,
-                    image: row.desktopMedia.image,
-                    video: row.desktopMedia.video,
-                  }}
-                  mobileMedia={{
-                    mediaType: row.mobileMedia.mediaType,
-                    image: row.mobileMedia.image,
-                    video: row.mobileMedia.video,
-                  }}
-                  videoTitle={project.title}
-                />
+                <MediaRenderer media={row.media} videoTitle={project.title} />
               </ScrollReveal>
-            </article>
-          );
-        }
-
-        // portfolioRowWithDescription - Media with description
-        if (row._type === 'portfolioRowWithDescription') {
-          const description = row.description;
-          const isDescriptionLeft = row.descriptionPosition === 'left';
-
-          const mediaOrderClasses = isDescriptionLeft ? 'order-2 md:order-2' : 'order-1 md:order-1';
-          const descriptionOrderClasses = isDescriptionLeft
-            ? 'order-1 md:pr-10'
-            : 'order-2 md:pl-10';
-
-          return (
-            <article class="mt-4 flex flex-col gap-8 md:flex-row md:items-center md:gap-4">
-              <div class={`w-full md:w-1/2 ${mediaOrderClasses}`}>
+            </div>
+            {description && description.length > 0 && (
+              <div
+                class={`w-full text-base leading-relaxed md:w-1/2 md:text-lg ${descriptionOrderClasses}`}
+              >
                 <ScrollReveal>
-                  <MediaRenderer media={row.media} videoTitle={project.title} />
-                </ScrollReveal>
-              </div>
-              {description && description.length > 0 && (
-                <div
-                  class={`w-full text-base leading-relaxed md:w-1/2 md:text-lg ${descriptionOrderClasses}`}
-                >
-                  <ScrollReveal>
-                    <div class="md:px-16">
-                      <StyledPortableText value={description} />
-                    </div>
-                  </ScrollReveal>
-                </div>
-              )}
-            </article>
-          );
-        }
-
-        // portfolioRowSplit - Two media items side by side
-        if (row._type === 'portfolioRowSplit') {
-          return (
-            <article class="mt-4 flex flex-col gap-4 md:flex-row">
-              <div class="w-full md:w-1/2">
-                <ScrollReveal>
-                  <MediaRenderer media={row.leftMedia} videoTitle={project.title} />
-                </ScrollReveal>
-              </div>
-              <div class="w-full md:w-1/2">
-                <ScrollReveal>
-                  <MediaRenderer media={row.rightMedia} videoTitle={project.title} />
-                </ScrollReveal>
-              </div>
-            </article>
-          );
-        }
-
-        // portfolioRowText - Text only block
-        if (row._type === 'portfolioRowText') {
-          return (
-            <article class="mt-40 mb-40">
-              <ScrollReveal>
-                <div class="md:flex md:justify-center">
-                  <div class="max-w-3xl text-base leading-relaxed md:text-lg">
-                    <StyledPortableText value={row.text} />
+                  <div class="md:px-16">
+                    <StyledPortableText value={description} />
                   </div>
-                </div>
-              </ScrollReveal>
-            </article>
-          );
-        }
+                </ScrollReveal>
+              </div>
+            )}
+          </article>
+        );
+      }
 
-        return null;
-      })
-    }
+      // portfolioRowSplit - Two media items side by side
+      if (row._type === 'portfolioRowSplit') {
+        return (
+          <article class="mt-4 flex flex-col gap-4 md:flex-row">
+            <div class="w-full md:w-1/2">
+              <ScrollReveal>
+                <MediaRenderer media={row.leftMedia} videoTitle={project.title} />
+              </ScrollReveal>
+            </div>
+            <div class="w-full md:w-1/2">
+              <ScrollReveal>
+                <MediaRenderer media={row.rightMedia} videoTitle={project.title} />
+              </ScrollReveal>
+            </div>
+          </article>
+        );
+      }
+
+      // portfolioRowText - Text only block
+      if (row._type === 'portfolioRowText') {
+        return (
+          <article class="mt-40 mb-40">
+            <ScrollReveal>
+              <div class="md:flex md:justify-center">
+                <div class="max-w-3xl text-base leading-relaxed md:text-lg">
+                  <StyledPortableText value={row.text} />
+                </div>
+              </div>
+            </ScrollReveal>
+          </article>
+        );
+      }
+
+      return null;
+    })}
   </section>
 
   <ScrollReveal>
@@ -235,20 +231,18 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
     </a>
   </ScrollReveal>
 
-  {
-    suggestedProjects.length ? (
-      <section class="content-padding mt-30 md:mt-40">
-        <h2 class="text-3xl font-bold tracking-tighter md:text-5xl">Suggested projects</h2>
-        <div class="mt-10 grid gap-4 md:grid-cols-3">
-          {suggestedProjects.map((suggested) => (
-            <ScrollReveal>
-              <ProjectPreview project={suggested} disableCursor={true} />
-            </ScrollReveal>
-          ))}
-        </div>
-      </section>
-    ) : null
-  }
+  {suggestedProjects.length ? (
+    <section class="content-padding mt-30 md:mt-40">
+      <h2 class="text-3xl font-bold tracking-tighter md:text-5xl">Suggested projects</h2>
+      <div class="mt-10 grid gap-4 md:grid-cols-3">
+        {suggestedProjects.map((suggested) => (
+          <ScrollReveal>
+            <ProjectPreview project={suggested} disableCursor={true} />
+          </ScrollReveal>
+        ))}
+      </div>
+    </section>
+  ) : null}
 
   <section class="content-padding mt-30 md:mt-40">
     <div class="flex flex-col gap-12 md:flex-row md:items-start md:gap-20">

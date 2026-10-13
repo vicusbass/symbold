@@ -15,14 +15,15 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/color-input": "^6.0.4",
-    "@sanity/vision": "^5.19.0",
-    "react": "^19.1",
-    "react-dom": "^19.1",
-    "sanity": "^5.19.0",
-    "sanity-plugin-dashboard-widget-vercel": "^3.1.6",
-    "sanity-plugin-mux-input": "^2.17.0",
-    "styled-components": "^6.1.18"
+    "@sanity/color-input": "^6.1.7",
+    "@sanity/dashboard": "^6.0.21",
+    "@sanity/vision": "^6.18.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sanity": "^6.18.0",
+    "sanity-plugin-dashboard-widget-vercel": "^4.0.31",
+    "sanity-plugin-mux-input": "^5.1.2",
+    "styled-components": "^6.6.0"
   },
   "overrides": {
     "@sanity/cli-core": {
@@ -30,9 +31,9 @@
     }
   },
   "devDependencies": {
-    "@sanity/eslint-config-studio": "^5.0.2",
+    "@sanity/eslint-config-studio": "^7.0.0",
     "@types/react": "^19.1",
-    "eslint": "^9.28",
+    "eslint": "^10.12.0",
     "prettier": "^3.5",
     "typescript": "^5.8"
   },

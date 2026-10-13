@@ -37,7 +37,8 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
   schema={{
     '@type': 'AboutPage',
     name: 'About Symbold',
-    description: 'We design bold visual identity systems — brand strategy, web design, and graphic design for ambitious companies.',
+    description:
+      'We design bold visual identity systems — brand strategy, web design, and graphic design for ambitious companies.',
     url: 'https://symbold.ro/about',
     publisher: { '@id': 'https://symbold.ro/#organization' },
   }}
@@ -46,7 +47,8 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
     <BaselineReveal>
       <h1 class="page-title">
         we design bold
-        <br />visual identity systems
+        <br />
+        visual identity systems
       </h1>
     </BaselineReveal>
     <BaselineReveal delayed>
@@ -56,22 +58,62 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
       </h2>
     </BaselineReveal>
 
-    <Button class="mt-10" href="/contact">Work with us</Button>
+    <Button class="mt-10" href="/contact">
+      Work with us
+    </Button>
   </section>
 
   <section id="hero" class="edge-padding mt-10 w-full md:mt-40">
-    {
-      aboutPage?.media1Desktop && aboutPage?.media1Mobile ? (
+    {aboutPage?.media1Desktop && aboutPage?.media1Mobile ? (
+      <ResponsiveHero
+        desktopMedia={{
+          mediaType: aboutPage.media1Desktop.mediaType,
+          image: aboutPage.media1Desktop.image,
+          video: aboutPage.media1Desktop.video,
+        }}
+        mobileMedia={{
+          mediaType: aboutPage.media1Mobile.mediaType,
+          image: aboutPage.media1Mobile.image,
+          video: aboutPage.media1Mobile.video,
+        }}
+        videoTitle="About"
+      />
+    ) : (
+      <>
+        {/* Fallback to static assets if no Sanity data */}
+        <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+        <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+      </>
+    )}
+  </section>
+
+  <RightReveal isTitle>
+    <h2 class="mt-10 text-center text-8xl font-black tracking-tighter md:mt-20 md:text-[clamp(9rem,17vw,17.5rem)]">
+      who we are
+    </h2>
+  </RightReveal>
+
+  <ScrollReveal>
+    <h2 class="content-padding mx-auto mt-20 w-full text-center text-xl leading-relaxed font-bold md:mt-50 md:text-4xl">
+      Symbold is not a traditional agency. <br /> We are a studio of branding experts, based in Cluj
+      and working internationally. <br />
+      We move fast, deliver a lot, and do it with depth and precision.
+    </h2>
+  </ScrollReveal>
+
+  <ScrollReveal>
+    <div class="edge-padding mt-10 w-full md:mt-40">
+      {aboutPage?.media2Desktop && aboutPage?.media2Mobile ? (
         <ResponsiveHero
           desktopMedia={{
-            mediaType: aboutPage.media1Desktop.mediaType,
-            image: aboutPage.media1Desktop.image,
-            video: aboutPage.media1Desktop.video,
+            mediaType: aboutPage.media2Desktop.mediaType,
+            image: aboutPage.media2Desktop.image,
+            video: aboutPage.media2Desktop.video,
           }}
           mobileMedia={{
-            mediaType: aboutPage.media1Mobile.mediaType,
-            image: aboutPage.media1Mobile.image,
-            video: aboutPage.media1Mobile.video,
+            mediaType: aboutPage.media2Mobile.mediaType,
+            image: aboutPage.media2Mobile.image,
+            video: aboutPage.media2Mobile.video,
           }}
           videoTitle="About"
         />
@@ -81,53 +123,7 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
           <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
           <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
         </>
-      )
-    }
-  </section>
-
-  <RightReveal isTitle>
-    <h2
-      class="mt-10 text-center text-8xl font-black tracking-tighter md:mt-20 md:text-[clamp(9rem,17vw,17.5rem)]"
-    >
-      who we are
-    </h2>
-  </RightReveal>
-
-  <ScrollReveal>
-    <h2
-      class="content-padding mx-auto mt-20 w-full text-center text-xl leading-relaxed font-bold md:mt-50 md:text-4xl"
-    >
-      Symbold is not a traditional agency. <br /> We are a studio of branding experts, based in Cluj
-      and working internationally. <br />We move fast, deliver a lot, and do it with depth and
-      precision.
-    </h2>
-  </ScrollReveal>
-
-  <ScrollReveal>
-    <div class="edge-padding mt-10 w-full md:mt-40">
-      {
-        aboutPage?.media2Desktop && aboutPage?.media2Mobile ? (
-          <ResponsiveHero
-            desktopMedia={{
-              mediaType: aboutPage.media2Desktop.mediaType,
-              image: aboutPage.media2Desktop.image,
-              video: aboutPage.media2Desktop.video,
-            }}
-            mobileMedia={{
-              mediaType: aboutPage.media2Mobile.mediaType,
-              image: aboutPage.media2Mobile.image,
-              video: aboutPage.media2Mobile.video,
-            }}
-            videoTitle="About"
-          />
-        ) : (
-          <>
-            {/* Fallback to static assets if no Sanity data */}
-            <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
-            <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
-          </>
-        )
-      }
+      )}
     </div>
   </ScrollReveal>
 
@@ -139,48 +135,44 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
         id="service-tags"
         class="mt-10 flex flex-wrap items-center justify-center gap-4 overflow-hidden px-0 md:mt-20 md:px-30"
       >
-        {
-          serviceTags.map((tag, index) => (
-            <RightReveal index={index}>
-              <Tag
-                id={tag}
-                label={tag}
-                class="px-6 py-2 text-xl md:px-10 md:py-4"
-                interactive={false}
-                hoverColor={{ hex: serviceTagColors[index % serviceTagColors.length] }}
-              />
-            </RightReveal>
-          ))
-        }
+        {serviceTags.map((tag, index) => (
+          <RightReveal index={index}>
+            <Tag
+              id={tag}
+              label={tag}
+              class="px-6 py-2 text-xl md:px-10 md:py-4"
+              interactive={false}
+              hoverColor={{ hex: serviceTagColors[index % serviceTagColors.length] }}
+            />
+          </RightReveal>
+        ))}
       </div>
     </ScrollReveal>
   </section>
 
   <ScrollReveal>
     <div class="edge-padding mt-10 w-full md:mt-40">
-      {
-        aboutPage?.media3Desktop && aboutPage?.media3Mobile ? (
-          <ResponsiveHero
-            desktopMedia={{
-              mediaType: aboutPage.media3Desktop.mediaType,
-              image: aboutPage.media3Desktop.image,
-              video: aboutPage.media3Desktop.video,
-            }}
-            mobileMedia={{
-              mediaType: aboutPage.media3Mobile.mediaType,
-              image: aboutPage.media3Mobile.image,
-              video: aboutPage.media3Mobile.video,
-            }}
-            videoTitle="About"
-          />
-        ) : (
-          <>
-            {/* Fallback to static assets if no Sanity data */}
-            <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
-            <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
-          </>
-        )
-      }
+      {aboutPage?.media3Desktop && aboutPage?.media3Mobile ? (
+        <ResponsiveHero
+          desktopMedia={{
+            mediaType: aboutPage.media3Desktop.mediaType,
+            image: aboutPage.media3Desktop.image,
+            video: aboutPage.media3Desktop.video,
+          }}
+          mobileMedia={{
+            mediaType: aboutPage.media3Mobile.mediaType,
+            image: aboutPage.media3Mobile.image,
+            video: aboutPage.media3Mobile.video,
+          }}
+          videoTitle="About"
+        />
+      ) : (
+        <>
+          {/* Fallback to static assets if no Sanity data */}
+          <Image src={heroMobile} alt="Hero" class="h-auto w-full md:hidden" />
+          <Image src={hero} alt="Hero" class="hidden h-auto w-full md:block" />
+        </>
+      )}
     </div>
   </ScrollReveal>
 
@@ -189,33 +181,31 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
       <div class="flex w-full flex-col md:w-1/2">
         <h2 class="pt-8 text-left text-4xl font-black md:pt-20 md:text-6xl">Our values</h2>
       </div>
-      <div
-        class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm md:w-1/2 md:pt-20 md:pl-0 md:text-2xl"
-      >
+      <div class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm md:w-1/2 md:pt-20 md:pl-0 md:text-2xl">
         <p>
-          <span class="font-bold md:font-normal">Brutally honest</span>
-          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> no sugarcoating,
-          only clarity
+          <span class="font-bold md:font-normal">Brutally honest</span>{' '}
+          <span class="text-accent hidden md:inline">→</span>
+          <br class="md:hidden" /> no sugarcoating, only clarity
         </p>
         <p>
-          <span class="font-bold md:font-normal">Conceptual</span>
-          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> every brand built
-          on strong ideas
+          <span class="font-bold md:font-normal">Conceptual</span>{' '}
+          <span class="text-accent hidden md:inline">→</span>
+          <br class="md:hidden" /> every brand built on strong ideas
         </p>
         <p>
-          <span class="font-bold md:font-normal">Efficient</span>
-          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> fast, structured,
-          reliable
+          <span class="font-bold md:font-normal">Efficient</span>{' '}
+          <span class="text-accent hidden md:inline">→</span>
+          <br class="md:hidden" /> fast, structured, reliable
         </p>
         <p>
-          <span class="font-bold md:font-normal">Ambitious</span>
-          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> aiming higher,
-          always
+          <span class="font-bold md:font-normal">Ambitious</span>{' '}
+          <span class="text-accent hidden md:inline">→</span>
+          <br class="md:hidden" /> aiming higher, always
         </p>
         <p>
-          <span class="font-bold md:font-normal">Profound</span>
-          <span class="text-accent hidden md:inline">→</span><br class="md:hidden" /> depth over superficial
-          design
+          <span class="font-bold md:font-normal">Profound</span>{' '}
+          <span class="text-accent hidden md:inline">→</span>
+          <br class="md:hidden" /> depth over superficial design
         </p>
       </div>
     </div>
@@ -230,9 +220,7 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
       <div class="flex w-full flex-col md:w-1/2">
         <h2 class="pt-8 text-left text-4xl font-black md:pt-20 md:text-6xl">Differentiators</h2>
       </div>
-      <div
-        class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm leading-8 md:w-1/2 md:pt-20 md:pl-0 md:text-2xl md:leading-14"
-      >
+      <div class="flex w-full flex-col gap-10 pt-8 pl-18 text-sm leading-8 md:w-1/2 md:pt-20 md:pl-0 md:text-2xl md:leading-14">
         <p class="pr:30 md:w-3/4 md:pr-20">
           Fast delivery, integrated services, and a proven methodology that combines strategic
           clarity with design excellence.
@@ -246,21 +234,17 @@ const serviceTagColors = ['#17e628', '#24a3e3', '#eccd08', '#e35824', '#e324cb',
   </div>
 
   <div class="md:content-padding px-2">
-    <h2
-      class="mx-auto pt-8 text-center text-xl leading-relaxed font-bold md:px-30 md:pt-35 md:text-[2.5rem]"
-    >
-      We're not here to please everyone.
-      <br class="md:hidden" />
-      We're here to partner with clients
-      <br class="md:hidden" />
-      who
-      <br class="md:hidden" />
-      understand the value of design done
-      <br class="md:hidden" />
+    <h2 class="mx-auto pt-8 text-center text-xl leading-relaxed font-bold md:px-30 md:pt-35 md:text-[2.5rem]">
+      We're not here to please everyone. <br class="md:hidden" />
+      We're here to partner with clients <br class="md:hidden" />
+      who <br class="md:hidden" />
+      understand the value of design done <br class="md:hidden" />
       right.
     </h2>
     <div class="mx-auto mb-10 flex justify-center pt-30 md:mb-40 md:pt-35">
-      <Button class="mx-2" href="/contact">Work with us</Button>
+      <Button class="mx-2" href="/contact">
+        Work with us
+      </Button>
     </div>
   </div>
 

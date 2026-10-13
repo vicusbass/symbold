@@ -40,10 +40,7 @@ export interface PortfolioRowSplit {
 }
 
 // Union type for all row types
-export type PortfolioRow =
-  | PortfolioRowFull
-  | PortfolioRowWithDescription
-  | PortfolioRowSplit;
+export type PortfolioRow = PortfolioRowFull | PortfolioRowWithDescription | PortfolioRowSplit;
 
 // Full Portfolio Document
 export interface Portfolio {

@@ -20,17 +20,16 @@ const { desktopMedia, mobileMedia, videoTitle = '', class: className } = Astro.p
 
 const mobileIsImage = mobileMedia.mediaType === 'image' && mobileMedia.image?.asset?._ref;
 const desktopIsImage = desktopMedia.mediaType === 'image' && desktopMedia.image?.asset?._ref;
-const mobileIsVideo =
-  mobileMedia.mediaType === 'video' && mobileMedia.video?.asset?.playbackId;
-const desktopIsVideo =
-  desktopMedia.mediaType === 'video' && desktopMedia.video?.asset?.playbackId;
+const mobileIsVideo = mobileMedia.mediaType === 'video' && mobileMedia.video?.asset?.playbackId;
+const desktopIsVideo = desktopMedia.mediaType === 'video' && desktopMedia.video?.asset?.playbackId;
 
 let mobileImageUrl: string | null = null;
 let desktopImageUrl: string | null = null;
 
 if (mobileIsImage) {
   try {
-    mobileImageUrl = urlFor(mobileMedia.image)?.auto('format').quality(90).width(1024).url() ?? null;
+    mobileImageUrl =
+      urlFor(mobileMedia.image)?.auto('format').quality(90).width(1024).url() ?? null;
   } catch {}
 }
 
@@ -47,70 +46,67 @@ const alt = desktopAlt || mobileAlt;
 ---
 
 {/* Both mobile and desktop are images — use <picture> for single download */}
-{
-  mobileImageUrl && desktopImageUrl ? (
-    <picture>
-      <source media="(max-width: 767px)" srcset={mobileImageUrl} />
-      <source media="(min-width: 768px)" srcset={desktopImageUrl} />
-      <img
-        src={desktopImageUrl}
-        alt={alt}
-        class:list={['h-auto w-full overflow-hidden rounded-md', className]}
-        loading="lazy"
-        decoding="async"
-      />
-    </picture>
-  ) : null
-}
-
-{/* Fallback: only mobile is image (desktop is video) */}
-{
-  mobileImageUrl && !desktopImageUrl ? (
-    <img
-      src={mobileImageUrl}
-      alt={mobileAlt}
-      class:list={['h-auto w-full overflow-hidden rounded-md md:hidden', className]}
-      loading="lazy"
-      decoding="async"
-    />
-  ) : null
-}
-
-{/* Fallback: only desktop is image (mobile is video) */}
-{
-  desktopImageUrl && !mobileImageUrl ? (
+{mobileImageUrl && desktopImageUrl ? (
+  <picture>
+    <source media="(max-width: 767px)" srcset={mobileImageUrl} />
+    <source media="(min-width: 768px)" srcset={desktopImageUrl} />
     <img
       src={desktopImageUrl}
-      alt={desktopAlt}
-      class:list={['hidden h-auto w-full overflow-hidden rounded-md md:block', className]}
+      alt={alt}
+      class:list={['h-auto w-full overflow-hidden rounded-md', className]}
       loading="lazy"
       decoding="async"
     />
-  ) : null
-}
+  </picture>
+) : null}
+
+{/* Fallback: only mobile is image (desktop is video) */}
+{mobileImageUrl && !desktopImageUrl ? (
+  <img
+    src={mobileImageUrl}
+    alt={mobileAlt}
+    class:list={['h-auto w-full overflow-hidden rounded-md md:hidden', className]}
+    loading="lazy"
+    decoding="async"
+  />
+) : null}
+
+{/* Fallback: only desktop is image (mobile is video) */}
+{desktopImageUrl && !mobileImageUrl ? (
+  <img
+    src={desktopImageUrl}
+    alt={desktopAlt}
+    class:list={['hidden h-auto w-full overflow-hidden rounded-md md:block', className]}
+    loading="lazy"
+    decoding="async"
+  />
+) : null}
 
 {/* Mobile video */}
-{
-  mobileIsVideo ? (
-    <div class:list={['overflow-hidden rounded-md', (desktopIsVideo || desktopImageUrl) && 'md:hidden']}>
-      <MuxVideo
-        playbackId={mobileMedia.video!.asset!.playbackId!}
-        videoTitle={videoTitle}
-        aspectRatio={mobileMedia.video!.asset!.aspectRatio}
-      />
-    </div>
-  ) : null
-}
+{mobileIsVideo ? (
+  <div
+    class:list={['overflow-hidden rounded-md', (desktopIsVideo || desktopImageUrl) && 'md:hidden']}
+  >
+    <MuxVideo
+      playbackId={mobileMedia.video!.asset!.playbackId!}
+      videoTitle={videoTitle}
+      aspectRatio={mobileMedia.video!.asset!.aspectRatio}
+    />
+  </div>
+) : null}
 
 {/* Desktop video */}
-{
-  desktopIsVideo ? (
-    <div class:list={['overflow-hidden rounded-md', (mobileIsVideo || mobileImageUrl) && 'hidden md:block']}>
-      <MuxVideo
-        playbackId={desktopMedia.video!.asset!.playbackId!}
-        videoTitle={videoTitle}
-        aspectRatio={desktopMedia.video!.asset!.aspectRatio}
-      />
-    </div>
-  ) : null
-}
+{desktopIsVideo ? (
+  <div
+    class:list={[
+      'overflow-hidden rounded-md',
+      (mobileIsVideo || mobileImageUrl) && 'hidden md:block',
+    ]}
+  >
+    <MuxVideo
+      playbackId={desktopMedia.video!.asset!.playbackId!}
+      videoTitle={videoTitle}
+      aspectRatio={desktopMedia.video!.asset!.aspectRatio}
+    />
+  </div>
+) : null}

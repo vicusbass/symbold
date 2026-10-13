@@ -39,7 +39,8 @@ const projects = portfolioData.map((project) => ({
   schema={{
     '@type': 'CollectionPage',
     name: 'Portfolio',
-    description: 'Branding and web design portfolio — bold brand identities, packaging, and digital experiences.',
+    description:
+      'Branding and web design portfolio — bold brand identities, packaging, and digital experiences.',
     url: 'https://symbold.ro/work',
     publisher: { '@id': 'https://symbold.ro/#organization' },
     hasPart: projects.map((item) => ({
@@ -66,52 +67,46 @@ const projects = portfolioData.map((project) => ({
       <RightReveal index={0}>
         <Tag id="all" label="All" active={true} />
       </RightReveal>
-      {
-        tags.map((tag, index) => (
-          <RightReveal index={index + 1}>
-            <Tag id={tag.id} label={tag.label} active={false} hoverColor={tag.hoverColor} />
-          </RightReveal>
-        ))
-      }
+      {tags.map((tag, index) => (
+        <RightReveal index={index + 1}>
+          <Tag id={tag.id} label={tag.label} active={false} hoverColor={tag.hoverColor} />
+        </RightReveal>
+      ))}
     </div>
   </section>
 
   <div class="edge-padding mt-20 flex flex-row flex-wrap md:mt-30">
-    {
-      projects.map((item, index) => {
-        let rowNumber = 0;
-        let itemsProcessed = 0;
-        let tempIndex = index;
+    {projects.map((item, index) => {
+      let rowNumber = 0;
+      let itemsProcessed = 0;
+      let tempIndex = index;
 
-        while (tempIndex >= 0) {
-          const itemsInRow = rowNumber % 2 === 0 ? 1 : 2;
-          if (tempIndex < itemsInRow) break;
-          tempIndex -= itemsInRow;
-          itemsProcessed += itemsInRow;
-          rowNumber++;
-        }
+      while (tempIndex >= 0) {
+        const itemsInRow = rowNumber % 2 === 0 ? 1 : 2;
+        if (tempIndex < itemsInRow) break;
+        tempIndex -= itemsInRow;
+        itemsProcessed += itemsInRow;
+        rowNumber++;
+      }
 
-        const isFullWidthRow = rowNumber % 2 === 0;
-        const isFirstInSplitRow = !isFullWidthRow && index === itemsProcessed;
+      const isFullWidthRow = rowNumber % 2 === 0;
+      const isFirstInSplitRow = !isFullWidthRow && index === itemsProcessed;
 
-        return (
-          <div
-            class={`mt-4 w-full ${isFullWidthRow ? 'md:w-full' : 'md:w-[calc(50%-8px)]'} ${isFirstInSplitRow ? 'md:mr-4' : ''} `}
-            data-tags={item.tags.join(',')}
-          >
-            <ScrollReveal>
-              <ProjectPreview project={item.project} disableCursor={true} />
-            </ScrollReveal>
-          </div>
-        );
-      })
-    }
+      return (
+        <div
+          class={`mt-4 w-full ${isFullWidthRow ? 'md:w-full' : 'md:w-[calc(50%-8px)]'} ${isFirstInSplitRow ? 'md:mr-4' : ''} `}
+          data-tags={item.tags.join(',')}
+        >
+          <ScrollReveal>
+            <ProjectPreview project={item.project} disableCursor={true} />
+          </ScrollReveal>
+        </div>
+      );
+    })}
   </div>
 
   <ScrollReveal>
-    <h2
-      class="edge-padding mx-auto mt-30 w-full text-center text-xl leading-tight font-bold md:mt-60 md:w-1/2 md:text-4xl"
-    >
+    <h2 class="edge-padding mx-auto mt-30 w-full text-center text-xl leading-tight font-bold md:mt-60 md:w-1/2 md:text-4xl">
       We are not for everyone.
       <br />
       Symbold partners only with visionaries who value design as strategy, not decoration.
@@ -119,7 +114,9 @@ const projects = portfolioData.map((project) => ({
   </ScrollReveal>
 
   <div class="content-padding mt-30 flex items-center justify-center">
-    <Button class="w-full md:w-auto" href="/contact">Work with us</Button>
+    <Button class="w-full md:w-auto" href="/contact">
+      Work with us
+    </Button>
   </div>
 
   <div class="content-padding">
@@ -127,7 +124,16 @@ const projects = portfolioData.map((project) => ({
   </div>
 </Layout>
 
+<style is:global>
+  /* Returning to /work: show restored cards in place instead of fading them in again */
+  html.restoring-work-grid .fade-in-scroll {
+    transition: none;
+  }
+</style>
+
 <script>
+  import { afterViewTransition } from '../lib/view-transition';
+
   function toggleProjectVisibility(projectElement: HTMLElement, isVisible: boolean) {
     const scrollAnimationChild = projectElement.querySelector(
       '[data-scroll-animation]'
@@ -226,8 +232,14 @@ const projects = portfolioData.map((project) => ({
     const top = workScrollY ?? routerScrollY ?? 0;
     if (top > 0) {
       window.scrollTo({ top, behavior: 'instant' });
-      // Reveal what is now on screen without waiting for the IntersectionObserver
+      // Reveal what is now on screen without waiting for the IntersectionObserver. Do it without the
+      // fade: Safari draws the view transition ahead of a running fade, so the cards would dip and
+      // fade in a second time once the transition ends.
+      document.documentElement.classList.add('restoring-work-grid');
       renderProjects(getActiveTags());
+      afterViewTransition().then(() =>
+        document.documentElement.classList.remove('restoring-work-grid')
+      );
     }
 
     // Only valid for this return; later scrolling here is tracked by ClientRouter again

@@ -40,9 +40,9 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
         class="w-full border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
         required
       />
-      <span id="email-error" class="mt-2 hidden text-sm text-red-600"
-        >Please enter a valid email address</span
-      >
+      <span id="email-error" class="mt-2 hidden text-sm text-red-600">
+        Please enter a valid email address
+      </span>
     </div>
     <input
       type="tel"
@@ -62,7 +62,8 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
       placeholder="Your message here"
       rows="6"
       class="w-full resize-none border-b border-gray-300 bg-transparent pb-3 text-base outline-none placeholder:text-black focus:border-black"
-      required></textarea>
+      required
+    ></textarea>
     <div class="flex items-start gap-3">
       <input
         type="checkbox"
@@ -72,14 +73,21 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
         required
       />
       <label for="terms" class="cursor-pointer text-sm leading-relaxed">
-        I have read and agree with the <a href="/terms" class="text-black underline"
-          >Terms and Conditions</a
-        > and with the <a href="/privacy" class="text-black underline">Privacy Policy</a>
+        I have read and agree with the{' '}
+        <a href="/terms" class="text-black underline">
+          Terms and Conditions
+        </a>{' '}
+        and with the{' '}
+        <a href="/privacy" class="text-black underline">
+          Privacy Policy
+        </a>
       </label>
     </div>
     <div id="form-message" class="hidden text-sm"></div>
     <div class="mt-4">
-      <Button type="submit" id="submit-button" class="text-base" disabled>SUBMIT</Button>
+      <Button type="submit" id="submit-button" class="text-base" disabled>
+        SUBMIT
+      </Button>
     </div>
   </form>
 </div>
