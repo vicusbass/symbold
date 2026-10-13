@@ -4,6 +4,18 @@
 @theme {
   --font-sans: var(--font-google-sans);
 
+  /*
+   * Google Sans is noticeably heavier than Area Normal (the previous Adobe font) at the same
+   * nominal weight. These remap Tailwind's named weights to the Google Sans values whose stem
+   * thickness (relative to x-height) matches Area Normal's, so the site keeps its look.
+   * Google Sans' wght axis is 400–700, hence nothing below 400.
+   */
+  --font-weight-medium: 400; /* Area 500 */
+  --font-weight-semibold: 400; /* Area 600 */
+  --font-weight-bold: 450; /* Area 700 */
+  --font-weight-extrabold: 525; /* Area 800 */
+  --font-weight-black: 700; /* Area 900 */
+
   --color-primary: #000000;
   --color-accent: #44ff00;
   --custom-gray: #d9d9d9;
@@ -78,7 +90,12 @@
 
 @layer components {
   .link-primary {
-    @apply decoration-accent text-2xl font-[800] text-black uppercase underline decoration-4 underline-offset-12 transition-all duration-300 ease-in-out hover:underline-offset-4;
+    @apply decoration-accent text-2xl font-extrabold text-black uppercase underline decoration-4 underline-offset-12 transition-all duration-300 ease-in-out hover:underline-offset-4;
+  }
+
+  /* The typography plugin hardcodes strong at 600; keep it on the calibrated scale above */
+  .prose strong {
+    font-weight: var(--font-weight-bold);
   }
 
   .fade-in-scroll {
@@ -134,6 +151,14 @@
     @apply mt-4 pb-8 leading-[1.1] md:mt-[8.75rem] md:tracking-tight;
     font-size: clamp(3.5rem, 0.938rem + 4.688vw, 6rem);
     font-weight: 700;
+  }
+
+  @media (min-width: 768px) {
+    /* Google Sans tops out at 700; the stroke adds the extra heft the old 900 + stroke title had */
+    .page-title {
+      -webkit-text-stroke: 1.5px black;
+      paint-order: stroke fill;
+    }
   }
 
   .bg-custom-gray {
