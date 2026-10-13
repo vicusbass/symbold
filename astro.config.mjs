@@ -8,7 +8,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import lottie from 'astro-integration-lottie';
 
 export default defineConfig({
-  site: 'https://symbold.ro',
+  site: 'https://www.symbold.ro',
 
   // HTML whitespace rules (Astro 7 defaults to 'jsx'), matching how Biome formats templates
   compressHTML: true,
