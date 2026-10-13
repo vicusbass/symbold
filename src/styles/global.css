@@ -90,7 +90,7 @@
 
 @layer components {
   .link-primary {
-    @apply decoration-accent text-2xl font-extrabold text-black uppercase underline decoration-4 underline-offset-12 transition-all duration-300 ease-in-out hover:underline-offset-4;
+    @apply decoration-accent text-2xl font-[500] text-black uppercase underline decoration-4 underline-offset-12 transition-all duration-300 ease-in-out hover:underline-offset-4;
   }
 
   /* The typography plugin hardcodes strong at 600; keep it on the calibrated scale above */
