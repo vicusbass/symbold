@@ -254,11 +254,52 @@ const projects = portfolioData.map((project) => ({
       }
 
       renderProjects();
+
+      // Keep the filters in this page's history entry so returning here restores the same grid
+      history.replaceState({ ...history.state, workTags: [...selectedTags] }, '');
     }
 
     // Attach click handlers to all tag buttons
     document.querySelectorAll('.tag-button').forEach((button) => {
       button.addEventListener('click', () => toggleTag(button));
     });
+
+    // Remember which history entry opened a project, so its "Back to work" link can go back here
+    document.querySelectorAll<HTMLAnchorElement>('[data-tags] a').forEach((link) => {
+      link.addEventListener('click', () => {
+        sessionStorage.setItem(
+          'work-origin',
+          JSON.stringify({ path: link.pathname.replace(/\/$/, ''), index: history.state?.index })
+        );
+      });
+    });
+
+    // Returning to this entry (Back button or "Back to work"): reapply the filters, then the
+    // scroll position, which was saved against the filtered layout. Fresh visits have neither.
+    // This listener also fires on other pages after a client-side navigation
+    if (!document.querySelector('[data-tags]')) return;
+
+    const savedTags: string[] | undefined = history.state?.workTags;
+    const savedScrollY: number = history.state?.scrollY ?? 0;
+    const hasSavedFilters = savedTags && !savedTags.includes('all');
+
+    if (hasSavedFilters) {
+      selectedTags = new Set(savedTags);
+      document.querySelectorAll('.tag-button').forEach((btn) => {
+        btn.setAttribute('data-active', String(selectedTags.has(btn.getAttribute('data-tag-id')!)));
+      });
+      renderProjects();
+    }
+
+    if (savedScrollY > 0) {
+      // ClientRouter restores the position too, but `scroll-behavior: smooth` turns that into a
+      // long animated scroll from the top; jump straight there instead
+      window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+    }
+
+    if (hasSavedFilters) {
+      // Re-run so cards now in the viewport get revealed
+      renderProjects();
+    }
   });
 </script>
