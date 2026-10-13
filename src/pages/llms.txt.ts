@@ -1,5 +1,5 @@
-import type { APIRoute } from 'astro';
 import { sanityClient } from 'sanity:client';
+import type { APIRoute } from 'astro';
 import { portfolioListQuery } from '../lib/queries/portfolio';
 
 type ProjectSummary = {

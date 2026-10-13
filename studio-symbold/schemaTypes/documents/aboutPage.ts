@@ -57,7 +57,7 @@ export const aboutPage = defineType({
       media3Desktop: 'media3Desktop.image',
       media3Type: 'media3Desktop.mediaType',
     },
-    prepare({media1Desktop, media1Type, media2Desktop, media2Type, media3Desktop, media3Type}) {
+    prepare({media1Desktop, media2Desktop, media3Desktop}) {
       const mediaCount = [media1Desktop, media2Desktop, media3Desktop].filter(Boolean).length
       return {
         title: 'About Page',

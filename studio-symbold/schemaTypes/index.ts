@@ -1,16 +1,16 @@
-import {tag} from './tag'
-import {heroSection} from './objects/heroSection'
-import {portfolioMedia} from './objects/portfolioMedia'
-import {
-  portfolioRowFull,
-  portfolioRowWithDescription,
-  portfolioRowSplit,
-  portfolioRowText,
-} from './objects/portfolioRow'
 import {aboutPage} from './documents/aboutPage'
 import {mainPage} from './documents/mainPage'
 import {portfolio} from './documents/portfolio'
 import {workPage} from './documents/workPage'
+import {heroSection} from './objects/heroSection'
+import {portfolioMedia} from './objects/portfolioMedia'
+import {
+  portfolioRowFull,
+  portfolioRowSplit,
+  portfolioRowText,
+  portfolioRowWithDescription,
+} from './objects/portfolioRow'
+import {tag} from './tag'
 
 export const schemaTypes = [
   // Documents

@@ -1,21 +1,20 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import type { SanityDocument } from '@sanity/client';
 import { sanityClient } from 'sanity:client';
-import Tag from '../../components/Tag.astro';
-import ScrollReveal from '../../components/ScrollReveal.astro';
+import type { SanityDocument } from '@sanity/client';
+import BaselineReveal from '../../components/BaselineReveal.astro';
 import ContactForm from '../../components/ContactForm.astro';
+import MediaRenderer from '../../components/MediaRenderer.astro';
 import ProjectPreview from '../../components/ProjectPreview.astro';
 import ResponsiveHero from '../../components/ResponsiveHero.astro';
-import MediaRenderer from '../../components/MediaRenderer.astro';
-import type { FeaturedProject } from '../../types/sanity';
-import { allProjectsQuery } from '../../lib/queries/portfolio';
-import BaselineReveal from '../../components/BaselineReveal.astro';
 import RightReveal from '../../components/RightReveal.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
 import StyledPortableText from '../../components/StyledPortableText.astro';
-import { extractPlainText } from '../../lib/seo';
+import Tag from '../../components/Tag.astro';
+import Layout from '../../layouts/Layout.astro';
+import { allProjectsQuery } from '../../lib/queries/portfolio';
 import { urlFor } from '../../lib/sanity';
-import type { PortableTextBlock } from '../../types/sanity';
+import { extractPlainText } from '../../lib/seo';
+import type { FeaturedProject, PortableTextBlock } from '../../types/sanity';
 
 export async function getStaticPaths() {
   // Fetch all projects with full details in one query
@@ -120,9 +119,7 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
         <BaselineReveal delayed>
           <h2 class="text-base font-semibold">Team:</h2>
           <div class="mt-1 text-base font-semibold text-gray-400">
-            {teamLines.map((line) => (
-              <p>{line}</p>
-            ))}
+            {teamLines.map((line) => <p>{line}</p>)}
           </div>
         </BaselineReveal>
       </div>

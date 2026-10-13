@@ -1,13 +1,13 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import type { SanityDocument } from '@sanity/client';
 import { sanityClient } from 'sanity:client';
-import Button from '../components/Button.astro';
-import ScrollReveal from '../components/ScrollReveal.astro';
+import type { SanityDocument } from '@sanity/client';
 import BaselineReveal from '../components/BaselineReveal.astro';
-import Tag from '../components/Tag.astro';
-import RightReveal from '../components/RightReveal.astro';
+import Button from '../components/Button.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
+import RightReveal from '../components/RightReveal.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import Tag from '../components/Tag.astro';
+import Layout from '../layouts/Layout.astro';
 import { portfolioListQuery } from '../lib/queries/portfolio';
 
 const TAGS_QUERY = `*[_type == "tag"]{ id, text, hoverColor, order } | order(order asc)`;
@@ -54,7 +54,8 @@ const projects = portfolioData.map((project) => ({
     <BaselineReveal>
       <h1 class="page-title">
         brands
-        <br /> we're proud of
+        <br />
+        we're proud of
       </h1>
     </BaselineReveal>
     <BaselineReveal delayed>
@@ -106,7 +107,9 @@ const projects = portfolioData.map((project) => ({
   </div>
 
   <ScrollReveal>
-    <h2 class="edge-padding mx-auto mt-30 w-full text-center text-xl leading-tight font-bold md:mt-60 md:w-1/2 md:text-4xl">
+    <h2
+      class="edge-padding mx-auto mt-30 w-full text-center text-xl leading-tight font-bold md:mt-60 md:w-1/2 md:text-4xl"
+    >
       We are not for everyone.
       <br />
       Symbold partners only with visionaries who value design as strategy, not decoration.
@@ -114,9 +117,7 @@ const projects = portfolioData.map((project) => ({
   </ScrollReveal>
 
   <div class="content-padding mt-30 flex items-center justify-center">
-    <Button class="w-full md:w-auto" href="/contact">
-      Work with us
-    </Button>
+    <Button class="w-full md:w-auto" href="/contact"> Work with us </Button>
   </div>
 
   <div class="content-padding">
@@ -259,7 +260,7 @@ const projects = portfolioData.map((project) => ({
   });
 
   document.addEventListener('astro:page-load', () => {
-    let selectedTags = getActiveTags();
+    const selectedTags = getActiveTags();
 
     function toggleTag(button: Element) {
       const tagId = button.getAttribute('data-tag-id');
