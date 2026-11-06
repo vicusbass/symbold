@@ -45,7 +45,10 @@ export default defineConfig({
       dataset: 'production',
       useCdn: false, // for static builds
     }),
-    sitemap(),
+    sitemap({
+      // Pages rendered with <Layout noindex> must not be listed
+      filter: (page) => !page.includes('/thank-you/'),
+    }),
   ],
 
   adapter: vercel(),

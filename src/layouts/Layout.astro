@@ -16,6 +16,8 @@ interface Props {
   type?: 'website';
   author?: string;
   schema?: Record<string, unknown> | Record<string, unknown>[];
+  /** Keep this page out of search results (also exclude it from the sitemap in astro.config.mjs) */
+  noindex?: boolean;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   type = 'website',
   author = 'Symbold',
   schema,
+  noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -54,7 +57,7 @@ const sanitizedDescription = description.trim().replace(/\s+/g, ' ');
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
     <meta name="author" content={author} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
     <meta name="language" content="English" />
     <link rel="canonical" href={canonicalURL} />
 
