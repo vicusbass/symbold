@@ -71,7 +71,7 @@ const seoDescription = buildMetaDescription(
 
 const heroImageUrl =
   project.hero?.mediaType === 'image' && project.hero.image?.asset
-    ? urlFor(project.hero.image)?.width(1200).height(630).fit('crop').auto('format').url()
+    ? urlFor(project.hero.image)?.width(1200).height(630).fit('crop').format('jpg').url()
     : null;
 
 const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
