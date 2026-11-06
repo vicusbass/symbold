@@ -10,6 +10,10 @@ import lottie from 'astro-integration-lottie';
 export default defineConfig({
   site: 'https://www.symbold.ro',
 
+  // Canonical URLs end in a slash; the Vercel adapter turns this into permanent redirects
+  // from the slash-less form, so /about and /about/ are no longer duplicates
+  trailingSlash: 'always',
+
   // HTML whitespace rules (Astro 7 defaults to 'jsx'), matching how Biome formats templates
   compressHTML: true,
 

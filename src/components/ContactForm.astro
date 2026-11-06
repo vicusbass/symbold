@@ -74,9 +74,9 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
       />
       <label for="terms" class="cursor-pointer text-sm leading-relaxed">
         I have read and agree with the
-        <a href="/terms" class="text-black underline">Terms and Conditions</a>
+        <a href="/terms/" class="text-black underline">Terms and Conditions</a>
         and with the
-        <a href="/privacy" class="text-black underline">Privacy Policy</a>
+        <a href="/privacy/" class="text-black underline">Privacy Policy</a>
       </label>
     </div>
     <div id="form-message" class="hidden text-sm"></div>
@@ -161,7 +161,7 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
         submitButton.disabled = true;
         submitButton.textContent = 'SENDING...';
 
-        const response = await fetch('/api/send-email', {
+        const response = await fetch('/api/send-email/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -171,14 +171,14 @@ const formClasses = [...baseFormClasses, formClass].filter(Boolean).join(' ');
 
         if (response.ok) {
           // Redirect to success page
-          window.location.href = '/thank-you?status=success';
+          window.location.href = '/thank-you/?status=success';
         } else {
           // Redirect to error page
-          window.location.href = '/thank-you?status=error';
+          window.location.href = '/thank-you/?status=error';
         }
       } catch (error) {
         // Redirect to error page on network failure
-        window.location.href = '/thank-you?status=error';
+        window.location.href = '/thank-you/?status=error';
       }
     });
   }
