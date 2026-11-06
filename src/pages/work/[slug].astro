@@ -75,6 +75,9 @@ const heroImageUrl =
     : null;
 
 const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
+
+// Content rows that sit in a md:w-1/2 column
+const HALF_WIDTH_SIZES = '(min-width: 768px) 50vw, 100vw';
 ---
 
 <Layout
@@ -130,7 +133,7 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
   </section>
 
   <section class="edge-padding mt-16 md:mt-24">
-    <MediaRenderer media={project.hero} videoTitle={project.title} />
+    <MediaRenderer media={project.hero} videoTitle={project.title} priority />
   </section>
 
   <section class="edge-padding">
@@ -170,7 +173,11 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
           <article class="mt-4 flex flex-col gap-8 md:flex-row md:items-center md:gap-4">
             <div class={`w-full md:w-1/2 ${mediaOrderClasses}`}>
               <ScrollReveal>
-                <MediaRenderer media={row.media} videoTitle={project.title} />
+                <MediaRenderer
+                  media={row.media}
+                  videoTitle={project.title}
+                  sizes={HALF_WIDTH_SIZES}
+                />
               </ScrollReveal>
             </div>
             {description && description.length > 0 && (
@@ -194,12 +201,20 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
           <article class="mt-4 flex flex-col gap-4 md:flex-row">
             <div class="w-full md:w-1/2">
               <ScrollReveal>
-                <MediaRenderer media={row.leftMedia} videoTitle={project.title} />
+                <MediaRenderer
+                  media={row.leftMedia}
+                  videoTitle={project.title}
+                  sizes={HALF_WIDTH_SIZES}
+                />
               </ScrollReveal>
             </div>
             <div class="w-full md:w-1/2">
               <ScrollReveal>
-                <MediaRenderer media={row.rightMedia} videoTitle={project.title} />
+                <MediaRenderer
+                  media={row.rightMedia}
+                  videoTitle={project.title}
+                  sizes={HALF_WIDTH_SIZES}
+                />
               </ScrollReveal>
             </div>
           </article>

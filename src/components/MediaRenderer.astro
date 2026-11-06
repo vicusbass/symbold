@@ -13,22 +13,47 @@ interface Props {
   media: MediaContent;
   videoTitle?: string;
   class?: string;
+  /** Above-the-fold media (LCP candidate): load eagerly with high fetch priority */
+  priority?: boolean;
+  /** `sizes` for the image/poster srcset */
+  sizes?: string;
 }
 
-const { media, videoTitle = '', class: className } = Astro.props;
+const { media, videoTitle = '', class: className, priority = false, sizes = '100vw' } = Astro.props;
 
-const imageUrl =
+const IMAGE_WIDTHS = [640, 960, 1280, 1920, 2560];
+
+// Sanity asset refs encode the original size: image-<hash>-<width>x<height>-<format>
+const dimensions = media.image?.asset?._ref?.match(/-(\d+)x(\d+)-[a-z0-9]+$/i);
+const originalWidth = dimensions ? Number(dimensions[1]) : undefined;
+const originalHeight = dimensions ? Number(dimensions[2]) : undefined;
+
+const imageBuilder =
   media.mediaType === 'image' && media.image?.asset?._ref
-    ? urlFor(media.image)?.auto('format').quality(90).width(2560).url()
+    ? urlFor(media.image)?.auto('format').quality(90)
     : null;
+
+// Never upscale: drop widths larger than the original
+const widths = originalWidth ? IMAGE_WIDTHS.filter((w) => w <= originalWidth) : IMAGE_WIDTHS;
+const largestWidth = widths.at(-1) ?? originalWidth ?? 2560;
+
+const imageUrl = imageBuilder?.width(largestWidth).url() ?? null;
+const imageSrcset = imageBuilder
+  ? widths.map((w) => `${imageBuilder.width(w).url()} ${w}w`).join(', ')
+  : undefined;
 ---
 
 {imageUrl ? (
   <img
     src={imageUrl}
+    srcset={imageSrcset}
+    sizes={sizes}
+    width={originalWidth}
+    height={originalHeight}
     alt={media.image?.alt || ''}
     class:list={['h-auto w-full rounded-md', className]}
-    loading="lazy"
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : undefined}
     decoding="async"
   />
 ) : media.mediaType === 'video' && media.video?.asset?.playbackId ? (
@@ -37,6 +62,8 @@ const imageUrl =
       playbackId={media.video.asset.playbackId}
       videoTitle={videoTitle}
       aspectRatio={media.video.asset.aspectRatio}
+      priority={priority}
+      sizes={sizes}
     />
   </div>
 ) : null}
