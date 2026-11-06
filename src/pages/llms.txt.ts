@@ -20,9 +20,9 @@ export const GET: APIRoute = async () => {
 
   const body = `# Symbold
 
-> Symbold is an independent branding and web design studio based in Cluj, Romania, working internationally. We craft conceptual, ambitious, and brutally honest brand identities for visionary companies that treat design as strategy, not decoration.
+> Symbold is a branding agency with offices in Cluj-Napoca and Bucharest. We take a concept-driven approach, bringing depth and meaning to ambitious brands in Romania and beyond.
 
-We are not a traditional agency. We move fast, deliver with depth and precision, and partner only with clients who understand the value of design done right.
+We craft conceptual, ambitious, and brutally honest brand identities for visionary companies that treat design as strategy, not decoration. We are not your typical agency. We move fast, deliver with depth and precision, and partner only with clients who understand the value of design done right.
 
 ## Services
 
