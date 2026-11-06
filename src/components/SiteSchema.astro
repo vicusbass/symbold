@@ -1,0 +1,95 @@
+---
+/**
+ * Site-wide JSON-LD: the Symbold organisation, the website, and one node per office.
+ * Defined once here and rendered in the <head> of every page by Layout.astro.
+ * Office details come from src/lib/business.ts, the same data the contact page shows.
+ */
+import { EMAIL, OFFICES, SITE_URL } from '../lib/business';
+
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+const LOGO_ID = `${SITE_URL}/#logo`;
+
+const DESCRIPTION =
+  'Symbold is a branding agency with offices in Cluj-Napoca and Bucharest. We take a concept-driven approach, bringing depth and meaning to ambitious brands in Romania and beyond.';
+
+const officeNodes = OFFICES.map((office) => ({
+  '@type': 'ProfessionalService',
+  '@id': `${SITE_URL}/#${office.id}`,
+  name: 'Symbold',
+  description: `Symbold branding agency, ${office.address.addressLocality} office.`,
+  url: SITE_URL,
+  image: `${SITE_URL}/OG.jpg`,
+  logo: { '@id': LOGO_ID },
+  priceRange: '$$',
+  telephone: office.phone,
+  email: EMAIL,
+  address: { '@type': 'PostalAddress', ...office.address },
+  ...(office.geo && { geo: { '@type': 'GeoCoordinates', ...office.geo } }),
+  hasMap: office.mapUrl,
+  parentOrganization: { '@id': ORGANIZATION_ID },
+}));
+
+const organization = {
+  '@type': 'Organization',
+  '@id': ORGANIZATION_ID,
+  name: 'Symbold',
+  alternateName: ['Symbold Studio', 'Symbold Branding Agency', 'Symbold Brands'],
+  legalName: 'SYMBOLD CONSULTANTS SRL',
+  description: DESCRIPTION,
+  url: SITE_URL,
+  email: EMAIL,
+  logo: {
+    '@type': 'ImageObject',
+    '@id': LOGO_ID,
+    url: `${SITE_URL}/symbold-logo.png`,
+    contentUrl: `${SITE_URL}/symbold-logo.png`,
+    width: 600,
+    height: 600,
+    caption: 'Symbold',
+  },
+  image: `${SITE_URL}/OG.jpg`,
+  foundingDate: '2021',
+  sameAs: [
+    'https://www.facebook.com/symboldstudio/',
+    'https://www.linkedin.com/company/symboldstudio/',
+    'https://www.instagram.com/symboldbrands/',
+  ],
+  knowsAbout: [
+    'Brand Identity Design',
+    'Graphic Design',
+    'Web Design',
+    'Logo Design',
+    'Strategic Branding',
+    'Visual Identity',
+    'Brand Strategy',
+  ],
+  areaServed: [
+    { '@type': 'Country', name: 'Romania' },
+    { '@type': 'Place', name: 'Worldwide' },
+  ],
+  contactPoint: OFFICES.map((office) => ({
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    telephone: office.phone,
+    email: EMAIL,
+    availableLanguage: ['English', 'Romanian'],
+  })),
+  department: officeNodes.map((node) => ({ '@id': node['@id'] })),
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: 'Symbold',
+  alternateName: 'Symbold Branding Agency',
+  url: SITE_URL,
+  publisher: { '@id': ORGANIZATION_ID },
+};
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [organization, website, ...officeNodes],
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(graph)} />
