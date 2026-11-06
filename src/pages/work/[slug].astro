@@ -13,8 +13,8 @@ import Tag from '../../components/Tag.astro';
 import Layout from '../../layouts/Layout.astro';
 import { allProjectsQuery } from '../../lib/queries/portfolio';
 import { urlFor } from '../../lib/sanity';
-import { extractPlainText } from '../../lib/seo';
-import type { FeaturedProject, PortableTextBlock } from '../../types/sanity';
+import { buildMetaDescription } from '../../lib/seo';
+import type { FeaturedProject } from '../../types/sanity';
 
 export async function getStaticPaths() {
   // Fetch all projects with full details in one query
@@ -64,8 +64,9 @@ const heroLabelledTags =
 
 const teamLines = Array.isArray(project.team) ? project.team : [];
 
-const seoDescription = extractPlainText(
-  Array.isArray(project.description) ? (project.description as PortableTextBlock[]) : undefined
+// `description` is a plain-text field in Sanity (see studio-symbold/schemaTypes/documents/portfolio.ts)
+const seoDescription = buildMetaDescription(
+  typeof project.description === 'string' ? project.description : undefined
 );
 
 const heroImageUrl =
@@ -87,7 +88,9 @@ const projectKeywords = project.tags?.map((tag: any) => tag.text) || [];
     url: `https://www.symbold.ro/work/${project.slug.current}/`,
     image: heroImageUrl || 'https://www.symbold.ro/OG.jpg',
     keywords: projectKeywords,
+    creator: { '@id': 'https://www.symbold.ro/#organization' },
     author: { '@id': 'https://www.symbold.ro/#organization' },
+    isPartOf: { '@id': 'https://www.symbold.ro/#website' },
     ...(project.publishedAt && { datePublished: project.publishedAt }),
   }}
 >
