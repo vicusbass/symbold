@@ -12,7 +12,6 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
-  keywords?: string;
   type?: 'website';
   author?: string;
   schema?: Record<string, unknown> | Record<string, unknown>[];
@@ -24,7 +23,6 @@ const {
   title = 'Symbold | Brutally Honest Branding & Web Design Agency',
   description = 'Symbold is a branding agency in Cluj-Napoca and Bucharest. Concept-driven branding that brings depth and meaning to ambitious brands in Romania and beyond.',
   image = '/OG.jpg',
-  keywords = 'Symbold, Symbold branding agency, Symbold studio, branding agency, brand identity, graphic design, web design, logo design, strategic branding, Romania branding, Cluj design agency, Bucharest design agency, brand strategy, visual identity, agenție de branding, identitate vizuală, design grafic, web design, design logo, strategie de brand',
   type = 'website',
   author = 'Symbold',
   schema,
@@ -47,23 +45,16 @@ const sanitizedDescription = description.trim().replace(/\s+/g, ' ');
     <link rel="icon" type="image/svg+xml" href="/32.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
-    <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords} />
     <meta name="author" content={author} />
     <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
-    <meta name="language" content="English" />
     <link rel="canonical" href={canonicalURL} />
-
-    <!-- Geographic Tags -->
-    <meta name="geo.region" content="RO" />
-    <meta name="geo.placename" content="Romania" />
 
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content={type} />

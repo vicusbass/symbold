@@ -3,6 +3,8 @@ import Facebook from '../assets/footer/facebook.svg';
 import Instagram from '../assets/footer/instagram.svg';
 import LinkedIn from '../assets/footer/linkedin.svg';
 import YouTube from '../assets/footer/youtube.svg';
+
+const year = new Date().getFullYear();
 ---
 
 <footer
@@ -45,7 +47,7 @@ import YouTube from '../assets/footer/youtube.svg';
     </div>
   </div>
 
-  <div class="text-center text-sm text-gray-600 md:text-left">© Copyright Symbold 2025</div>
+  <div class="text-center text-sm text-gray-600 md:text-left">© Copyright Symbold {year}</div>
 
   <nav class="flex flex-col items-center gap-3 text-sm text-gray-600 md:flex-row md:gap-6">
     <a href="/terms/" class="hover:text-black"> Terms & Conditions </a>
