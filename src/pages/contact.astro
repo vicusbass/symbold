@@ -2,17 +2,22 @@
 import BaselineReveal from '../components/BaselineReveal.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Layout from '../layouts/Layout.astro';
+import { OFFICES } from '../lib/business';
+
+const description =
+  'Contact Symbold, a branding agency with offices in Cluj-Napoca and Bucharest. Tell us about your brand and we will get back to you.';
 ---
 
 <Layout
-  title="Contact Symbold | Branding & Web Design Agency"
-  description="Ready to build a bold brand? Contact Symbold — branding and web design agency in Cluj, Romania. Contactează agenția de branding și web design."
+  title="Contact Symbold | Cluj-Napoca & Bucharest Offices"
+  description={description}
   schema={{
     '@type': 'ContactPage',
     name: 'Contact Symbold',
-    description: 'Contact Symbold — branding and web design agency for visionary businesses.',
+    description,
     url: 'https://www.symbold.ro/contact/',
     publisher: { '@id': 'https://www.symbold.ro/#organization' },
+    about: { '@id': 'https://www.symbold.ro/#organization' },
   }}
 >
   <section class="content-padding">
@@ -22,7 +27,38 @@ import Layout from '../layouts/Layout.astro';
           <h1 class="page-title">contact</h1>
         </BaselineReveal>
 
-        <div class="text-bold mt-10 w-full text-base md:mt-[280px] md:text-2xl md:leading-[2.5]">
+        <div class="mt-2 flex flex-col gap-8 text-base leading-snug md:text-xl">
+          {OFFICES.map((office) => (
+            <div>
+              <h2 class="font-extrabold">{office.label}</h2>
+              <span aria-hidden="true">-</span>
+              <address class="not-italic">
+                <a
+                  href={office.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline underline-offset-4 hover:opacity-70"
+                >
+                  {office.addressLines.map((line, index) => (
+                    <>
+                      {index > 0 && <br />}
+                      {line}
+                    </>
+                  ))}
+                </a>
+                <br />
+                <a
+                  href={`tel:${office.phone}`}
+                  class="underline underline-offset-4 hover:opacity-70"
+                >
+                  {office.phoneDisplay}
+                </a>
+              </address>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-bold mt-10 w-full text-base md:mt-16 md:text-2xl md:leading-[2.5]">
           <p>
             Symbold works with ambitious clients who value design as strategy. If you're ready to
             truly start building your brand, we'd love to hear from you.

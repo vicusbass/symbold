@@ -2,16 +2,32 @@
 /**
  * Site-wide JSON-LD: the Symbold organisation, the website, and one node per office.
  * Defined once here and rendered in the <head> of every page by Layout.astro.
- *
- * Keep the office details identical to the Google Business Profiles (name, address, phone).
+ * Office details come from src/lib/business.ts, the same data the contact page shows.
  */
-const SITE = 'https://www.symbold.ro';
-const ORGANIZATION_ID = `${SITE}/#organization`;
-const OFFICE_CLUJ_ID = `${SITE}/#office-cluj-napoca`;
-const OFFICE_BUCHAREST_ID = `${SITE}/#office-bucuresti`;
+import { EMAIL, OFFICES, SITE_URL } from '../lib/business';
+
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+const LOGO_ID = `${SITE_URL}/#logo`;
 
 const DESCRIPTION =
   'Symbold is a branding agency with offices in Cluj-Napoca and Bucharest. We take a concept-driven approach, bringing depth and meaning to ambitious brands in Romania and beyond.';
+
+const officeNodes = OFFICES.map((office) => ({
+  '@type': 'ProfessionalService',
+  '@id': `${SITE_URL}/#${office.id}`,
+  name: 'Symbold',
+  description: `Symbold branding agency, ${office.address.addressLocality} office.`,
+  url: SITE_URL,
+  image: `${SITE_URL}/OG.jpg`,
+  logo: { '@id': LOGO_ID },
+  priceRange: '$$',
+  telephone: office.phone,
+  email: EMAIL,
+  address: { '@type': 'PostalAddress', ...office.address },
+  ...(office.geo && { geo: { '@type': 'GeoCoordinates', ...office.geo } }),
+  hasMap: office.mapUrl,
+  parentOrganization: { '@id': ORGANIZATION_ID },
+}));
 
 const organization = {
   '@type': 'Organization',
@@ -20,17 +36,18 @@ const organization = {
   alternateName: ['Symbold Studio', 'Symbold Branding Agency', 'Symbold Brands'],
   legalName: 'SYMBOLD CONSULTANTS SRL',
   description: DESCRIPTION,
-  url: SITE,
+  url: SITE_URL,
+  email: EMAIL,
   logo: {
     '@type': 'ImageObject',
-    '@id': `${SITE}/#logo`,
-    url: `${SITE}/symbold-logo.png`,
-    contentUrl: `${SITE}/symbold-logo.png`,
+    '@id': LOGO_ID,
+    url: `${SITE_URL}/symbold-logo.png`,
+    contentUrl: `${SITE_URL}/symbold-logo.png`,
     width: 600,
     height: 600,
     caption: 'Symbold',
   },
-  image: `${SITE}/OG.jpg`,
+  image: `${SITE_URL}/OG.jpg`,
   foundingDate: '2021',
   sameAs: [
     'https://www.facebook.com/symboldstudio/',
@@ -50,74 +67,28 @@ const organization = {
     { '@type': 'Country', name: 'Romania' },
     { '@type': 'Place', name: 'Worldwide' },
   ],
-  contactPoint: {
+  contactPoint: OFFICES.map((office) => ({
     '@type': 'ContactPoint',
-    contactType: 'Customer Service',
-    telephone: '+40728297829',
+    contactType: 'customer service',
+    telephone: office.phone,
+    email: EMAIL,
     availableLanguage: ['English', 'Romanian'],
-  },
-  department: [{ '@id': OFFICE_CLUJ_ID }, { '@id': OFFICE_BUCHAREST_ID }],
+  })),
+  department: officeNodes.map((node) => ({ '@id': node['@id'] })),
 };
 
 const website = {
   '@type': 'WebSite',
-  '@id': `${SITE}/#website`,
+  '@id': `${SITE_URL}/#website`,
   name: 'Symbold',
   alternateName: 'Symbold Branding Agency',
-  url: SITE,
+  url: SITE_URL,
   publisher: { '@id': ORGANIZATION_ID },
-};
-
-const officeCluj = {
-  '@type': 'ProfessionalService',
-  '@id': OFFICE_CLUJ_ID,
-  name: 'Symbold',
-  description: 'Symbold branding agency, Cluj-Napoca office.',
-  url: SITE,
-  image: `${SITE}/OG.jpg`,
-  logo: { '@id': `${SITE}/#logo` },
-  priceRange: '$$',
-  telephone: '+40728297829',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Strada Theodor Capidan 1-3',
-    postalCode: '400462',
-    addressLocality: 'Cluj-Napoca',
-    addressRegion: 'Cluj',
-    addressCountry: 'RO',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 46.7524624,
-    longitude: 23.6041259,
-  },
-  hasMap: 'https://maps.app.goo.gl/LNNu2zjyo3g1jjbH7',
-  parentOrganization: { '@id': ORGANIZATION_ID },
-};
-
-// TODO(seo): Bucharest office is missing postalCode, telephone, geo and hasMap.
-// Add them once confirmed by the owner (see docs/seo-backlog.md); never guess them.
-const officeBucharest = {
-  '@type': 'ProfessionalService',
-  '@id': OFFICE_BUCHAREST_ID,
-  name: 'Symbold',
-  description: 'Symbold branding agency, Bucharest office.',
-  url: SITE,
-  image: `${SITE}/OG.jpg`,
-  logo: { '@id': `${SITE}/#logo` },
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Strada Clucerului 62-64, Sector 1',
-    addressLocality: 'București',
-    addressRegion: 'București',
-    addressCountry: 'RO',
-  },
-  parentOrganization: { '@id': ORGANIZATION_ID },
 };
 
 const graph = {
   '@context': 'https://schema.org',
-  '@graph': [organization, website, officeCluj, officeBucharest],
+  '@graph': [organization, website, ...officeNodes],
 };
 ---
 
