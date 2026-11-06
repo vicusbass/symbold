@@ -39,9 +39,10 @@ const sanitizedDescription = description.trim().replace(/\s+/g, ' ');
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/32.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/svg+xml" sizes="180x180" href="/180.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -109,7 +110,15 @@ const sanitizedDescription = description.trim().replace(/\s+/g, ' ');
             description:
               'Symbold is a branding agency with offices in Cluj-Napoca and Bucharest. We take a concept-driven approach, bringing depth and meaning to ambitious brands in Romania and beyond.',
             url: 'https://www.symbold.ro',
-            logo: 'https://www.symbold.ro/32.svg',
+            logo: {
+              '@type': 'ImageObject',
+              '@id': 'https://www.symbold.ro/#logo',
+              url: 'https://www.symbold.ro/symbold-logo.png',
+              contentUrl: 'https://www.symbold.ro/symbold-logo.png',
+              width: 600,
+              height: 600,
+              caption: 'Symbold',
+            },
             foundingDate: '2021',
             sameAs: [
               'https://www.facebook.com/symboldstudio/',
