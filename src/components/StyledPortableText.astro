@@ -36,6 +36,13 @@ type MarkClasses = {
         h4: 'mb-2 text-lg font-bold md:text-2xl',
         normal: 'mb-4',
       };
+      // The page title is the only <h1>: CMS headings render one level lower
+      // (h1 → h2 … h5 → h6) and keep the look of the style the editor chose.
+      const headingLevel = /^h([1-5])$/.exec(style)?.[1];
+      if (headingLevel) {
+        const Heading = `h${Number(headingLevel) + 1}`;
+        return <Heading class={styleClasses[style] || styleClasses.normal}>{children}</Heading>;
+      }
       return (
         <Component {...props} class={styleClasses[style] || styleClasses.normal}>
           {children}
