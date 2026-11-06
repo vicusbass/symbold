@@ -37,12 +37,12 @@ export const OFFICES: Office[] = [
   {
     id: 'office-cluj-napoca',
     label: 'Cluj-Napoca Office',
-    addressLines: ['Theodor Capidan 1-3'],
+    addressLines: ['Theodor Capidan 1'],
     phoneDisplay: '0728 297 829',
     phone: '+40728297829',
     mapUrl: 'https://maps.app.goo.gl/LNNu2zjyo3g1jjbH7',
     address: {
-      streetAddress: 'Strada Theodor Capidan 1-3',
+      streetAddress: 'Strada Theodor Capidan 1',
       postalCode: '400462',
       addressLocality: 'Cluj-Napoca',
       addressRegion: 'Cluj',
