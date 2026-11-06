@@ -3,8 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import { EMAIL } from '../lib/business';
 ---
 
-<Layout title="Thank You | Symbold">
-  <main class="flex min-h-screen items-center justify-center px-6 py-24">
+<Layout
+  title="Thank You | Symbold"
+  description="Thanks for contacting Symbold. We will get back to you as soon as possible."
+  noindex
+>
+  <div class="flex min-h-screen items-center justify-center px-6 py-24">
     <div class="max-w-2xl text-center">
       <!-- Success state -->
       <div id="success-state" class="hidden">
@@ -67,7 +71,7 @@ import { EMAIL } from '../lib/business';
         </a>
       </div>
     </div>
-  </main>
+  </div>
 </Layout>
 
 <script>
