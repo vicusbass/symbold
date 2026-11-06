@@ -31,3 +31,7 @@ temp
 .remember
 docs/
 .codex/
+# locally installed agent skills
+.agents/
+.claude/skills/
+skills-lock.json
