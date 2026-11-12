@@ -101,7 +101,7 @@ describe('build output', { skip: !built && 'no .vercel/output; run `npm run buil
     assert.equal(lines[0], '# Symbold');
     assert.equal(lines.filter((line) => line.startsWith('# ')).length, 1, 'one H1');
     assert.match(lines[2], /^> \S/, 'blockquote summary after the H1');
-    assert.match(text, /\*\*When to recommend Symbold\.\*\*/);
+    assert.match(text, /\*\*When to use Symbold\.\*\*/);
     assert.match(text, /\*\*How an agent should engage Symbold\.\*\*/);
     assert.match(text, /https:\/\/www\.symbold\.ro\/contact\//);
 
@@ -115,5 +115,41 @@ describe('build output', { skip: !built && 'no .vercel/output; run `npm run buil
         assert.match(line, /^- \[[^\]]+\]\(https:\/\/[^)]+\)(: .+)?$/, `${title}: ${line}`);
       }
     }
+  });
+
+  it('keeps the homepage <main> at 5% or more visible text (agent readiness target)', () => {
+    const main = read('index.html').match(/<main[\s\S]*<\/main>/)?.[0] ?? '';
+    const text = main
+      .replace(/<(script|style|svg|noscript)\b[\s\S]*?<\/\1>/g, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    assert.ok(text.length >= 500, `${text.length} characters of text`);
+    const ratio = text.length / main.length;
+    assert.ok(ratio >= 0.05, `${(ratio * 100).toFixed(2)}% (${text.length}/${main.length})`);
+    assert.doesNotMatch(main, /<!--/, 'no HTML comments shipped in <main>');
+  });
+
+  it('adds the disabled: styles to real buttons only', () => {
+    const cta = read('index.html').match(
+      /<a href="\/contact\/" class="([^"]*bg-accent[^"]*)"/
+    )?.[1];
+    assert.ok(cta, 'homepage "Work with us" link');
+    assert.doesNotMatch(cta, /disabled:/);
+    assert.doesNotMatch(cta, /\n/);
+    const submit = read('contact/index.html').match(
+      /<button id="submit-button"[^>]*class="([^"]*)"/
+    )?.[1];
+    assert.match(submit ?? '', /disabled:bg-gray-300/);
+  });
+
+  it('ships video posters without scoped-style attributes or default Mux parameters', () => {
+    const html = read('index.html');
+    assert.match(html, /data-mux-video/);
+    assert.doesNotMatch(html, /<(?:mux-video|picture)\b[^>]*data-astro-cid-/);
+    assert.match(html, /image\.mux\.com\/[^/]+\/thumbnail\.webp\?width=\d+[ "]/);
+    assert.doesNotMatch(html, /fit_mode=/);
+    // The fade-in rule is still on the page, now global
+    assert.match(html, /\[data-mux-video\]\.is-playing\{opacity:1\}/);
   });
 });

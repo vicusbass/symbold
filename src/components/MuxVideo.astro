@@ -21,9 +21,13 @@ const {
   sizes = '100vw',
 } = Astro.props;
 const cssAspectRatio = aspectRatio.replace(':', '/');
+// fit_mode=preserve is Mux's default, so it stays out of the (repeated) srcset URLs
 const posterUrl = (width: number) =>
-  `https://image.mux.com/${playbackId}/thumbnail.webp?width=${width}&fit_mode=preserve`;
+  `https://image.mux.com/${playbackId}/thumbnail.webp?width=${width}`;
 const posterSrcset = [480, 720, 960, 1280, 1920].map((w) => `${posterUrl(w)} ${w}w`).join(', ');
+// The <style> below is global (its selector, [data-mux-video], only exists here): scoped styles
+// would stamp a data-astro-cid attribute on every element of every video, ~25 per page.
+
 // 1x1 transparent GIF, chosen by <picture> when `media` doesn't match
 const emptyImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 ---
@@ -114,7 +118,7 @@ const emptyImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALA
   document.addEventListener('astro:page-load', initMuxVideos);
 </script>
 
-<style>
+<style is:global>
   [data-mux-video] {
     display: block;
     opacity: 0;
