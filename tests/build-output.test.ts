@@ -102,6 +102,7 @@ describe('build output', { skip: !built && 'no .vercel/output; run `npm run buil
     assert.equal(lines.filter((line) => line.startsWith('# ')).length, 1, 'one H1');
     assert.match(lines[2], /^> \S/, 'blockquote summary after the H1');
     assert.match(text, /\*\*When to use Symbold\.\*\*/);
+    assert.match(text, /^- Design of a website, web app or mobile app /m);
     assert.match(text, /\*\*How an agent should engage Symbold\.\*\*/);
     assert.match(text, /https:\/\/www\.symbold\.ro\/contact\//);
 
