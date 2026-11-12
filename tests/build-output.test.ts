@@ -95,6 +95,31 @@ describe('build output', { skip: !built && 'no .vercel/output; run `npm run buil
     assert.match(text.toLowerCase(), new RegExp(knowsAbout[0].toLowerCase()));
   });
 
+  it('lists every service in the JSON-LD offer catalog, the same list llms.txt uses', () => {
+    const html = read('index.html');
+    const graph = JSON.parse(
+      html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] ?? '{}'
+    );
+    const organization = graph['@graph'].find(
+      (node: { '@type': string }) => node['@type'] === 'Organization'
+    );
+    const offered = organization.hasOfferCatalog.itemListElement.map(
+      (offer: { itemOffered: { name: string } }) => offer.itemOffered.name
+    );
+    const services = read('llms.txt')
+      .match(/^Services: (.*)\.$/m)?.[1]
+      .split(', ');
+    assert.deepEqual(offered, services);
+    for (const name of [
+      'Web and App Development',
+      'Social Media Management',
+      'Advertising Campaigns',
+    ]) {
+      assert.ok(offered.includes(name), name);
+    }
+    assert.ok(organization.knowsAbout.includes('Mobile App Development'));
+  });
+
   it('writes llms.txt in the llmstxt.org layout, with when-to-use guidance', () => {
     const text = read('llms.txt');
     const lines = text.split('\n');
@@ -102,7 +127,12 @@ describe('build output', { skip: !built && 'no .vercel/output; run `npm run buil
     assert.equal(lines.filter((line) => line.startsWith('# ')).length, 1, 'one H1');
     assert.match(lines[2], /^> \S/, 'blockquote summary after the H1');
     assert.match(text, /\*\*When to use Symbold\.\*\*/);
-    assert.match(text, /^- Design of a website, web app or mobile app /m);
+    // Sites and apps are designed *and* built
+    assert.match(text, /^- A website, web app or mobile app, designed and built /m);
+    assert.match(text, /^Services: .*Web and App Development/m);
+    assert.match(text, /^- Social media management and advertising campaigns /m);
+    assert.match(text, /^Services: .*Social Media Management, Advertising Campaigns\.$/m);
+    assert.doesNotMatch(text, /does not list|software development/i);
     assert.match(text, /\*\*How an agent should engage Symbold\.\*\*/);
     assert.match(text, /https:\/\/www\.symbold\.ro\/contact\//);
 
