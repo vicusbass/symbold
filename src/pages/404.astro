@@ -1,0 +1,43 @@
+---
+import Button from '../components/Button.astro';
+import Layout from '../layouts/Layout.astro';
+
+// Served with a 404 status for every unmatched URL (the Vercel adapter routes misses to /404.html).
+// Agents that send `Accept: text/markdown` get the markdown twin, /404.md (src/integrations/agent-markdown.ts).
+const links = [
+  { href: '/', label: 'Home', note: 'who we are and featured work' },
+  { href: '/work/', label: 'Work', note: 'all our branding case studies' },
+  { href: '/about/', label: 'About', note: 'our services and how we work' },
+  { href: '/contact/', label: 'Contact', note: 'start a project with us' },
+];
+---
+
+<Layout
+  title="Page Not Found | Symbold"
+  description="This page doesn't exist. Find Symbold's branding work, services and contact details instead."
+  noindex
+>
+  <section class="content-padding">
+    <h1 class="page-title">page not found</h1>
+    <p class="mt-2 text-base md:text-2xl lg:max-w-[calc(50vw-100px)]">
+      The page you're looking for doesn't exist or has moved. Here's where to go instead:
+    </p>
+    <ul class="mt-10 flex flex-col gap-3 text-base md:text-xl">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="font-semibold underline underline-offset-4"
+            set:text={link.label}
+          ></a>
+          <span class="text-gray-500">– {link.note}</span>
+        </li>
+      ))}
+    </ul>
+    <Button class="mt-10" href="/">Back to home</Button>
+  </section>
+
+  <div class="content-padding">
+    <hr class="mt-30 mb-10 md:mb-30" />
+  </div>
+</Layout>
