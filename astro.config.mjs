@@ -6,6 +6,7 @@ import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, fontProviders } from 'astro/config';
 import lottie from 'astro-integration-lottie';
+import agentMarkdown from './src/integrations/agent-markdown.ts';
 
 export default defineConfig({
   site: 'https://www.symbold.ro',
@@ -32,6 +33,12 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Ship component scripts (reveal animations, cursor, Vercel Analytics) as cached files
+      // instead of inlining them into every page, so the raw HTML is mostly content.
+      // Returning undefined keeps Vite's default 4 KB rule for everything else.
+      assetsInlineLimit: (filePath) => (filePath.endsWith('.js') ? false : undefined),
+    },
   },
 
   image: {
@@ -49,6 +56,8 @@ export default defineConfig({
       // Pages rendered with <Layout noindex> must not be listed
       filter: (page) => !page.includes('/thank-you/'),
     }),
+    // Markdown twin of every page for `Accept: text/markdown` (patches the Vercel build output)
+    agentMarkdown(),
   ],
 
   adapter: vercel(),
