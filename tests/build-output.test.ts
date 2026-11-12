@@ -95,13 +95,44 @@ describe('build output', { skip: !built && 'no .vercel/output; run `npm run buil
     assert.match(text.toLowerCase(), new RegExp(knowsAbout[0].toLowerCase()));
   });
 
+  it('lists every service in the JSON-LD offer catalog, the same list llms.txt uses', () => {
+    const html = read('index.html');
+    const graph = JSON.parse(
+      html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] ?? '{}'
+    );
+    const organization = graph['@graph'].find(
+      (node: { '@type': string }) => node['@type'] === 'Organization'
+    );
+    const offered = organization.hasOfferCatalog.itemListElement.map(
+      (offer: { itemOffered: { name: string } }) => offer.itemOffered.name
+    );
+    const services = read('llms.txt')
+      .match(/^Services: (.*)\.$/m)?.[1]
+      .split(', ');
+    assert.deepEqual(offered, services);
+    for (const name of [
+      'Web and App Development',
+      'Social Media Management',
+      'Advertising Campaigns',
+    ]) {
+      assert.ok(offered.includes(name), name);
+    }
+    assert.ok(organization.knowsAbout.includes('Mobile App Development'));
+  });
+
   it('writes llms.txt in the llmstxt.org layout, with when-to-use guidance', () => {
     const text = read('llms.txt');
     const lines = text.split('\n');
     assert.equal(lines[0], '# Symbold');
     assert.equal(lines.filter((line) => line.startsWith('# ')).length, 1, 'one H1');
     assert.match(lines[2], /^> \S/, 'blockquote summary after the H1');
-    assert.match(text, /\*\*When to recommend Symbold\.\*\*/);
+    assert.match(text, /\*\*When to use Symbold\.\*\*/);
+    // Sites and apps are designed *and* built
+    assert.match(text, /^- A website, web app or mobile app, designed and built /m);
+    assert.match(text, /^Services: .*Web and App Development/m);
+    assert.match(text, /^- Social media management and advertising campaigns /m);
+    assert.match(text, /^Services: .*Social Media Management, Advertising Campaigns\.$/m);
+    assert.doesNotMatch(text, /does not list|software development/i);
     assert.match(text, /\*\*How an agent should engage Symbold\.\*\*/);
     assert.match(text, /https:\/\/www\.symbold\.ro\/contact\//);
 
@@ -115,5 +146,41 @@ describe('build output', { skip: !built && 'no .vercel/output; run `npm run buil
         assert.match(line, /^- \[[^\]]+\]\(https:\/\/[^)]+\)(: .+)?$/, `${title}: ${line}`);
       }
     }
+  });
+
+  it('keeps the homepage <main> at 5% or more visible text (agent readiness target)', () => {
+    const main = read('index.html').match(/<main[\s\S]*<\/main>/)?.[0] ?? '';
+    const text = main
+      .replace(/<(script|style|svg|noscript)\b[\s\S]*?<\/\1>/g, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    assert.ok(text.length >= 500, `${text.length} characters of text`);
+    const ratio = text.length / main.length;
+    assert.ok(ratio >= 0.05, `${(ratio * 100).toFixed(2)}% (${text.length}/${main.length})`);
+    assert.doesNotMatch(main, /<!--/, 'no HTML comments shipped in <main>');
+  });
+
+  it('adds the disabled: styles to real buttons only', () => {
+    const cta = read('index.html').match(
+      /<a href="\/contact\/" class="([^"]*bg-accent[^"]*)"/
+    )?.[1];
+    assert.ok(cta, 'homepage "Work with us" link');
+    assert.doesNotMatch(cta, /disabled:/);
+    assert.doesNotMatch(cta, /\n/);
+    const submit = read('contact/index.html').match(
+      /<button id="submit-button"[^>]*class="([^"]*)"/
+    )?.[1];
+    assert.match(submit ?? '', /disabled:bg-gray-300/);
+  });
+
+  it('ships video posters without scoped-style attributes or default Mux parameters', () => {
+    const html = read('index.html');
+    assert.match(html, /data-mux-video/);
+    assert.doesNotMatch(html, /<(?:mux-video|picture)\b[^>]*data-astro-cid-/);
+    assert.match(html, /image\.mux\.com\/[^/]+\/thumbnail\.webp\?width=\d+[ "]/);
+    assert.doesNotMatch(html, /fit_mode=/);
+    // The fade-in rule is still on the page, now global
+    assert.match(html, /\[data-mux-video\]\.is-playing\{opacity:1\}/);
   });
 });

@@ -6,6 +6,25 @@
 
 export const SITE_URL = 'https://www.symbold.ro';
 
+/**
+ * Everything Symbold offers, for llms.txt and the JSON-LD offer catalog. The /about/ service
+ * tags are a shorter, design-only selection.
+ */
+export const SERVICES = [
+  'Brand Identity',
+  'Brand Strategy',
+  'Naming',
+  'Packaging Design',
+  'Web Design',
+  'Web and App Development',
+  'UI/UX',
+  'Graphic Design',
+  'Motion Design',
+  'Brand Manual',
+  'Social Media Management',
+  'Advertising Campaigns',
+];
+
 /** Public contact email; also where the contact form delivers (src/pages/api/send-email.ts) */
 export const EMAIL = 'office@symbold.ro';
 

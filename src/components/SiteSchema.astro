@@ -4,7 +4,7 @@
  * Defined once here and rendered in the <head> of every page by Layout.astro.
  * Office details come from src/lib/business.ts, the same data the contact page shows.
  */
-import { EMAIL, OFFICES, SITE_URL } from '../lib/business';
+import { EMAIL, OFFICES, SERVICES, SITE_URL } from '../lib/business';
 
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const LOGO_ID = `${SITE_URL}/#logo`;
@@ -62,10 +62,24 @@ const organization = {
     'Naming',
     'Packaging Design',
     'Web Design',
+    'Web Development',
+    'Mobile App Development',
+    'UI/UX Design',
     'Graphic Design',
+    'Motion Design',
     'Logo Design',
     'Visual Identity',
+    'Social Media Management',
+    'Advertising',
   ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Symbold services',
+    itemListElement: SERVICES.map((name) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name },
+    })),
+  },
   areaServed: [
     { '@type': 'Country', name: 'Romania' },
     { '@type': 'Place', name: 'Worldwide' },

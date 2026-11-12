@@ -20,6 +20,19 @@ const {
   id,
 } = Astro.props;
 const Element = href ? 'a' : 'button';
+
+const classes = [
+  'border-1 bg-accent rounded-md pl-10 pr-15 py-5 font-[500] text-black uppercase',
+  'inline-flex items-center justify-center w-full md:w-auto group',
+  'transition-all duration-400 ease-in-out',
+  'hover:bg-black hover:text-white hover:border-black',
+  // Only a <button> can be disabled; links skip these so every page carries less markup
+  !href &&
+    'disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 disabled:hover:text-gray-500',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
 ---
 
 <Element
@@ -27,13 +40,7 @@ const Element = href ? 'a' : 'button';
   href={href}
   type={!href ? type : undefined}
   disabled={!href ? disabled : undefined}
-  class={`border-1 bg-accent rounded-md pl-10 pr-15 py-5 font-[500] text-black uppercase
-    inline-flex items-center justify-center w-full md:w-auto group
-    transition-all duration-400 ease-in-out
-    hover:bg-black hover:text-white hover:border-black
-    disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 disabled:hover:text-gray-500
-    ${className}
-    `}
+  class={classes}
 >
   {hasArrow && (
     <Image
